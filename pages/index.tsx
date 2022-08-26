@@ -13,6 +13,7 @@ const ExampleComponentCSS = styled.div`
 
 const Home: NextPage = () => {
   const a = 'hi';
+  const b = 'hi';
 
   return (
     <div className={styles.container}>
