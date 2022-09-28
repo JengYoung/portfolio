@@ -4,9 +4,10 @@
 name: Depoly Portfolio Application to AWS S3 Bucket (Static Web)
 
 on:
-  push:
+  # TODO: reassign 'pull_request' to 'push' if code is not problem
+  pull_request:
     # NOTE: `main` branch has rule of managing deploy portfolio app in my repo!
-    branches: [ "main" ]
+    branches: ['main']
 
 jobs:
   build:
@@ -18,14 +19,12 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      - name: Install dependencies
+        run: yarn
 
-    - name: Install dependencies
-      run: yarn
-    
-    - name: Build and Export App
-    - run: yarn export 
-
+      - name: Build and Export App
+        run: yarn export
