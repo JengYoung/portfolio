@@ -9,6 +9,7 @@
     "lint": "next lint",
     "lint:fix": "next lint --fix",
     "stylelint:fix": "stylelint --fix \"**/*.tsx\"",
+    "lint:all": "next lint && yarn stylelint \"**/*.tsx\"",
     "postinstall": "husky install",
     "export": "next build && next export"
   },
