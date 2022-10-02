@@ -4,52 +4,117 @@ import Image from 'next/image';
 import styles from '../styles/Home.module.css';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import readonly from '../utils/readonly';
 import { getTypingAnimationTextArr } from '../utils/animations/typing';
 import useInterval from '../hooks/useInterval';
 
-const ExampleComponentCSS = styled.div`
-  width: 1rem;
-  height: 1rem;
-  color: red;
-  background-color: white;
+const Page = styled.div`
+  width: 100%;
+  height: 100%;
+`;
+
+const CatchphraseContainer = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+`;
+const Catchphrase = styled.div`
+  font-size: 2rem;
+  line-height: 1.5;
 `;
 
 const Home: NextPage = () => {
-  const text = `
-    사람들은 추락을 두려워한다.
-    하지만 사람은 누구나 바닥에서 태어난다.
-    사람들은 잃는 것을 두려워하지만
-    실상 잃은 것은 아무것도 없다.
-  `;
+  const texts = [
+    '사람들은 추락을 두려워한다.',
+    '하지만 사람은 누구나 바닥에서 태어난다.',
+    '사람들은 잃었다고 생각하지만',
+    '실상 잃은 것은 아무것도 없다.',
+  ];
 
-  const textArr = readonly([''].concat(getTypingAnimationTextArr(text)));
-  const maxIndex = textArr.length;
+  const textsArr: string[][] = readonly(
+    texts.map((text) => [''].concat(getTypingAnimationTextArr(text)))
+  );
 
-  const [textArrIndex, setTextArrIndex] = useState(0);
-  const timerId = useInterval(timerCallback, 20);
+  const [textsArrIndex, setTextsArrIndex] = useState(
+    Array.from({ length: textsArr.length }, () => ({
+      isStarted: false,
+      idx: 0,
+    }))
+  );
 
-  function timerCallback() {
-    if (timerId.current === null) return;
-    setTextArrIndex((idx) => idx + 1);
-  }
+  const nowFlagIndex = useMemo(() => {
+    return textsArrIndex.filter(({ isStarted, idx }) => isStarted).length;
+  }, [textsArrIndex]);
+
+  const timerCallback = useCallback(() => {
+    setTextsArrIndex((state) =>
+      state.map(({ isStarted, idx }, index) => ({
+        isStarted,
+        idx: idx + +(index === nowFlagIndex),
+      }))
+    );
+  }, [nowFlagIndex]);
+
+  const { timerId, savedCallback } = useInterval(timerCallback, 50);
 
   useEffect(() => {
-    if (textArrIndex === maxIndex - 1) {
-      clearInterval(timerId.current as NodeJS.Timeout);
+    if (textsArrIndex.every(({ isStarted }) => isStarted)) {
+      return;
     }
-  }, [textArrIndex, maxIndex, timerId]);
+
+    const nowMaxLength = textsArr[nowFlagIndex].length - 1;
+
+    if (textsArrIndex[nowFlagIndex].idx === nowMaxLength) {
+      clearInterval(timerId.current as NodeJS.Timeout);
+      timerId.current = null;
+
+      setTextsArrIndex((state) =>
+        state.map(({ isStarted, idx }) => ({
+          isStarted: idx === nowMaxLength ? true : isStarted,
+          idx,
+        }))
+      );
+    }
+  }, [nowFlagIndex, timerId, textsArr, textsArrIndex]);
+
+  useEffect(() => {
+    if (timerId.current) return;
+    if (textsArrIndex.every(({ isStarted }) => isStarted)) {
+      return;
+    }
+
+    savedCallback.current = timerCallback;
+    setTimeout(() => {
+      timerId.current = setInterval(savedCallback.current, 50);
+    }, 500);
+
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, [timerId, nowFlagIndex, savedCallback, timerCallback]);
+
+  useEffect(() => {
+    console.log('timerId: ', timerId.current);
+  }, [timerId]);
 
   return (
-    <div className="page">
+    <Page className="page">
       <Head>
         <title>Jengyoung&apos;s Portfolio 🙆🏻</title>
         <meta name="description" content="front-end developer portfolio" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="page__intro-copy">{textArr[textArrIndex]}</div>
-    </div>
+      <CatchphraseContainer className="page__intro-copy">
+        {textsArr.map((text, index) => (
+          <Catchphrase key={index}>
+            {text[textsArrIndex[index].idx]}
+          </Catchphrase>
+        ))}
+      </CatchphraseContainer>
+    </Page>
   );
 };
 
