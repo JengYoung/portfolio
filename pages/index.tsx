@@ -1,10 +1,7 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
-import styles from '../styles/Home.module.css';
 import styled from '@emotion/styled';
-import { css } from '@emotion/react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import readonly from '../utils/readonly';
 import { getTypingAnimationTextArr } from '../utils/animations/typing';
 import useInterval from '../hooks/useInterval';
@@ -24,6 +21,7 @@ const CatchphraseContainer = styled.div`
   height: 100vh;
 `;
 const Catchphrase = styled.div`
+  font-family: 'Gowun Batang', serif;
   font-size: 2rem;
   line-height: 1.5;
 `;
@@ -42,19 +40,19 @@ const Home: NextPage = () => {
 
   const [textsArrIndex, setTextsArrIndex] = useState(
     Array.from({ length: textsArr.length }, () => ({
-      isStarted: false,
+      isEnded: false,
       idx: 0,
     }))
   );
 
   const nowFlagIndex = useMemo(() => {
-    return textsArrIndex.filter(({ isStarted, idx }) => isStarted).length;
+    return textsArrIndex.filter(({ isEnded }) => isEnded).length;
   }, [textsArrIndex]);
 
   const timerCallback = useCallback(() => {
     setTextsArrIndex((state) =>
-      state.map(({ isStarted, idx }, index) => ({
-        isStarted,
+      state.map(({ isEnded, idx }, index) => ({
+        isEnded,
         idx: idx + +(index === nowFlagIndex),
       }))
     );
@@ -63,7 +61,7 @@ const Home: NextPage = () => {
   const { timerId, savedCallback } = useInterval(timerCallback, 50);
 
   useEffect(() => {
-    if (textsArrIndex.every(({ isStarted }) => isStarted)) {
+    if (textsArrIndex.every(({ isEnded }) => isEnded)) {
       return;
     }
 
@@ -74,8 +72,8 @@ const Home: NextPage = () => {
       timerId.current = null;
 
       setTextsArrIndex((state) =>
-        state.map(({ isStarted, idx }) => ({
-          isStarted: idx === nowMaxLength ? true : isStarted,
+        state.map(({ isEnded, idx }) => ({
+          isEnded: idx === nowMaxLength ? true : isEnded,
           idx,
         }))
       );
@@ -84,7 +82,7 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     if (timerId.current) return;
-    if (textsArrIndex.every(({ isStarted }) => isStarted)) {
+    if (textsArrIndex.every(({ isEnded }) => isEnded)) {
       return;
     }
 
@@ -93,12 +91,12 @@ const Home: NextPage = () => {
       timerId.current = setInterval(savedCallback.current, 50);
     }, 500);
 
+    return () => {
+      clearInterval(timerId.current as NodeJS.Timeout);
+    };
+
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [timerId, nowFlagIndex, savedCallback, timerCallback]);
-
-  useEffect(() => {
-    console.log('timerId: ', timerId.current);
-  }, [timerId]);
 
   return (
     <Page className="page">

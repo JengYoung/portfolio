@@ -5,6 +5,10 @@ const useInterval = (callback: () => any, delay: number) => {
   const timerId = useRef<undefined | null | NodeJS.Timeout>();
 
   useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  useEffect(() => {
     const tick = () => {
       savedCallback.current();
     };
