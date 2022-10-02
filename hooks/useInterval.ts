@@ -5,20 +5,16 @@ const useInterval = (callback: () => any, delay: number) => {
   const timerId = useRef<undefined | null | NodeJS.Timeout>();
 
   useEffect(() => {
-    savedCallback.current = callback;
-  });
-
-  useEffect(() => {
     const tick = () => {
       savedCallback.current();
     };
 
     timerId.current = setInterval(tick, delay);
-    console.log('hihihi', timerId);
-    return () => clearInterval(timerId.current as NodeJS.Timeout);
-  }, [delay]);
 
-  return timerId;
+    return () => clearInterval(timerId.current as NodeJS.Timeout);
+  }, [delay, savedCallback, timerId]);
+
+  return { timerId, savedCallback };
 };
 
 export default useInterval;
