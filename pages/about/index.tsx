@@ -1,8 +1,16 @@
 import styled from '@emotion/styled';
 import React from 'react';
 import TransitionText from '../../components/Text/TransitionText';
-import * as THREE from 'three';
-import Canvas from '../../components/Metaball/Canvas';
+import Canvas, { CanvasInterface } from '../../components/Metaball/Canvas';
+
+import dynamic from 'next/dynamic';
+
+const DynamicCanvas = dynamic(
+  () => import('../../components/Metaball/Canvas'),
+  {
+    ssr: false,
+  }
+);
 
 const AboutMeDescription = styled.div`
   margin-top: 1rem;
@@ -34,7 +42,7 @@ const AboutPage = () => {
           </TransitionText>
         </AboutMeDescription>
       </div>
-      <Canvas></Canvas>
+      <DynamicCanvas></DynamicCanvas>
     </>
   );
 };
