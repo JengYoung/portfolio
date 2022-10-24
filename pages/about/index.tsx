@@ -1,12 +1,11 @@
 import styled from '@emotion/styled';
 import React from 'react';
-import TransitionText from '../../components/Text/TransitionText';
-import Canvas, { CanvasInterface } from '../../components/Metaball/Canvas';
+import TransitionText from '@components/Text/TransitionText';
 
 import dynamic from 'next/dynamic';
 
 const DynamicCanvas = dynamic(
-  () => import('../../components/Metaball/Canvas'),
+  () => import('@components/Metaball').then((module) => module.Canvas),
   {
     ssr: false,
   }

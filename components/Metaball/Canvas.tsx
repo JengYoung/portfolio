@@ -1,12 +1,9 @@
+import React, { useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
-import React, { useEffect, useRef, useState } from 'react';
-import useCanvas from '../../hooks/useCanvas';
-import { Metaballs } from './Metaballs';
 
-export interface CanvasInterface {
-  width: number;
-  height: number;
-}
+import { Metaballs } from '.';
+
+import useCanvas from '@hooks/useCanvas';
 
 const MetaballCanvas = styled.canvas`
   position: absolute;
@@ -17,6 +14,7 @@ const MetaballCanvas = styled.canvas`
 const initialGradientColors: readonly string[] = ['#000000', '#200032'];
 
 const Canvas = () => {
+  console.log('HIHII');
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const { ctx, setFillStyle } = useCanvas({
     canvasRef,

@@ -1,20 +1,7 @@
-import { getRandom } from '../../utils/math';
-import { Bubble } from './Bubble';
-import { Metaball } from './Metaball';
+import { Bubble, Metaball } from '.';
+import { MetaballsInterface, MetaballsPropsInterface } from './types';
 
-export interface MetaballsPropsInterface {
-  ctx: CanvasRenderingContext2D;
-  bubbleNum: number;
-  absorbBallNum: number;
-  canvasWidth: number;
-  canvasHeight: number;
-  gradients: [string, string];
-}
-
-export interface MetaballsInterface extends MetaballsPropsInterface {
-  // balls: Metaball[];
-  mainMetaball: Metaball;
-}
+import { getRandom } from '@utils/math';
 
 export class Metaballs implements MetaballsInterface {
   ctx: CanvasRenderingContext2D;

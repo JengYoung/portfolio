@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import React, { ReactNode, useRef } from 'react';
-import useIntersectionObserver from '../../hooks/useIntersectionObserver';
+import useIntersectionObserver from '@hooks/useIntersectionObserver';
 
 interface TextInterface {
   $delay: number;

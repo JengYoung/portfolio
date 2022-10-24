@@ -1,32 +1,12 @@
-import { getAngle, getDist, getRandom, PIH } from '../../utils/math';
+import {
+  MetaballBaseInterface,
+  MetaballInterface,
+  MetaballPropInterface,
+  MetaballStateInterface,
+  UpdateReturnTypeInterface,
+} from './types';
 
-export interface MetaballBaseInterface {
-  x: number;
-  y: number;
-  r: number;
-}
-export interface MetaballPropInterface extends MetaballBaseInterface {
-  ctx: CanvasRenderingContext2D;
-  v: [number, number];
-}
-
-export interface MetaballStateInterface extends MetaballPropInterface {}
-
-export interface MetaballInterface {
-  state: MetaballStateInterface;
-  stickyWeight: number;
-}
-
-export interface UpdateReturnTypeInterface {
-  p1: [number, number];
-  h1: [number, number];
-  cmpH1: [number, number];
-  cmpP1: [number, number];
-  cmpP2: [number, number];
-  cmpH2: [number, number];
-  h2: [number, number];
-  p2: [number, number];
-}
+import { getAngle, getDist, getRandom, PIH } from '@utils/math';
 
 export class Metaball implements MetaballInterface {
   state: MetaballStateInterface;

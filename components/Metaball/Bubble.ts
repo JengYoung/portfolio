@@ -1,16 +1,13 @@
-import { getDist, getRandom } from '../../utils/math';
+import { Metaball } from '.';
+
 import {
-  Metaball,
+  BubbleStateInterface,
   MetaballBaseInterface,
   MetaballPropInterface,
   MetaballStateInterface,
-} from './Metaball';
+} from './types';
 
-export interface BubbleStateInterface extends MetaballStateInterface {
-  scale: number;
-  opacity: number;
-  isBurst: boolean;
-}
+import { getDist, getRandom } from '@utils/math';
 
 export class Bubble extends Metaball {
   maxScale: number;
