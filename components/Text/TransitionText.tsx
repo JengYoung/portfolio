@@ -73,8 +73,14 @@ const TransitionText = ({
   const textRef = useRef<HTMLDivElement | null>(null);
   const [classNames, setClassNames] = useState(['text--hidden']);
 
+  /**
+   * WARNING:
+   * 알기로는 리액트에서는 DOM 사용을 지양한다. virtual DOM의 휴리스틱에 지장을 주기 때문이다.
+   * 현재 개발을 빠르게 해야 하므로 이를 기술부채로 남겨놓는다.
+   */
   const callbackRef = useRef(() => {
     textRef.current &&
+      !textRef.current.classList.contains(TEXT_CLASS_NAMES.active) &&
       setClassNames((state) => [...state, TEXT_CLASS_NAMES.active]);
   });
 
@@ -84,7 +90,7 @@ const TransitionText = ({
         state.filter((cn) => cn !== TEXT_CLASS_NAMES.hidden)
       );
     }, $pending);
-  }, [classNames, $pending]);
+  }, [$pending]);
 
   useIntersectionObserver(textRef, callbackRef, {});
 
