@@ -21,9 +21,10 @@ const sizes = {
 } as const;
 
 const Text = styled.div<TextInterface>`
-  font-family: 'Gowun Batang', serif;
+  /* font-family: 'Gowun Batang', serif; */
   font-size: 2rem;
   font-weight: 400;
+  line-height: 1.5;
 
   opacity: 0;
 
