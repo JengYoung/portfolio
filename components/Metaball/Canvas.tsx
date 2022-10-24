@@ -14,7 +14,6 @@ const MetaballCanvas = styled.canvas`
 const initialGradientColors: readonly string[] = ['#000000', '#200032'];
 
 const Canvas = () => {
-  console.log('HIHII');
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const { ctx, setFillStyle } = useCanvas({
     canvasRef,

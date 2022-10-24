@@ -11,36 +11,27 @@ const DynamicCanvas = dynamic(
   }
 );
 
-const AboutMeDescription = styled.div`
-  margin-top: 1rem;
+const Greet = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
 `;
 const AboutPage = () => {
   return (
     <>
-      <div>
-        <TransitionText $delay={1} $size="xl">
-          반가워요!
+      <Greet>
+        <TransitionText $delay={1} $size="xxl" $fontWeight="extrabold">
+          안녕하세요! 🖐🏻
         </TransitionText>
         <TransitionText $delay={1} $size="xl">
-          <strong>바닥</strong>을 지향하는 개발자 황재영입니다.
+          웹 프론트엔드 개발자
         </TransitionText>
-
-        <AboutMeDescription>
-          <TransitionText $delay={1} $size="md">
-            알고 있는 것일수록 더욱 경계하고, 다시 지식을 쌓아 나갑니다.
-          </TransitionText>
-          <TransitionText $delay={2} $size="md">
-            그렇게 언러닝하며 무너지기보다는, 오히려 몰랐던 것을 알게됨에
-            감사해요. 🥰
-          </TransitionText>
-          <TransitionText $delay={3} $size="md">
-            결국, <strong>인생은 거리가 아닌 방향</strong>이고,
-          </TransitionText>
-          <TransitionText $delay={4} $size="md">
-            저는 또 한 걸음 더욱 성장하며 나아갈테니까요.
-          </TransitionText>
-        </AboutMeDescription>
-      </div>
+        <TransitionText $pending={1000} $delay={1} $size="xl">
+          <strong>황재영</strong>입니다.
+        </TransitionText>
+      </Greet>
       <DynamicCanvas></DynamicCanvas>
     </>
   );

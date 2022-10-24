@@ -123,7 +123,6 @@ export class Metaballs implements MetaballsInterface {
   }
 
   animate() {
-    console.log(this.restMetaballs, 'hi');
     this.restMetaballs.forEach((ball) => {
       ball.animate({
         x: this.mainMetaball.state.x,
