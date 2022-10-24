@@ -3,6 +3,7 @@ import React from 'react';
 import TransitionText from '@components/Text/TransitionText';
 
 import dynamic from 'next/dynamic';
+import Introduction from './Introduction';
 
 const DynamicCanvas = dynamic(
   () => import('@components/Metaball').then((module) => module.Canvas),
@@ -32,6 +33,9 @@ const AboutPage = () => {
           <strong>황재영</strong>입니다.
         </TransitionText>
       </Greet>
+
+      <Introduction></Introduction>
+
       <DynamicCanvas></DynamicCanvas>
     </>
   );

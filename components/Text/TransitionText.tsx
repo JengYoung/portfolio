@@ -1,7 +1,9 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
-import useIntersectionObserver from '@hooks/useIntersectionObserver';
+import useIntersectionObserver, {
+  UseIntersectionCallbackType,
+} from '@hooks/useIntersectionObserver';
 
 interface TextInterface {
   $pending?: number;
@@ -78,19 +80,24 @@ const TransitionText = ({
    * 알기로는 리액트에서는 DOM 사용을 지양한다. virtual DOM의 휴리스틱에 지장을 주기 때문이다.
    * 현재 개발을 빠르게 해야 하므로 이를 기술부채로 남겨놓는다.
    */
-  const callbackRef = useRef(() => {
-    textRef.current &&
-      !textRef.current.classList.contains(TEXT_CLASS_NAMES.active) &&
-      setClassNames((state) => [...state, TEXT_CLASS_NAMES.active]);
-  });
+  const callbackRef = useRef<UseIntersectionCallbackType>((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        if (
+          textRef.current &&
+          !textRef.current.classList.contains(TEXT_CLASS_NAMES.active)
+        ) {
+          setClassNames((state) => [...state, TEXT_CLASS_NAMES.active]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setClassNames((state) =>
-        state.filter((cn) => cn !== TEXT_CLASS_NAMES.hidden)
-      );
-    }, $pending);
-  }, [$pending]);
+          setTimeout(() => {
+            setClassNames((state) =>
+              state.filter((cn) => cn !== TEXT_CLASS_NAMES.hidden)
+            );
+          }, $pending);
+        }
+      }
+    });
+  });
 
   useIntersectionObserver(textRef, callbackRef, {});
 

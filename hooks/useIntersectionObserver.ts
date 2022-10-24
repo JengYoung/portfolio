@@ -1,16 +1,21 @@
 import { RefObject, useEffect } from 'react';
 
-type CallbackType = IntersectionObserverCallback;
+export type UseIntersectionCallbackType = IntersectionObserverCallback;
+
 const useIntersectionObserver = (
   targetRef: RefObject<Element>,
-  callbackRef: RefObject<CallbackType>,
+  callbackRef: RefObject<UseIntersectionCallbackType>,
   { root, rootMargin, threshold }: IntersectionObserverInit
 ) => {
   useEffect(() => {
     if (callbackRef.current === null || targetRef.current === null) return;
 
     const target = targetRef.current;
-    const options = { root, rootMargin, threshold };
+    const options = {
+      root,
+      rootMargin: `0px 0px -300px 0px`,
+      threshold,
+    };
 
     const observer = new IntersectionObserver(callbackRef.current, options);
 
