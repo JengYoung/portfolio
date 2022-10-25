@@ -1,8 +1,7 @@
-import Bubble from '@components/Bubble';
 import TextStyle from '@components/Text';
 import TransitionText from '@components/Text/TransitionText';
 import styled from '@emotion/styled';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 const StyledIntroduction = styled.section`
   position: relative;
@@ -13,10 +12,6 @@ const StyledIntroduction = styled.section`
     background: linear-gradient(0deg, #1d142d 60%, #770084);
   }
   opacity: 1;
-`;
-
-const SubCopy = styled.div`
-  font-size: 1rem;
 `;
 
 const Introduction = () => {

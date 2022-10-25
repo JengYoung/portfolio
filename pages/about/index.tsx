@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React, { useEffect } from 'react';
+import React from 'react';
 import TransitionText from '@components/Text/TransitionText';
 
 import dynamic from 'next/dynamic';
@@ -13,6 +13,7 @@ const DynamicCanvas = dynamic(
 );
 
 const Greet = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;

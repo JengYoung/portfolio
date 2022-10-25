@@ -1,10 +1,10 @@
 import { Metaball } from '.';
 
 import {
+  BubbleOptions,
+  BubblePropInterface,
   BubbleStateInterface,
   MetaballBaseInterface,
-  MetaballPropInterface,
-  MetaballStateInterface,
 } from './types';
 
 import { getDist, getRandom } from '@utils/math';
@@ -14,10 +14,21 @@ export class Bubble extends Metaball {
 
   state: BubbleStateInterface;
 
-  constructor({ ctx, x, y, r, v }: MetaballPropInterface) {
+  options: BubbleOptions;
+
+  constructor({
+    ctx,
+    x,
+    y,
+    r,
+    v,
+    options = { burst: true },
+  }: BubblePropInterface) {
     super({ ctx, x, y, r, v });
 
     this.maxScale = 1.1;
+
+    this.options = options;
 
     this.state = {
       ctx,
@@ -97,9 +108,17 @@ export class Bubble extends Metaball {
     const dist = getDist(this.x, this.y, bx, by);
 
     if (dist >= maxDist) {
-      this.setState({
-        isBurst: true,
-      });
+      if (this.options.burst) {
+        this.setState({
+          isBurst: true,
+        });
+        return;
+      } else {
+        this.setState({
+          x: this.x + this.v[0],
+          y: this.y + this.v[1],
+        });
+      }
     }
 
     if (dist < maxDist) {

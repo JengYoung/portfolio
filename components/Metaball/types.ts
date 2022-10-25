@@ -58,6 +58,12 @@ export interface UpdateReturnTypeInterface {
  * Bubble Interface
  */
 
+export interface BubbleOptions {
+  burst: true;
+}
+export interface BubblePropInterface extends MetaballPropInterface {
+  options?: BubbleOptions;
+}
 export interface BubbleStateInterface extends MetaballStateInterface {
   scale: number;
   opacity: number;
