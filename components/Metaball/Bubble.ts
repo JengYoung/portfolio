@@ -58,8 +58,8 @@ export class Bubble extends Metaball {
         y: this.ctx.canvas.height / 2,
         r: getRandom(50, 100, { allowNagative: false }),
         v: [
-          getRandom(0.5, 1, { allowNagative: true }),
-          getRandom(0.5, 1, { allowNagative: true }),
+          getRandom(0.2, 1, { allowNagative: true }),
+          getRandom(0.2, 1, { allowNagative: true }),
         ],
         scale: 1,
         opacity: 1,
@@ -115,10 +115,11 @@ export class Bubble extends Metaball {
     startAngle: number = 0,
     endAngle: number = Math.PI * 2
   ) {
+    ctx.save();
     ctx.globalAlpha = this.opacity;
 
     super.render(ctx, startAngle, endAngle);
 
-    ctx.globalAlpha = 1;
+    ctx.restore();
   }
 }

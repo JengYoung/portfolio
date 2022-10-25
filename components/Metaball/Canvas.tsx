@@ -8,10 +8,10 @@ import useCanvas from '@hooks/useCanvas';
 const MetaballCanvas = styled.canvas`
   position: absolute;
   top: 0;
-  z-index: -1;
+  z-index: -9999;
 `;
 
-const initialGradientColors: readonly string[] = ['#000000', '#200032'];
+const initialGradientColors: readonly string[] = ['#770084', '#1d142d'];
 
 const Canvas = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -24,20 +24,24 @@ const Canvas = () => {
 
   const animate = (metaballs: Metaballs, linearGradient: CanvasGradient) => {
     if (ctx === null) return;
-    ctx.fillStyle = linearGradient;
+
+    ctx.save();
     ctx.fillRect(0, 0, width, height);
+
     metaballs.render(ctx);
     metaballs.animate();
+
+    ctx.restore();
+
     requestAnimationFrame(() => animate(metaballs, linearGradient));
   };
 
   useEffect(() => {
-    const linearGradient = ctx?.createLinearGradient(
-      0,
-      0,
-      ctx.canvas.width,
-      ctx.canvas.height
-    ) as CanvasGradient;
+    if (ctx === null) return;
+
+    const linearGradient = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height);
+
+    if (!linearGradient) return;
 
     initialGradientColors.forEach((gradient, idx) => {
       linearGradient?.addColorStop(idx, gradient);
@@ -46,12 +50,12 @@ const Canvas = () => {
     setFillStyle(() => linearGradient);
 
     const metaballs = new Metaballs({
-      ctx: ctx as CanvasRenderingContext2D,
+      ctx: ctx,
       bubbleNum: 4,
       absorbBallNum: 5,
       canvasWidth: width,
       canvasHeight: height,
-      gradients: ['#5825ff', '#aa00ff'],
+      gradients: ['#f200ff', '#9000ff'],
     });
 
     animate(metaballs, linearGradient);

@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React from 'react';
+import React, { useEffect } from 'react';
 import TransitionText from '@components/Text/TransitionText';
 
 import dynamic from 'next/dynamic';
@@ -19,6 +19,7 @@ const Greet = styled.div`
   justify-content: center;
   height: 100vh;
 `;
+
 const AboutPage = () => {
   return (
     <>

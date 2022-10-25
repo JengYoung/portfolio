@@ -37,7 +37,6 @@ const useCanvas = ({
     if (canvasRef.current !== null && ctx !== null) {
       ctx.fillStyle = fillStyle ?? baseFillColor;
       ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-      ctx.save();
     }
 
     // NOTE: canvasRef는 ctx가 타입을 보장하므로 불필요한 반복 호출을 막기 위해 생략하였다.

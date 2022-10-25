@@ -54,6 +54,43 @@ export class Metaballs implements MetaballsInterface {
     this.init();
   }
 
+  /**
+   * @deprecated
+   * WARNING: 그러나 아직 사용할지도 모르니 프로젝트가 끝날 때까지 남겨놓자.
+   *
+   * 본래 목적은 rootState와 transform을 이용하여, 메타볼들을 요리조리 이동할 계획이였다.
+   * 메타볼이 화면만큼 갑자기 확! 커지고, 작아지면서 또 다른 메타볼과 결합하는 과정을 만들면 기가막히겠다...라는 생각이었다.
+   *
+   * 그러나 이는 2시간의 고민 끝에, 내 오만함으로 결론을 지었다.
+   * 생각해보니, 화면의 크기만큼 키우면서, 요리조리 연산해내는데, 그것을 스크롤에 따라서 결정하는 것이
+   * 과연 클린한 동작을 위한 로직 대비 얼마나 효용가치가 있는지를 생각해보았는데, 형편 없었다.
+   *
+   * 지금 당장만 해도 맥북 14인치 기준 전체 화면 시 캔버스에서만 19MB의 메모리를 사용하고 있다.
+   * 심지어 지금 컴포지션 단계에서 뭔가 문제가 있어 보여서... 거의 70MB 가량 사용하고 있다.
+   *
+   * 따라서 해당 애니메이션을 위한 매서드는 사용하지 않으려 하지만, 혹시나 나중에 기가 막힌 방법이 있다면 사용하려 놔둔다.
+   * 일단 시급한 것들 구현하고, 최적화한 후에 좀 더 고민하련다. 그때 지우겠다.
+   */
+  get rootState() {
+    return this.mainMetaball.state;
+  }
+
+  transform(xValue?: number, yValue?: number, rValue?: number) {
+    this.mainMetaball.setState({
+      x: this.mainMetaball.x - (xValue ?? 0),
+      y: this.mainMetaball.y - (yValue ?? 0),
+      r: this.mainMetaball.r - (rValue ?? 0),
+    });
+
+    this.absorbedMetaBalls.forEach((metaball) => {
+      metaball.setState({
+        x: metaball.x - (xValue ?? 0),
+        y: metaball.y - (yValue ?? 0),
+        r: metaball.r - (rValue ?? 0),
+      });
+    });
+  }
+
   init() {
     for (let i = 0; i < this.absorbBallNum; i += 1) {
       const metaball = new Metaball({
@@ -135,6 +172,8 @@ export class Metaballs implements MetaballsInterface {
   }
 
   render(ctx: CanvasRenderingContext2D) {
+    this.fillGradient();
+
     this.bubbles.forEach((ball, idx) => {
       if (ball.isBurst) {
         ball.burst();
@@ -163,7 +202,6 @@ export class Metaballs implements MetaballsInterface {
     });
 
     this.absorbedMetaBalls.forEach((ball, idx) => {
-      this.fillGradient();
       const mainMetaballPath = ball.update(this.mainMetaball);
       if (mainMetaballPath !== null) ball.renderCurve(mainMetaballPath);
 

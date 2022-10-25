@@ -2,11 +2,16 @@ import Bubble from '@components/Bubble';
 import TextStyle from '@components/Text';
 import TransitionText from '@components/Text/TransitionText';
 import styled from '@emotion/styled';
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const StyledIntroduction = styled.section`
   position: relative;
   height: 100vh;
+  background: linear-gradient(180deg, #1d142d 40%, #770084);
+
+  &:nth-child(2n + 1) {
+    background: linear-gradient(0deg, #1d142d 60%, #770084);
+  }
   opacity: 1;
 `;
 
