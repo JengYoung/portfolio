@@ -1,7 +1,8 @@
+import { Canvas } from '@components/Metaball';
 import TextStyle from '@components/Text';
 import TransitionText from '@components/Text/TransitionText';
 import styled from '@emotion/styled';
-import React from 'react';
+import React, { useRef } from 'react';
 
 const StyledIntroduction = styled.section`
   position: relative;
@@ -15,6 +16,8 @@ const StyledIntroduction = styled.section`
 `;
 
 const Introduction = () => {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
   return (
     <>
       <StyledIntroduction>

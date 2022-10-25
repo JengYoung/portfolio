@@ -1,4 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, {
+  ForwardedRef,
+  MutableRefObject,
+  Ref,
+  useEffect,
+  useRef,
+} from 'react';
 import styled from '@emotion/styled';
 
 import { Metaballs } from '.';
@@ -12,70 +18,51 @@ const MetaballCanvas = styled.canvas`
   z-index: -9999;
 `;
 
-const initialGradientColors: readonly string[] = ['#770084', '#1d142d'];
+interface CanvasPropsInterface {
+  width: number;
+  height: number;
+}
 
-const Canvas = () => {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const { ctx, setFillStyle } = useCanvas({
-    canvasRef,
-  });
+interface WrappedCanvasPropsInterface extends CanvasPropsInterface {
+  ref: CanvasRefType;
+  canvasRef: CanvasRefType;
+}
 
-  const width = window.innerWidth;
-  const height = window.innerHeight;
+type CanvasRefType = ForwardedRef<HTMLCanvasElement | null>;
 
-  const animate = (metaballs: Metaballs, linearGradient: CanvasGradient) => {
-    if (ctx === null) return;
+const Canvas = React.forwardRef(
+  ({ width, height }: CanvasPropsInterface, ref: CanvasRefType) => {
+    return (
+      <MetaballCanvas ref={ref} width={width} height={height}></MetaballCanvas>
+    );
+  }
+);
 
-    ctx.save();
-    ctx.fillRect(0, 0, width, height);
+Canvas.displayName = 'Canvas';
 
-    metaballs.render(ctx);
-    metaballs.animate();
-
-    ctx.restore();
-
-    requestAnimationFrame(() => animate(metaballs, linearGradient));
-  };
-
-  useEffect(() => {
-    if (ctx === null) return;
-
-    const linearGradient = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height);
-
-    if (!linearGradient) return;
-
-    initialGradientColors.forEach((gradient, idx) => {
-      linearGradient?.addColorStop(idx, gradient);
-    });
-
-    setFillStyle(() => linearGradient);
-
-    const metaballs = new Metaballs({
-      ctx,
-      mainMetaballState: {
-        x: width / 2,
-        y: height / 2,
-        r: 200,
-      },
-      bubbleNum: 4,
-      absorbBallNum: 5,
-      canvasWidth: width,
-      canvasHeight: height,
-      gradients: ['#f200ff', '#9000ff'],
-    });
-
-    animate(metaballs, linearGradient);
-
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  }, [ctx]);
-
-  return (
-    <MetaballCanvas
-      ref={canvasRef}
-      width={width}
-      height={height}
-    ></MetaballCanvas>
-  );
+/**
+ * @descriptions
+ * 기본적으로 Canvas는 Ref를 상위에서 사용해야 하므로 forwardRef로 wrapping하고 있다.
+ * 따라서, 이를 ref 타입으로 넘겨받아야 한다.
+ * 이때, dynamic import에서 받기 위해서는 ref로 주는 것이 아닌 다른 prop으로 넘겨주는 방식을 채택해야 한다.
+ *
+ * @error
+ * 이를 다루는 데 주의사항이 있다.
+ * 특이한 게, Dynamic import로 넘겨줄 때 canvasRef와 동시에, ref prop을 같은 ref로 넘겨주어야 한다.
+ * 이는 `ref`를 dynamic import할 때 제대로 인자를 받지 못하는 현상이 있기 때문이다.
+ *
+ * @param WrappedCanvasPropsInterface
+ *
+ * @returns Canvas
+ *
+ * @see: https://stackoverflow.com/questions/63469232/forwardref-error-when-dynamically-importing-a-module-in-next-js
+ */
+const WrappedCanvas = ({
+  width,
+  height,
+  canvasRef,
+}: WrappedCanvasPropsInterface) => {
+  return <Canvas ref={canvasRef} width={width} height={height}></Canvas>;
 };
 
-export default Canvas;
+export default WrappedCanvas;
