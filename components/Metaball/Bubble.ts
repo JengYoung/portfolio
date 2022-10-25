@@ -46,7 +46,7 @@ export class Bubble extends Metaball {
     return 1.1;
   }
 
-  get burstWeight() {
+  get #burstWeight() {
     return 1.5;
   }
 
@@ -103,7 +103,7 @@ export class Bubble extends Metaball {
 
     const { x: bx, y: by, r: br } = base;
 
-    const maxDist = (this.r + br) * this.burstWeight;
+    const maxDist = (this.r + br) * this.#burstWeight;
 
     const dist = getDist(this.x, this.y, bx, by);
 
@@ -135,6 +135,7 @@ export class Bubble extends Metaball {
     endAngle: number = Math.PI * 2
   ) {
     ctx.save();
+
     ctx.globalAlpha = this.opacity;
 
     super.render(ctx, startAngle, endAngle);

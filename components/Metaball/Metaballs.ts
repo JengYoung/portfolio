@@ -1,7 +1,12 @@
 import { Bubble, Metaball } from '.';
-import { MetaballsInterface, MetaballsPropsInterface } from './types';
+import {
+  MetaballsInterface,
+  MetaballsPropsInterface,
+  MetaballStateInterface,
+} from './types';
 
 import { getRandom } from '@utils/math';
+import { StaticBubble } from './StaticBubble';
 
 export class Metaballs implements MetaballsInterface {
   ctx: CanvasRenderingContext2D;
@@ -18,12 +23,17 @@ export class Metaballs implements MetaballsInterface {
 
   gradients: [string, string];
 
+  mainMetaballState: MetaballStateInterface;
+
+  #staticBubbles: StaticBubble[] = [];
+
   #bubbles: Bubble[] = [];
 
   #absorbedMetaBalls: Metaball[] = [];
 
   constructor({
     ctx,
+    mainMetaballState,
     bubbleNum,
     absorbBallNum,
     canvasWidth,
@@ -38,16 +48,13 @@ export class Metaballs implements MetaballsInterface {
     this.canvasWidth = canvasWidth;
     this.canvasHeight = canvasHeight;
 
-    this.mainMetaball = new Metaball({
-      ctx: this.ctx,
-      x: this.canvasWidth / 2,
-      y: this.canvasHeight / 2,
-      r: 200,
-      v: [
-        getRandom(0, 1, { allowNagative: true }),
-        getRandom(0, 1, { allowNagative: true }),
-      ],
-    });
+    this.mainMetaballState = {
+      ...mainMetaballState,
+      ctx,
+      v: [0, 0],
+    };
+
+    this.mainMetaball = new Metaball(this.mainMetaballState);
 
     this.gradients = gradients;
 
@@ -76,13 +83,7 @@ export class Metaballs implements MetaballsInterface {
   }
 
   transform(xValue?: number, yValue?: number, rValue?: number) {
-    this.mainMetaball.setState({
-      x: this.mainMetaball.x - (xValue ?? 0),
-      y: this.mainMetaball.y - (yValue ?? 0),
-      r: this.mainMetaball.r - (rValue ?? 0),
-    });
-
-    this.absorbedMetaBalls.forEach((metaball) => {
+    [this.mainMetaball, ...this.absorbedMetaBalls].forEach((metaball) => {
       metaball.setState({
         x: metaball.x - (xValue ?? 0),
         y: metaball.y - (yValue ?? 0),
@@ -125,6 +126,10 @@ export class Metaballs implements MetaballsInterface {
 
   get absorbedMetaBalls() {
     return this.#absorbedMetaBalls;
+  }
+
+  get staticBubbles() {
+    return this.#staticBubbles;
   }
 
   /**

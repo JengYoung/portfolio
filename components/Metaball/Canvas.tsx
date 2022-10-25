@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { Metaballs } from '.';
 
 import useCanvas from '@hooks/useCanvas';
+import { getRandom } from '@utils/math';
 
 const MetaballCanvas = styled.canvas`
   position: absolute;
@@ -50,7 +51,12 @@ const Canvas = () => {
     setFillStyle(() => linearGradient);
 
     const metaballs = new Metaballs({
-      ctx: ctx,
+      ctx,
+      mainMetaballState: {
+        x: width / 2,
+        y: height / 2,
+        r: 200,
+      },
       bubbleNum: 4,
       absorbBallNum: 5,
       canvasWidth: width,

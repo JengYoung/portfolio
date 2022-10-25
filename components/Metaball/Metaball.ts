@@ -80,7 +80,7 @@ export class Metaball implements MetaballInterface {
     const maxSpread = Math.acos((this.r - cmpR) / dist);
 
     /**
-     * Paper.js metaball의 경우 실제로 0.5로 설정했다고 합니다.
+     * 최적화를 위한 값이며 Paper.js metaball의 경우 실제로 0.5로 설정했다고 합니다.
      *
      * @see: http://paperjs.org/examples/meta-balls/
      */

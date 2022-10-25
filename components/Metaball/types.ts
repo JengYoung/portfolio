@@ -10,6 +10,7 @@ export interface CanvasInterface {
  */
 export interface MetaballsPropsInterface {
   ctx: CanvasRenderingContext2D;
+  mainMetaballState: MetaballBaseInterface;
   bubbleNum: number;
   absorbBallNum: number;
   canvasWidth: number;
@@ -20,6 +21,7 @@ export interface MetaballsPropsInterface {
 export interface MetaballsInterface extends MetaballsPropsInterface {
   // balls: Metaball[];
   mainMetaball: Metaball;
+  mainMetaballState: MetaballStateInterface;
 }
 
 /**
