@@ -6,7 +6,6 @@ import Introduction from './Introduction';
 import TransitionText from '@components/Text/TransitionText';
 import { DynamicCanvas, Metaballs } from '@components/Metaball';
 
-import useCanvas from '@hooks/useCanvas';
 import { GradientType } from '@components/Metaball/types';
 import useMetaball from '@hooks/useMetaball';
 
@@ -26,10 +25,10 @@ const AboutPage = () => {
   const width = globalThis.innerWidth;
   const height = globalThis.innerHeight;
 
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const greetRef = useRef<HTMLCanvasElement | null>(null);
 
   useMetaball({
-    canvasRef,
+    canvasRef: greetRef,
     gradient: initialGradientColors,
     metaballGradient: metaballGradientColors,
     mainMetaball: {
@@ -59,13 +58,26 @@ const AboutPage = () => {
         </TransitionText>
       </Greet>
 
-      <Introduction width={width} height={height}></Introduction>
+      <>
+        <Introduction.Maticulous
+          width={width}
+          height={height}
+        ></Introduction.Maticulous>
+        <Introduction.Documentation
+          width={width}
+          height={height}
+        ></Introduction.Documentation>
+        <Introduction.Curious
+          width={width}
+          height={height}
+        ></Introduction.Curious>
+      </>
 
       <DynamicCanvas
         width={width}
         height={height}
-        canvasRef={canvasRef}
-        ref={canvasRef}
+        canvasRef={greetRef}
+        ref={greetRef}
       ></DynamicCanvas>
     </>
   );

@@ -89,19 +89,6 @@ const useMetaball = ({
       ...mainMetaballProp,
     });
 
-    /*
-      {
-        ctx,
-        x: (width / 100) * 90,
-        y: (height / 100) * 10,
-        r: 300,
-        v: [-4, 4.2],
-        to: {
-          x: (width / 100) * 70,
-          y: (height / 100) * 60,
-        },
-      }
-     */
     if (staticBubbles) {
       staticBubbles.forEach((ballState) => {
         metaballs.createStaticBubbles({
