@@ -1,23 +1,11 @@
 import styled from '@emotion/styled';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 
 import Introduction from './Introduction';
-
-import TransitionText from '@components/Text/TransitionText';
-
 import { GradientType } from '@components/Metaball/types';
-import useMetaball from '@hooks/useMetaball';
-import { ForwardedCanvas } from '@components/Metaball/Canvas';
-import useWindow from '@hooks/useWindow';
 
-const Greet = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-`;
+import useMetaball from '@hooks/useMetaball';
+import useWindow from '@hooks/useWindow';
 
 /** TODO:
  * @todo
@@ -59,38 +47,18 @@ const AboutPage = () => {
 
   return (
     <>
-      <Greet>
-        <TransitionText $delay={1} $size="xxl" $fontWeight="extrabold">
-          안녕하세요! 🖐🏻
-        </TransitionText>
-        <TransitionText $delay={1} $size="xl">
-          웹 프론트엔드 개발자
-        </TransitionText>
-        <TransitionText $pending={1000} $delay={1} $size="xl">
-          <strong>황재영</strong>입니다.
-        </TransitionText>
-      </Greet>
-
-      <>
-        <Introduction.Maticulous
-          width={windowState.width}
-          height={Math.max(1000, windowState.height)}
-        ></Introduction.Maticulous>
-        <Introduction.Documentation
-          width={windowState.width}
-          height={Math.max(1000, windowState.height)}
-        ></Introduction.Documentation>
-        <Introduction.Curious
-          width={windowState.width}
-          height={Math.max(1000, windowState.height)}
-        ></Introduction.Curious>
-      </>
-
-      <ForwardedCanvas
+      <Introduction.Maticulous
         width={windowState.width}
-        height={windowState.height}
-        ref={greetRef}
-      ></ForwardedCanvas>
+        height={Math.max(1000, windowState.height)}
+      ></Introduction.Maticulous>
+      <Introduction.Documentation
+        width={windowState.width}
+        height={Math.max(1000, windowState.height)}
+      ></Introduction.Documentation>
+      <Introduction.Curious
+        width={windowState.width}
+        height={Math.max(1000, windowState.height)}
+      ></Introduction.Curious>
     </>
   );
 };
