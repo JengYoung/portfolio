@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import readonly from '../utils/readonly';
 import { getTypingAnimationTextArr } from '../utils/animations/typing';
 import useInterval from '../hooks/useInterval';
+import useTypingText from '@hooks/useTypingText';
 
 const Page = styled.div`
   width: 100%;
@@ -34,70 +35,7 @@ const Home: NextPage = () => {
     '실상 잃은 것은 아무것도 없다.',
   ];
 
-  const textsArr: string[][] = readonly(
-    texts.map((text) => [''].concat(getTypingAnimationTextArr(text)))
-  );
-
-  const [textsArrIndex, setTextsArrIndex] = useState(
-    Array.from({ length: textsArr.length }, () => ({
-      isEnded: false,
-      idx: 0,
-    }))
-  );
-
-  const nowFlagIndex = useMemo(() => {
-    return textsArrIndex.filter(({ isEnded }) => isEnded).length;
-  }, [textsArrIndex]);
-
-  const timerCallback = useCallback(() => {
-    setTextsArrIndex((state) =>
-      state.map(({ isEnded, idx }, index) => ({
-        isEnded,
-        idx: idx + +(index === nowFlagIndex),
-      }))
-    );
-  }, [nowFlagIndex]);
-
-  const { timerId, savedCallback } = useInterval(timerCallback, 50);
-
-  useEffect(() => {
-    if (textsArrIndex.every(({ isEnded }) => isEnded)) {
-      return;
-    }
-
-    const nowMaxLength = textsArr[nowFlagIndex].length - 1;
-
-    if (textsArrIndex[nowFlagIndex].idx === nowMaxLength) {
-      clearInterval(timerId.current as NodeJS.Timeout);
-      timerId.current = null;
-
-      setTextsArrIndex((state) =>
-        state.map(({ isEnded, idx }) => ({
-          isEnded: idx === nowMaxLength ? true : isEnded,
-          idx,
-        }))
-      );
-    }
-  }, [nowFlagIndex, timerId, textsArr, textsArrIndex]);
-
-  useEffect(() => {
-    if (timerId.current) return;
-    if (textsArrIndex.every(({ isEnded }) => isEnded)) {
-      return;
-    }
-
-    savedCallback.current = timerCallback;
-    setTimeout(() => {
-      timerId.current = setInterval(savedCallback.current, 50);
-    }, 500);
-
-    return () => {
-      clearInterval(timerId.current as NodeJS.Timeout);
-    };
-
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  }, [timerId, nowFlagIndex, savedCallback, timerCallback]);
-
+  const { textsArr, textsArrIndex } = useTypingText({ texts, delay: 50 });
   return (
     <Page className="page">
       <Head>
