@@ -57,8 +57,11 @@ const MainCopy = styled(XXLarge)`
 `;
 
 /**
- * @descriptions
- * TODO: 아직은 구체적인 사양을 정하지 않았으나 추후 확장하기 용이하도록 변수로 할당하였다.
+ * @description
+ * 아직은 구체적인 사양을 정하지 않았으나 추후 확장하기 용이하도록 변수로 할당하였다.
+ *
+ * @todo
+ * 확장 가능성 생각하고 이를 처리하기.
  */
 const SubCopy = styled(Default)``;
 

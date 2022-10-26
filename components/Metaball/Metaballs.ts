@@ -139,7 +139,7 @@ export class Metaballs implements MetaballsInterface {
   }
 
   /**
-   * @descriptions
+   * @description
    * mainMetaball을 제외한 나머지 메타볼들을 모두 합합니다.
    */
   get restMetaballs() {

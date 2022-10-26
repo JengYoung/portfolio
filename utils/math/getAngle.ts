@@ -1,7 +1,7 @@
-import {RADIAN} from './constants';
+import { RADIAN } from './constants';
 
 /**
- * @descriptions
+ * @description
  * 두 점 간의 각도를 구하는 함수입니다.
  * 현재 대상 좌표를 앞에,
  * 비교할 대상을 뒤에 놓으면 됩니다.
@@ -20,7 +20,7 @@ const getAngle = (
   y1: number,
   x2: number,
   y2: number,
-  {degree = false}: {degree?: boolean},
+  { degree = false }: { degree?: boolean }
 ) => Math.atan2(y1 - y2, x1 - x2) * (degree ? RADIAN : 1);
 
 export default getAngle;

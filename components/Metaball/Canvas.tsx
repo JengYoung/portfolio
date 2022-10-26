@@ -42,7 +42,7 @@ const Canvas = React.forwardRef(
 Canvas.displayName = 'Canvas';
 
 /**
- * @descriptions
+ * @description
  * 기본적으로 Canvas는 Ref를 상위에서 사용해야 하므로 forwardRef로 wrapping하고 있다.
  * 따라서, 이를 ref 타입으로 넘겨받아야 한다.
  * 이때, dynamic import에서 받기 위해서는 ref로 주는 것이 아닌 다른 prop으로 넘겨주는 방식을 채택해야 한다.

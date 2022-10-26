@@ -5,7 +5,7 @@ import { getDist } from '@utils/math';
 import { StaticBubbleInterface, StaticBubbleStateInterface } from './types';
 
 /**
- * @descriptions
+ * @description
  * Bubble과 좀 다른 특성을 가진 컴포넌트가 필요해서, 이를 확장해서 추가했다.
  * `StaticBubble`의 특징은 다음과 같다.
  * 1. 목적 방향 존재
@@ -47,7 +47,7 @@ export class StaticBubble extends Bubble implements StaticBubbleInterface {
   }
 
   /**
-   * @descriptions
+   * @description
    * 기존 Bubble과 달리, 다음 목적지와의 거리에 따라 렌더링합니다.
    * 정적인 특성에 맞춰, 도착 시 v는 0으로 바꿔줍니다.
    *

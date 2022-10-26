@@ -18,6 +18,19 @@ const Greet = styled.div`
   height: 100vh;
 `;
 
+/** TODO:
+ * @todo
+ * [ ] 1. 메타볼 위치 조정
+ * [ ] 2. 텍스트 포지션 바꾸기
+ * [ ] 3. 이미지 넣기
+ * [ ] 4. 이미지 렌더링 방식 생각하기
+ * [ ] 5. 모바일 대응은 어떻게 할 것인지 고민하기.
+ *
+ * @description
+ * 이는 지금 당장 위의 것들을 하지는 않을 것 같다. (너무 하나하나 디테일 잡고 가려니, 시간이 너무 걸리기 때문이다.)
+ * MVP를 완성 후 손 볼 예정이다.
+ */
+
 const AboutPage = () => {
   const initialGradientColors: GradientType = ['#770084', '#ab0746'];
   const metaballGradientColors: GradientType = ['#9000ff', '#ff3dbb'];

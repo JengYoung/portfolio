@@ -6,13 +6,12 @@ import styled from '@emotion/styled';
 import useMetaball from '@hooks/useMetaball';
 import React, { useRef } from 'react';
 
-const StyledIntroduction = styled.section`
-  position: relative;
-  height: 1000px;
-  opacity: 1;
-`;
-
 const Styled = {
+  Introduction: styled.section`
+    position: relative;
+    height: 1000px;
+    opacity: 1;
+  `,
   TextContainer: styled.div`
     position: relative;
     transform: translate3d(100px, 300px, 0);
@@ -73,7 +72,7 @@ const Maticulous = ({ width, height }: { width: number; height: number }) => {
   });
 
   return (
-    <StyledIntroduction>
+    <Styled.Introduction>
       <DynamicCanvas
         width={width}
         height={height}
@@ -98,7 +97,7 @@ const Maticulous = ({ width, height }: { width: number; height: number }) => {
           </TextStyle.Default>
         </TransitionText>
       </Styled.TextContainer>
-    </StyledIntroduction>
+    </Styled.Introduction>
   );
 };
 
@@ -145,7 +144,7 @@ const Documentation = ({
   });
 
   return (
-    <StyledIntroduction>
+    <Styled.Introduction>
       <DynamicCanvas
         width={width}
         height={height}
@@ -167,7 +166,7 @@ const Documentation = ({
           </TextStyle.Default>
         </TransitionText>
       </Styled.TextContainer>
-    </StyledIntroduction>
+    </Styled.Introduction>
   );
 };
 
@@ -208,7 +207,7 @@ const Curious = ({ width, height }: { width: number; height: number }) => {
   });
 
   return (
-    <StyledIntroduction>
+    <Styled.Introduction>
       <DynamicCanvas
         width={width}
         height={height}
@@ -230,7 +229,7 @@ const Curious = ({ width, height }: { width: number; height: number }) => {
           </TextStyle.Default>
         </TransitionText>
       </Styled.TextContainer>
-    </StyledIntroduction>
+    </Styled.Introduction>
   );
 };
 
