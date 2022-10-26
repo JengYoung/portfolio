@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import Introduction from './Introduction';
 
@@ -8,6 +8,7 @@ import { DynamicCanvas, Metaballs } from '@components/Metaball';
 
 import { GradientType } from '@components/Metaball/types';
 import useMetaball from '@hooks/useMetaball';
+import { ForwardedCanvas } from '@components/Metaball/Canvas';
 
 const Greet = styled.div`
   position: relative;
@@ -35,8 +36,18 @@ const AboutPage = () => {
   const initialGradientColors: GradientType = ['#770084', '#ab0746'];
   const metaballGradientColors: GradientType = ['#9000ff', '#ff3dbb'];
 
-  const width = globalThis.innerWidth;
-  const height = globalThis.innerHeight;
+  const [windowState, setWindowState] = useState({
+    width: 0,
+    height: 0,
+  });
+
+  useEffect(() => {
+    setWindowState((state) => ({
+      ...state,
+      width: window.innerWidth,
+      height: window.innerHeight,
+    }));
+  }, []);
 
   const greetRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -45,15 +56,15 @@ const AboutPage = () => {
     gradient: initialGradientColors,
     metaballGradient: metaballGradientColors,
     mainMetaball: {
-      x: width / 2,
-      y: height / 2,
+      x: windowState.width / 2,
+      y: windowState.height / 2,
       r: 200,
     },
     options: {
       bubbleNum: 4,
       absorbBallNum: 5,
-      canvasWidth: width,
-      canvasHeight: height,
+      canvasWidth: windowState.width,
+      canvasHeight: windowState.height,
     },
   });
 
@@ -71,7 +82,7 @@ const AboutPage = () => {
         </TransitionText>
       </Greet>
 
-      <>
+      {/* <>
         <Introduction.Maticulous
           width={width}
           height={Math.max(1000, height)}
@@ -84,14 +95,14 @@ const AboutPage = () => {
           width={width}
           height={Math.max(1000, height)}
         ></Introduction.Curious>
-      </>
+      </> */}
 
-      <DynamicCanvas
-        width={width}
-        height={height}
-        canvasRef={greetRef}
+      <ForwardedCanvas
+        width={windowState.width}
+        height={windowState.height}
+        // canvasRef={greetRef}
         ref={greetRef}
-      ></DynamicCanvas>
+      ></ForwardedCanvas>
     </>
   );
 };
