@@ -1,10 +1,12 @@
-import { DynamicCanvas } from '@components/Metaball';
+import React, { useRef } from 'react';
+import styled from '@emotion/styled';
+
+import { ForwardedCanvas } from '@components/Metaball';
 import { GradientType } from '@components/Metaball/types';
 import TextStyle from '@components/Text';
 import TransitionText from '@components/Text/TransitionText';
-import styled from '@emotion/styled';
+
 import useMetaball from '@hooks/useMetaball';
-import React, { useRef } from 'react';
 
 const Styled = {
   Introduction: styled.section`
@@ -73,12 +75,11 @@ const Maticulous = ({ width, height }: { width: number; height: number }) => {
 
   return (
     <Styled.Introduction>
-      <DynamicCanvas
+      <ForwardedCanvas
         width={width}
         height={height}
         ref={canvasRef}
-        canvasRef={canvasRef}
-      ></DynamicCanvas>
+      ></ForwardedCanvas>
 
       <Styled.TextContainer>
         <TransitionText $delay={1} $size="xxl" $fontWeight="extrabold">
@@ -145,12 +146,11 @@ const Documentation = ({
 
   return (
     <Styled.Introduction>
-      <DynamicCanvas
+      <ForwardedCanvas
         width={width}
         height={height}
         ref={canvasRef}
-        canvasRef={canvasRef}
-      ></DynamicCanvas>
+      ></ForwardedCanvas>
 
       <Styled.TextContainer>
         <TransitionText $delay={1} $size="xxl" $fontWeight="extrabold">
@@ -208,12 +208,11 @@ const Curious = ({ width, height }: { width: number; height: number }) => {
 
   return (
     <Styled.Introduction>
-      <DynamicCanvas
+      <ForwardedCanvas
         width={width}
         height={height}
         ref={canvasRef}
-        canvasRef={canvasRef}
-      ></DynamicCanvas>
+      ></ForwardedCanvas>
 
       <Styled.TextContainer>
         <TransitionText $delay={1} $size="xxl" $fontWeight="extrabold">

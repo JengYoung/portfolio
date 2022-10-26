@@ -1,17 +1,21 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import styled from '@emotion/styled';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import readonly from '../utils/readonly';
-import { getTypingAnimationTextArr } from '../utils/animations/typing';
-import useInterval from '../hooks/useInterval';
+import { useMemo, useRef } from 'react';
+import useTypingText from '@hooks/useTypingText';
+import useMetaball from '@hooks/useMetaball';
+import { GradientType } from '@components/Metaball/types';
+import CopyStyle from '@components/Text';
+import Link from 'next/link';
+import { ForwardedCanvas } from '@components/Metaball/Canvas';
+import useWindow from '@hooks/useWindow';
 
 const Page = styled.div`
   width: 100%;
   height: 100%;
 `;
 
-const CatchphraseContainer = styled.div`
+const Container = styled.div`
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -20,99 +24,118 @@ const CatchphraseContainer = styled.div`
   width: 100%;
   height: 100vh;
 `;
+
+const Inner = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+`;
+
 const Catchphrase = styled.div`
   font-family: 'Gowun Batang', serif;
   font-size: 2rem;
   line-height: 1.5;
 `;
 
+const Button = styled.button`
+  ${CopyStyle.Large}
+  display: block;
+
+  width: 5rem;
+  height: 5rem;
+
+  font-weight: 700;
+
+  background: #333;
+
+  border: 0;
+  border-radius: 50%;
+
+  transition: all 1s;
+
+  &.button--visible {
+    opacity: 1;
+
+    &:hover {
+      color: #333;
+      cursor: pointer;
+      background: white;
+    }
+  }
+  &.button--invisible {
+    opacity: 0;
+    transform: rotate(90deg) scale(0.75);
+  }
+`;
+
 const Home: NextPage = () => {
-  const texts = [
-    '사람들은 추락을 두려워한다.',
-    '하지만 사람은 누구나 바닥에서 태어난다.',
-    '사람들은 잃었다고 생각하지만',
-    '실상 잃은 것은 아무것도 없다.',
-  ];
+  const initialGradientColors: GradientType = ['#770084', '#ab0746'];
+  const metaballGradientColors: GradientType = ['#9000ff', '#ff3dbb'];
 
-  const textsArr: string[][] = readonly(
-    texts.map((text) => [''].concat(getTypingAnimationTextArr(text)))
+  const { windowState } = useWindow();
+
+  const greetRef = useRef(null);
+
+  const texts = ['안녕하세요!', '프론트엔드 개발자', '황재영입니다.'];
+
+  useMetaball({
+    canvasRef: greetRef,
+    gradient: initialGradientColors,
+    metaballGradient: metaballGradientColors,
+    mainMetaball: {
+      x: windowState.width / 2,
+      y: windowState.height / 2,
+      r: 200,
+    },
+    options: {
+      bubbleNum: 4,
+      absorbBallNum: 5,
+      canvasWidth: windowState.width,
+      canvasHeight: windowState.height,
+    },
+  });
+
+  const { textsArr, textsArrIndex } = useTypingText({ texts, delay: 50 });
+
+  const buttonClassName = useMemo(
+    () =>
+      textsArrIndex.some((obj) => obj.isEnded)
+        ? 'button--visible'
+        : 'button--invisible',
+    [textsArrIndex]
   );
-
-  const [textsArrIndex, setTextsArrIndex] = useState(
-    Array.from({ length: textsArr.length }, () => ({
-      isEnded: false,
-      idx: 0,
-    }))
-  );
-
-  const nowFlagIndex = useMemo(() => {
-    return textsArrIndex.filter(({ isEnded }) => isEnded).length;
-  }, [textsArrIndex]);
-
-  const timerCallback = useCallback(() => {
-    setTextsArrIndex((state) =>
-      state.map(({ isEnded, idx }, index) => ({
-        isEnded,
-        idx: idx + +(index === nowFlagIndex),
-      }))
-    );
-  }, [nowFlagIndex]);
-
-  const { timerId, savedCallback } = useInterval(timerCallback, 50);
-
-  useEffect(() => {
-    if (textsArrIndex.every(({ isEnded }) => isEnded)) {
-      return;
-    }
-
-    const nowMaxLength = textsArr[nowFlagIndex].length - 1;
-
-    if (textsArrIndex[nowFlagIndex].idx === nowMaxLength) {
-      clearInterval(timerId.current as NodeJS.Timeout);
-      timerId.current = null;
-
-      setTextsArrIndex((state) =>
-        state.map(({ isEnded, idx }) => ({
-          isEnded: idx === nowMaxLength ? true : isEnded,
-          idx,
-        }))
-      );
-    }
-  }, [nowFlagIndex, timerId, textsArr, textsArrIndex]);
-
-  useEffect(() => {
-    if (timerId.current) return;
-    if (textsArrIndex.every(({ isEnded }) => isEnded)) {
-      return;
-    }
-
-    savedCallback.current = timerCallback;
-    setTimeout(() => {
-      timerId.current = setInterval(savedCallback.current, 50);
-    }, 500);
-
-    return () => {
-      clearInterval(timerId.current as NodeJS.Timeout);
-    };
-
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  }, [timerId, nowFlagIndex, savedCallback, timerCallback]);
 
   return (
-    <Page className="page">
-      <Head>
-        <title>Jengyoung&apos;s Portfolio 🙆🏻</title>
-        <meta name="description" content="front-end developer portfolio" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <CatchphraseContainer className="page__intro-copy">
-        {textsArr.map((text, index) => (
-          <Catchphrase key={index}>
-            {text[textsArrIndex[index].idx]}
-          </Catchphrase>
-        ))}
-      </CatchphraseContainer>
-    </Page>
+    <>
+      <Page className="page">
+        <Head>
+          <title>Jengyoung&apos;s Portfolio 🙆🏻</title>
+          <meta name="description" content="front-end developer portfolio" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <Container className="page__intro-copy">
+          <Inner>
+            {textsArr.map((text, index) => (
+              <Catchphrase key={index}>
+                {text[textsArrIndex[index].idx]}
+              </Catchphrase>
+            ))}
+          </Inner>
+
+          <Button className={buttonClassName}>
+            <Link href="/about">CLICK</Link>
+          </Button>
+        </Container>
+      </Page>
+
+      <ForwardedCanvas
+        width={windowState.width}
+        height={windowState.height}
+        ref={greetRef}
+      ></ForwardedCanvas>
+    </>
   );
 };
 
