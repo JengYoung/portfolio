@@ -19,8 +19,8 @@ const Greet = styled.div`
 `;
 
 const AboutPage = () => {
-  const initialGradientColors: GradientType = ['#770084', '#1d142d'];
-  const metaballGradientColors: GradientType = ['#f200ff', '#9000ff'];
+  const initialGradientColors: GradientType = ['#770084', '#ab0746'];
+  const metaballGradientColors: GradientType = ['#9000ff', '#ff3dbb'];
 
   const width = globalThis.innerWidth;
   const height = globalThis.innerHeight;
@@ -61,15 +61,15 @@ const AboutPage = () => {
       <>
         <Introduction.Maticulous
           width={width}
-          height={height}
+          height={Math.max(1000, height)}
         ></Introduction.Maticulous>
         <Introduction.Documentation
           width={width}
-          height={height}
+          height={Math.max(1000, height)}
         ></Introduction.Documentation>
         <Introduction.Curious
           width={width}
-          height={height}
+          height={Math.max(1000, height)}
         ></Introduction.Curious>
       </>
 
