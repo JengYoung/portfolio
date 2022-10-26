@@ -13,4 +13,4 @@ export { StaticBubble } from './StaticBubble';
 export { Metaballs } from './Metaballs';
 
 export { default as Canvas } from './Canvas';
-export { DynamicCanvas } from './Canvas';
+export { ForwardedCanvas } from './Canvas';

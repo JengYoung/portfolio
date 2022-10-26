@@ -4,11 +4,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import Introduction from './Introduction';
 
 import TransitionText from '@components/Text/TransitionText';
-import { DynamicCanvas, Metaballs } from '@components/Metaball';
 
 import { GradientType } from '@components/Metaball/types';
 import useMetaball from '@hooks/useMetaball';
 import { ForwardedCanvas } from '@components/Metaball/Canvas';
+import useWindow from '@hooks/useWindow';
 
 const Greet = styled.div`
   position: relative;
@@ -36,18 +36,7 @@ const AboutPage = () => {
   const initialGradientColors: GradientType = ['#770084', '#ab0746'];
   const metaballGradientColors: GradientType = ['#9000ff', '#ff3dbb'];
 
-  const [windowState, setWindowState] = useState({
-    width: 0,
-    height: 0,
-  });
-
-  useEffect(() => {
-    setWindowState((state) => ({
-      ...state,
-      width: window.innerWidth,
-      height: window.innerHeight,
-    }));
-  }, []);
+  const { windowState } = useWindow();
 
   const greetRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -82,25 +71,24 @@ const AboutPage = () => {
         </TransitionText>
       </Greet>
 
-      {/* <>
+      <>
         <Introduction.Maticulous
-          width={width}
-          height={Math.max(1000, height)}
+          width={windowState.width}
+          height={Math.max(1000, windowState.height)}
         ></Introduction.Maticulous>
         <Introduction.Documentation
-          width={width}
-          height={Math.max(1000, height)}
+          width={windowState.width}
+          height={Math.max(1000, windowState.height)}
         ></Introduction.Documentation>
         <Introduction.Curious
-          width={width}
-          height={Math.max(1000, height)}
+          width={windowState.width}
+          height={Math.max(1000, windowState.height)}
         ></Introduction.Curious>
-      </> */}
+      </>
 
       <ForwardedCanvas
         width={windowState.width}
         height={windowState.height}
-        // canvasRef={greetRef}
         ref={greetRef}
       ></ForwardedCanvas>
     </>
