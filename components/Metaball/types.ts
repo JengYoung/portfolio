@@ -1,5 +1,13 @@
 import { Metaball } from '.';
 
+/**
+ * Common Type
+ */
+export type GradientType = readonly [string, string];
+
+/**
+ * Canvas Interface
+ */
 export interface CanvasInterface {
   width: number;
   height: number;
@@ -15,7 +23,7 @@ export interface MetaballsPropsInterface {
   absorbBallNum: number;
   canvasWidth: number;
   canvasHeight: number;
-  gradients: [string, string];
+  gradients: GradientType;
 }
 
 export interface MetaballsInterface extends MetaballsPropsInterface {
@@ -70,4 +78,21 @@ export interface BubbleStateInterface extends MetaballStateInterface {
   scale: number;
   opacity: number;
   isBurst: boolean;
+}
+
+/**
+ * StaticBubble Interface
+ */
+
+export interface ToInterface {
+  x: number;
+  y: number;
+}
+
+export interface StaticBubbleInterface extends BubblePropInterface {
+  to: ToInterface;
+}
+
+export interface StaticBubbleStateInterface extends BubbleStateInterface {
+  to: ToInterface;
 }

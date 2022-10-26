@@ -1,26 +1,62 @@
-import { Canvas } from '@components/Metaball';
+import { DynamicCanvas } from '@components/Metaball';
+import { GradientType } from '@components/Metaball/types';
 import TextStyle from '@components/Text';
 import TransitionText from '@components/Text/TransitionText';
 import styled from '@emotion/styled';
+import useMetaball from '@hooks/useMetaball';
 import React, { useRef } from 'react';
 
 const StyledIntroduction = styled.section`
   position: relative;
   height: 100vh;
-  background: linear-gradient(180deg, #1d142d 40%, #770084);
-
-  &:nth-child(2n + 1) {
-    background: linear-gradient(0deg, #1d142d 60%, #770084);
-  }
   opacity: 1;
 `;
 
-const Introduction = () => {
+const Introduction = ({ width, height }: { width: number; height: number }) => {
+  const initialGradientColors: GradientType = ['#1d142d', '#770084'];
+  const metaballGradientColors: GradientType = ['#f200ff', '#9000ff'];
+
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+  useMetaball({
+    canvasRef,
+    gradient: initialGradientColors,
+    metaballGradient: metaballGradientColors,
+    mainMetaball: {
+      x: (width / 100) * 90,
+      y: (height / 100) * 25,
+      r: 200,
+    },
+    staticBubbles: [
+      {
+        x: (width / 100) * 90,
+        y: (height / 100) * 25,
+        r: 300,
+        v: [-14, 14.2],
+        to: {
+          x: (width / 100) * 90 - 400,
+          y: (height / 100) * 25 + 400,
+        },
+      },
+    ],
+    options: {
+      bubbleNum: 0,
+      absorbBallNum: 0,
+      canvasWidth: width,
+      canvasHeight: height,
+    },
+  });
 
   return (
     <>
       <StyledIntroduction>
+        <DynamicCanvas
+          width={width}
+          height={height}
+          ref={canvasRef}
+          canvasRef={canvasRef}
+        ></DynamicCanvas>
+
         <TransitionText $delay={1} $size="xxl" $fontWeight="extrabold">
           <TextStyle.MainCopy>
             <div>좋은 코드에는</div>

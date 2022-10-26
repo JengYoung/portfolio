@@ -1,19 +1,8 @@
-import { getDist } from '@utils/math';
 import { Bubble } from '.';
-import { BubblePropInterface, BubbleStateInterface } from './types';
 
-interface ToInterface {
-  x: number;
-  y: number;
-}
+import { getDist } from '@utils/math';
 
-interface StaticBubbleInterface extends BubblePropInterface {
-  to: ToInterface;
-}
-
-interface StaticBubbleStateInterface extends BubbleStateInterface {
-  to: ToInterface;
-}
+import { StaticBubbleInterface, StaticBubbleStateInterface } from './types';
 
 /**
  * @descriptions
@@ -29,7 +18,8 @@ interface StaticBubbleStateInterface extends BubbleStateInterface {
  * 만약 목적지점까지 도착했다면, 더이상 이동하지 않는다.
  * 그렇기에, scale, opacity와 같은 상태가 필요하지 않다.
  */
-export class StaticBubble extends Bubble {
+
+export class StaticBubble extends Bubble implements StaticBubbleInterface {
   state: StaticBubbleStateInterface;
 
   constructor({ ctx, x, y, r, v, to }: StaticBubbleInterface) {

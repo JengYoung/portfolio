@@ -1,23 +1,14 @@
 import styled from '@emotion/styled';
-import React, {
-  MutableRefObject,
-  RefAttributes,
-  useEffect,
-  useRef,
-} from 'react';
-import TransitionText from '@components/Text/TransitionText';
+import React, { useEffect, useRef } from 'react';
 
-import dynamic from 'next/dynamic';
 import Introduction from './Introduction';
-import { Canvas, Metaballs } from '@components/Metaball';
-import useCanvas from '@hooks/useCanvas';
 
-const DynamicCanvas = dynamic(
-  () => import('@components/Metaball').then((module) => module.Canvas),
-  {
-    ssr: false,
-  }
-);
+import TransitionText from '@components/Text/TransitionText';
+import { DynamicCanvas, Metaballs } from '@components/Metaball';
+
+import useCanvas from '@hooks/useCanvas';
+import { GradientType } from '@components/Metaball/types';
+import useMetaball from '@hooks/useMetaball';
 
 const Greet = styled.div`
   position: relative;
@@ -27,63 +18,32 @@ const Greet = styled.div`
   justify-content: center;
   height: 100vh;
 `;
-const initialGradientColors: readonly string[] = ['#770084', '#1d142d'];
 
 const AboutPage = () => {
-  const width = globalThis.innerWidth ?? 0;
-  const height = globalThis.innerHeight ?? 0;
+  const initialGradientColors: GradientType = ['#770084', '#1d142d'];
+  const metaballGradientColors: GradientType = ['#f200ff', '#9000ff'];
+
+  const width = globalThis.innerWidth;
+  const height = globalThis.innerHeight;
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
-  const { ctx, setFillStyle } = useCanvas({
+  useMetaball({
     canvasRef,
-  });
-
-  const animate = (metaballs: Metaballs, linearGradient: CanvasGradient) => {
-    if (ctx === null) return;
-
-    ctx.save();
-    ctx.fillRect(0, 0, width, height);
-
-    metaballs.render(ctx);
-    metaballs.animate();
-
-    ctx.restore();
-
-    requestAnimationFrame(() => animate(metaballs, linearGradient));
-  };
-
-  useEffect(() => {
-    if (ctx === null) return;
-
-    const linearGradient = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height);
-
-    if (!linearGradient) return;
-
-    initialGradientColors.forEach((gradient, idx) => {
-      linearGradient?.addColorStop(idx, gradient);
-    });
-
-    setFillStyle(() => linearGradient);
-
-    const metaballs = new Metaballs({
-      ctx,
-      mainMetaballState: {
-        x: width / 2,
-        y: height / 2,
-        r: 200,
-      },
+    gradient: initialGradientColors,
+    metaballGradient: metaballGradientColors,
+    mainMetaball: {
+      x: width / 2,
+      y: height / 2,
+      r: 200,
+    },
+    options: {
       bubbleNum: 4,
       absorbBallNum: 5,
       canvasWidth: width,
       canvasHeight: height,
-      gradients: ['#f200ff', '#9000ff'],
-    });
-
-    animate(metaballs, linearGradient);
-
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  }, [ctx]);
+    },
+  });
 
   return (
     <>
@@ -99,7 +59,7 @@ const AboutPage = () => {
         </TransitionText>
       </Greet>
 
-      <Introduction></Introduction>
+      <Introduction width={width} height={height}></Introduction>
 
       <DynamicCanvas
         width={width}

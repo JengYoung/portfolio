@@ -11,6 +11,7 @@ import { Metaballs } from '.';
 
 import useCanvas from '@hooks/useCanvas';
 import { getRandom } from '@utils/math';
+import dynamic from 'next/dynamic';
 
 const MetaballCanvas = styled.canvas`
   position: absolute;
@@ -57,7 +58,8 @@ Canvas.displayName = 'Canvas';
  *
  * @see: https://stackoverflow.com/questions/63469232/forwardref-error-when-dynamically-importing-a-module-in-next-js
  */
-const WrappedCanvas = ({
+
+export const WrappedCanvas = ({
   width,
   height,
   canvasRef,
@@ -65,4 +67,14 @@ const WrappedCanvas = ({
   return <Canvas ref={canvasRef} width={width} height={height}></Canvas>;
 };
 
-export default WrappedCanvas;
+export const DynamicCanvas = dynamic(
+  () =>
+    import('@components/Metaball/Canvas').then(
+      (module) => module.WrappedCanvas
+    ),
+  {
+    ssr: false,
+  }
+);
+
+export default Canvas;

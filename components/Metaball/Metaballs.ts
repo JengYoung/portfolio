@@ -1,8 +1,10 @@
 import { Bubble, Metaball } from '.';
 import {
+  GradientType,
   MetaballsInterface,
   MetaballsPropsInterface,
   MetaballStateInterface,
+  StaticBubbleInterface,
 } from './types';
 
 import { getRandom } from '@utils/math';
@@ -21,7 +23,7 @@ export class Metaballs implements MetaballsInterface {
 
   canvasHeight: number;
 
-  gradients: [string, string];
+  gradients: GradientType;
 
   mainMetaballState: MetaballStateInterface;
 
@@ -132,19 +134,27 @@ export class Metaballs implements MetaballsInterface {
     return this.#staticBubbles;
   }
 
+  createStaticBubbles(prop: StaticBubbleInterface) {
+    this.#staticBubbles.push(new StaticBubble(prop));
+  }
+
   /**
    * @descriptions
    * mainMetaball을 제외한 나머지 메타볼들을 모두 합합니다.
    */
   get restMetaballs() {
-    return [...this.#absorbedMetaBalls, ...this.#bubbles];
+    return [
+      ...this.#absorbedMetaBalls,
+      ...this.#bubbles,
+      ...this.#staticBubbles,
+    ];
   }
 
   get bubbles() {
     return this.#bubbles;
   }
 
-  gradient(gradients: [string, string]) {
+  gradient(gradients: GradientType) {
     const result = this.ctx.createLinearGradient(
       0,
       0,
@@ -217,6 +227,13 @@ export class Metaballs implements MetaballsInterface {
         const paths = ball.update(nextBall);
         if (paths !== null) ball.renderCurve(paths);
       }
+
+      ball.render(ctx);
+    });
+
+    this.staticBubbles.forEach((ball, idx) => {
+      const mainMetaballPath = ball.update(this.mainMetaball);
+      if (mainMetaballPath !== null) ball.renderCurve(mainMetaballPath);
 
       ball.render(ctx);
     });
