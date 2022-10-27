@@ -1,11 +1,18 @@
 import styled from '@emotion/styled';
 import React from 'react';
 
+interface BubbleProps {
+  children: React.ReactNode;
+}
+
 const StyledBubbleContainer = styled.div`
-  position: absolute;
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(transparent, 70%, #752bed);
+  position: inline-block;
+  display: center;
+  align-items: center;
+  justify-content: center;
+  width: 10rem;
+  height: 10rem;
+  background: radial-gradient(transparent, 70%, #b791f3);
 
   border-radius: 50%;
   opacity: 0.5;
@@ -20,8 +27,8 @@ const StyledBubbleContainer = styled.div`
   }
 `;
 
-const Bubble = () => {
-  return <StyledBubbleContainer></StyledBubbleContainer>;
+const Bubble = ({ children }: BubbleProps) => {
+  return <StyledBubbleContainer>{children}</StyledBubbleContainer>;
 };
 
 export default Bubble;
