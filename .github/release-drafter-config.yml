@@ -17,13 +17,13 @@ change-title-escapes: '\<*_&'
 version-resolver:
   major:
     labels:
-      - '⚪️ Release major'
+      - '⚪️ Release.major'
   minor:
     labels:
-      - '🟠 Release minor'
+      - '🟠 Release.minor'
   patch:
     labels:
-      - '🟡 Release patch'
+      - '🟡 Release.patch'
   default: minor
 template: |
   ## 🚀 이번 버전에서는 어떤 점들이 변경되었는지 확인해볼까요?
