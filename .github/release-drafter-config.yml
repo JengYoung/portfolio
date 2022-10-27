@@ -1,0 +1,32 @@
+name-template: '🚀 v$RESOLVED_VERSION'
+tag-template: 'v$RESOLVED_VERSION'
+categories:
+  - title: '💡 Features'
+    labels:
+      - '✅ CheckList'
+      - '🌈 Feature'
+  - title: '🐛 Bug fixes'
+    labels:
+      - '⚠️ Bug'
+  - title: '🤯 Inner Changes'
+    labels:
+      - '📦 Chore'
+      - '📃 Docs'
+change-template: '- $TITLE #$NUMBER @$AUTHOR '
+change-title-escapes: '\<*_&'
+version-resolver:
+  major:
+    labels:
+      - '⚪️ Release.major'
+  minor:
+    labels:
+      - '🟠 Release.minor'
+  patch:
+    labels:
+      - '🟡 Release.patch'
+  default: minor
+template: |
+  ## 🚀 이번 버전에서는 어떤 점들이 변경되었는지 확인해볼까요?
+  ---
+  $CHANGES
+no-changes-template: '앗! 변경사항이 없어요. 😖'
