@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 
 interface BubbleProps {
   children: React.ReactNode;
+  onClick: MouseEventHandler;
 }
 
 const StyledBubbleContainer = styled.div`
@@ -27,8 +28,10 @@ const StyledBubbleContainer = styled.div`
   }
 `;
 
-const Bubble = ({ children }: BubbleProps) => {
-  return <StyledBubbleContainer>{children}</StyledBubbleContainer>;
+const Bubble = ({ children, onClick }: BubbleProps) => {
+  return (
+    <StyledBubbleContainer onClick={onClick}>{children}</StyledBubbleContainer>
+  );
 };
 
 export default Bubble;
