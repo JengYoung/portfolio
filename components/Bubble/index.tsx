@@ -10,12 +10,12 @@ const StyledBubbleContainer = styled.div`
   display: center;
   align-items: center;
   justify-content: center;
-  width: 10rem;
-  height: 10rem;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
   background: radial-gradient(transparent, 70%, #b791f3);
 
   border-radius: 50%;
-  opacity: 0.5;
 
   transition: all 0.5s ease-in;
 
