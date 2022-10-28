@@ -1,13 +1,18 @@
-import type { NextPage } from 'next';
-import Head from 'next/head';
+import { ReactElement, useMemo, useRef } from 'react';
 import styled from '@emotion/styled';
-import { useMemo, useRef } from 'react';
+
+import Head from 'next/head';
+import Link from 'next/link';
+
+import type { NextPageWithLayout } from '@pages/_app';
+
+import BaseLayout from '@components/layouts/BaseLayout';
+import { GradientType } from '@components/Metaball/types';
+import { ForwardedCanvas } from '@components/Metaball/Canvas';
+import CopyStyle from '@components/Text';
+
 import useTypingText from '@hooks/useTypingText';
 import useMetaball from '@hooks/useMetaball';
-import { GradientType } from '@components/Metaball/types';
-import CopyStyle from '@components/Text';
-import Link from 'next/link';
-import { ForwardedCanvas } from '@components/Metaball/Canvas';
 import useWindow from '@hooks/useWindow';
 
 const Page = styled.div`
@@ -70,7 +75,7 @@ const Button = styled.button`
   }
 `;
 
-const Home: NextPage = () => {
+const HomePage: NextPageWithLayout = () => {
   const initialGradientColors: GradientType = ['#770084', '#ab0746'];
   const metaballGradientColors: GradientType = ['#9000ff', '#ff3dbb'];
 
@@ -139,4 +144,11 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+/**
+ * @see: ../
+ */
+HomePage.getLayout = function getLayout(page: ReactElement) {
+  return <BaseLayout>{page}</BaseLayout>;
+};
+
+export default HomePage;
