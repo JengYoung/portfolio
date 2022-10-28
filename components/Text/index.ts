@@ -63,7 +63,9 @@ const MainCopy = styled(XXLarge)`
  * @todo
  * 확장 가능성 생각하고 이를 처리하기.
  */
-const SubCopy = styled(Default)``;
+const SubCopy = styled(Default)`
+  margin-bottom: 1rem;
+`;
 
 const CopyStyle = {
   XSmall,
