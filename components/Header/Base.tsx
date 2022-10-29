@@ -1,8 +1,45 @@
+import useHeader from '@hooks/useHeader';
+import Link from 'next/link';
+
 import React from 'react';
 import { StyledBase } from '.';
 
 const Base = () => {
-  return <StyledBase.Header>Base</StyledBase.Header>;
+  const Links = [
+    {
+      name: 'HOME',
+      url: '/',
+    },
+    {
+      name: 'ABOUT',
+      url: '/about',
+    },
+    {
+      name: 'SKILLS',
+      url: '/skills',
+    },
+    {
+      name: 'EXPERIENCES',
+      url: '/experiences',
+    },
+  ];
+
+  const { isScrollDown } = useHeader();
+
+  return (
+    <StyledBase.Header isScrollDown={isScrollDown}>
+      <StyledBase.Links>
+        {Links.map((link) => (
+          <StyledBase.LinkContainer
+            isActive={new RegExp(window.location.pathname).test(link.url)}
+            key={link.name}
+          >
+            <Link href={link.url}>{link.name}</Link>
+          </StyledBase.LinkContainer>
+        ))}
+      </StyledBase.Links>
+    </StyledBase.Header>
+  );
 };
 
 export default Base;
