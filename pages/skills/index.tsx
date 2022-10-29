@@ -1,8 +1,12 @@
+import styled from '@emotion/styled';
+import React, { useState } from 'react';
+
+import Image from 'next/image';
+
+import { getBaseLayout } from '@components/layouts';
+
 import Bubble from '@components/Bubble';
 import CopyStyle from '@components/Text';
-import styled from '@emotion/styled';
-import Image from 'next/image';
-import React, { useState } from 'react';
 
 interface SkillInterface {
   name: string;
@@ -297,5 +301,7 @@ const Styled = {
     margin-bottom: 1rem;
   `,
 };
+
+SkillsPage.getLayout = getBaseLayout;
 
 export default SkillsPage;
