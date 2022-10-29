@@ -1,13 +1,15 @@
 import styled from '@emotion/styled';
 import React, { useRef } from 'react';
 
+import { getBaseLayout } from '@components/layouts';
+
 import { GradientType } from '@components/Metaball/types';
+import { ForwardedCanvas } from '@components/Metaball';
+import TransitionText from '@components/Text/TransitionText';
 import TextStyle from '@components/Text';
 
 import useMetaball from '@hooks/useMetaball';
 import useWindow from '@hooks/useWindow';
-import { ForwardedCanvas } from '@components/Metaball';
-import TransitionText from '@components/Text/TransitionText';
 
 enum IntroductionEnum {
   Maticulous,
@@ -293,13 +295,14 @@ const Curious = ({ width, height }: { width: number; height: number }) => {
 /**
  * @description
  * Introduction이라는 말도 전체를 다 표현하지 못한다는 생각에 이런 식으로 작성했다.
- * 이것이 Introduction을 위한 하위 컴포넌트임을 분명히 하기 위해 몇 시간을 고민한 끝에, 약간 DOM보다 좀 더 upgrade된 방법을 사용했다.
- * 어쩌면 누군가는 욕할 수 있겠지만, 이게 좀 더 깔끔하게 관리하는 듯하다 나는.
+ * 이것이 Introduction을 위한 하위 컴포넌트임을 분명히 하기 위해 사용했다.
  */
 const Introduction = {
   Maticulous,
   Documentation,
   Curious,
 };
+
+AboutPage.getLayout = getBaseLayout;
 
 export default AboutPage;

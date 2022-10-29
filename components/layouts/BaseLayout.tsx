@@ -1,16 +1,19 @@
-import { DefaultHeader } from '@components/Header';
-import React, { ReactNode } from 'react';
+import { BaseHeader } from '@components/Header';
+import React, { ReactElement } from 'react';
 
-interface BaseLayoutInterface {
-  children: ReactNode;
-}
-const BaseLayout = ({ children }: BaseLayoutInterface) => {
+import { LayoutInterface } from './types';
+
+const BaseLayout = ({ children }: LayoutInterface) => {
   return (
     <>
-      <DefaultHeader />
+      <BaseHeader></BaseHeader>
       <main>{children}</main>
     </>
   );
+};
+
+export const getBaseLayout = (page: ReactElement) => {
+  return <BaseLayout>{page}</BaseLayout>;
 };
 
 export default BaseLayout;

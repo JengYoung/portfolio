@@ -1,4 +1,4 @@
-import { ReactElement, useMemo, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import styled from '@emotion/styled';
 
 import Head from 'next/head';
@@ -6,7 +6,8 @@ import Link from 'next/link';
 
 import type { NextPageWithLayout } from '@pages/_app';
 
-import BaseLayout from '@components/layouts/BaseLayout';
+import { getIntroLayout } from '@components/layouts';
+
 import { GradientType } from '@components/Metaball/types';
 import { ForwardedCanvas } from '@components/Metaball/Canvas';
 import CopyStyle from '@components/Text';
@@ -147,8 +148,6 @@ const HomePage: NextPageWithLayout = () => {
 /**
  * @see: ../
  */
-HomePage.getLayout = function getLayout(page: ReactElement) {
-  return <BaseLayout>{page}</BaseLayout>;
-};
+HomePage.getLayout = getIntroLayout;
 
 export default HomePage;

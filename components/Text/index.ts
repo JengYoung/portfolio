@@ -8,7 +8,7 @@ const commonStyle = css`
 `;
 
 const XSmall = styled.h5`
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 400;
 
   ${commonStyle}
