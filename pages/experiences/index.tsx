@@ -16,4 +16,5 @@ const Styled = {
     padding-top: 4rem;
   `,
 };
+
 export default ExpriencePage;
