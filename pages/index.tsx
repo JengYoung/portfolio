@@ -1,13 +1,19 @@
-import type { NextPage } from 'next';
-import Head from 'next/head';
-import styled from '@emotion/styled';
 import { useMemo, useRef } from 'react';
+import styled from '@emotion/styled';
+
+import Head from 'next/head';
+import Link from 'next/link';
+
+import type { NextPageWithLayout } from '@pages/_app';
+
+import { getIntroLayout } from '@components/layouts';
+
+import { GradientType } from '@components/Metaball/types';
+import { ForwardedCanvas } from '@components/Metaball/Canvas';
+import CopyStyle from '@components/Text';
+
 import useTypingText from '@hooks/useTypingText';
 import useMetaball from '@hooks/useMetaball';
-import { GradientType } from '@components/Metaball/types';
-import CopyStyle from '@components/Text';
-import Link from 'next/link';
-import { ForwardedCanvas } from '@components/Metaball/Canvas';
 import useWindow from '@hooks/useWindow';
 
 const Page = styled.div`
@@ -70,11 +76,10 @@ const Button = styled.button`
   }
 `;
 
-const Home: NextPage = () => {
+const HomePage: NextPageWithLayout = () => {
   const initialGradientColors: GradientType = ['#770084', '#ab0746'];
   const metaballGradientColors: GradientType = ['#9000ff', '#ff3dbb'];
-
-  const { windowState } = useWindow();
+  const { windowState } = useWindow(['innerWidth', 'innerHeight']);
 
   const greetRef = useRef(null);
 
@@ -85,15 +90,15 @@ const Home: NextPage = () => {
     gradient: initialGradientColors,
     metaballGradient: metaballGradientColors,
     mainMetaball: {
-      x: windowState.width / 2,
-      y: windowState.height / 2,
+      x: windowState.innerWidth / 2,
+      y: windowState.innerHeight / 2,
       r: 200,
     },
     options: {
       bubbleNum: 4,
       absorbBallNum: 5,
-      canvasWidth: windowState.width,
-      canvasHeight: windowState.height,
+      canvasWidth: windowState.innerWidth,
+      canvasHeight: windowState.innerHeight,
     },
   });
 
@@ -131,12 +136,17 @@ const Home: NextPage = () => {
       </Page>
 
       <ForwardedCanvas
-        width={windowState.width}
-        height={windowState.height}
+        width={windowState.innerWidth}
+        height={windowState.innerHeight}
         ref={greetRef}
       ></ForwardedCanvas>
     </>
   );
 };
 
-export default Home;
+/**
+ * @see: ../
+ */
+HomePage.getLayout = getIntroLayout;
+
+export default HomePage;

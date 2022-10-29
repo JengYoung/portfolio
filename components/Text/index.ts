@@ -8,7 +8,7 @@ const commonStyle = css`
 `;
 
 const XSmall = styled.h5`
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 400;
 
   ${commonStyle}
@@ -63,7 +63,9 @@ const MainCopy = styled(XXLarge)`
  * @todo
  * 확장 가능성 생각하고 이를 처리하기.
  */
-const SubCopy = styled(Default)``;
+const SubCopy = styled(Default)`
+  margin-bottom: 1rem;
+`;
 
 const CopyStyle = {
   XSmall,
