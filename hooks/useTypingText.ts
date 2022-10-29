@@ -79,7 +79,7 @@ const useTypingText = ({ texts, delay }: UseTypingTextParam) => {
     };
 
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  }, [timerId, nowFlagIndex, savedCallback, timerCallback]);
+  }, [savedCallback, timerCallback]);
 
   return {
     textsArr,

@@ -1,4 +1,5 @@
 import useHeader from '@hooks/useHeader';
+import useWindow from '@hooks/useWindow';
 import Link from 'next/link';
 
 import React from 'react';
@@ -25,13 +26,14 @@ const Base = () => {
   ];
 
   const { isScrollDown } = useHeader();
+  const { windowState } = useWindow(['location']);
 
   return (
     <StyledBase.Header isScrollDown={isScrollDown}>
       <StyledBase.Links>
         {Links.map((link) => (
           <StyledBase.LinkContainer
-            isActive={new RegExp(window.location.pathname).test(link.url)}
+            isActive={new RegExp(windowState.location?.pathname).test(link.url)}
             key={link.name}
           >
             <Link href={link.url}>{link.name}</Link>

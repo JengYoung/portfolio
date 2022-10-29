@@ -34,7 +34,7 @@ const AboutPage = () => {
   const initialGradientColors: GradientType = ['#770084', '#ab0746'];
   const metaballGradientColors: GradientType = ['#9000ff', '#ff3dbb'];
 
-  const { windowState } = useWindow();
+  const { windowState } = useWindow(['innerWidth', 'innerHeight']);
 
   const greetRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -43,31 +43,31 @@ const AboutPage = () => {
     gradient: initialGradientColors,
     metaballGradient: metaballGradientColors,
     mainMetaball: {
-      x: windowState.width / 2,
-      y: windowState.height / 2,
+      x: windowState.innerWidth / 2,
+      y: windowState.innerHeight / 2,
       r: 200,
     },
     options: {
       bubbleNum: 4,
       absorbBallNum: 5,
-      canvasWidth: windowState.width,
-      canvasHeight: windowState.height,
+      canvasWidth: windowState.innerWidth,
+      canvasHeight: windowState.innerHeight,
     },
   });
 
   return (
     <>
       <Introduction.Maticulous
-        width={windowState.width}
-        height={Math.max(1000, windowState.height)}
+        width={windowState.innerWidth}
+        height={Math.max(1000, windowState.innerHeight)}
       ></Introduction.Maticulous>
       <Introduction.Documentation
-        width={windowState.width}
-        height={Math.max(1000, windowState.height)}
+        width={windowState.innerWidth}
+        height={Math.max(1000, windowState.innerHeight)}
       ></Introduction.Documentation>
       <Introduction.Curious
-        width={windowState.width}
-        height={Math.max(1000, windowState.height)}
+        width={windowState.innerWidth}
+        height={Math.max(1000, windowState.innerHeight)}
       ></Introduction.Curious>
     </>
   );
