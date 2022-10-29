@@ -1,4 +1,5 @@
 import { BaseHeader } from '@components/Header';
+import styled from '@emotion/styled';
 import React, { ReactElement } from 'react';
 
 import { LayoutInterface } from './types';
