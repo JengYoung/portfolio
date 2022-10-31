@@ -1,5 +1,5 @@
 import { IntroHeader } from '@components/Header';
-import React, { ReactElement, ReactNode } from 'react';
+import React, { ReactElement } from 'react';
 import { LayoutInterface } from './types';
 
 const IntroLayout = ({ children }: LayoutInterface) => {

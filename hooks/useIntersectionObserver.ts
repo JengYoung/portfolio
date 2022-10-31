@@ -9,15 +9,13 @@ const useIntersectionObserver = (
 ) => {
   useEffect(() => {
     if (callbackRef.current === null || targetRef.current === null) return;
-
     const target = targetRef.current;
-    const options = {
-      root,
-      rootMargin: `0px 0px -300px 0px`,
-      threshold,
-    };
 
-    const observer = new IntersectionObserver(callbackRef.current, options);
+    const observer = new IntersectionObserver(callbackRef.current, {
+      root,
+      rootMargin,
+      threshold,
+    });
 
     observer.observe(target);
 

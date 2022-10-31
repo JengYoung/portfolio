@@ -1,0 +1,39 @@
+# <type>: <subject>
+##### Subject 50 characters ################# -> |
+
+
+# Body Message
+######## Allows multi-line, but no more than 4 lines. ############# -> |
+######## 72 characters limit per line ############################# -> |
+
+# Issue Tracker Number or URL
+
+# --- COMMIT END ---
+# Type can be
+#   ✨    : new feature
+#   🐛    : bug fix
+#   ♻️    : refactoring production code
+#   💄    : formatting, missing semi colons, etc; (no production code change)
+#   📝    : changes to documentation
+#   ✅    : adding or refactoring tests; (no production code change)
+#   📦    : updating grunt tasks etc; (no production code change)
+#   🚚    : move files, code, directory
+#   🔥    : remove files, code, directory
+# ------------------
+# Remember me ~
+#   Capitalize the subject line
+#     제목줄은 대문자로 시작한다.
+#   Use the imperative mood in the subject line
+#     제목줄은 명령어로 작성한다.
+#   Do not end the subject line with a period
+#     제목줄은 마침표로 끝내지 않는다.
+#   Separate subject from body with a blank line
+#     본문과 제목에는 빈줄을 넣어서 구분한다.
+#   Use the body to explain what and why vs. how
+#     본문에는 "어떻게" 보다는 "왜"와 "무엇을" 설명한다.
+#   Can use multiple lines with "-" for bullet points in body
+#     본문에 목록을 나타낼때는 "-"로 시작한다.
+# ------------------
+# this template is written by referring this documentation.
+# @see: https://ujuc.github.io/2020/02/02/git-commit-message-template-man-deul-gi/
+# ------------------
