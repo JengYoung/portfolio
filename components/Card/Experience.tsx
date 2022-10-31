@@ -63,6 +63,8 @@ const Styled = {
 
     border: 1px solid #fff;
     border-radius: 20px;
+
+    transition: all 1s;
     transform: scale(0);
 
     ${({ state }) => {
@@ -70,7 +72,6 @@ const Styled = {
         case CardsState.invisible: {
           return css`
             opacity: 0;
-            transition: transform 1s;
             transform: scale(0);
           `;
         }
@@ -78,7 +79,6 @@ const Styled = {
         case CardsState.visible: {
           return css`
             opacity: 1;
-            transition: transform 1s;
             transform: scale(1);
           `;
         }
@@ -86,7 +86,6 @@ const Styled = {
         case CardsState.out: {
           return css`
             opacity: 1;
-            transition: transform 1s;
             transform: translateZ(5400px) translateX(-100vw) scale(1);
           `;
         }
@@ -99,6 +98,7 @@ const Styled = {
   `,
   Header: styled.header`
     display: flex;
+    flex-direction: column;
     align-items: baseline;
   `,
   Title: styled(CopyStyle.XLarge)`
@@ -109,12 +109,9 @@ const Styled = {
     color: #888;
   `,
   SubCopy: styled(CopyStyle.Default)`
+    margin-top: 1rem;
     font-weight: bold;
     color: black;
-
-    &:not(:first-child) {
-      margin-top: 1rem;
-    }
   `,
   List: styled.ul`
     padding: 0;
