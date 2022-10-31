@@ -1,12 +1,4 @@
-import React, {
-  createRef,
-  MutableRefObject,
-  RefObject,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { createRef, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { ExperienceCard } from '@components/Card';
@@ -246,7 +238,6 @@ const Styled = {
   Container: styled.section`
     width: 100%;
     height: 1600vh;
-    /* padding-top: 4rem; */
     perspective: 10000px;
   `,
   IntersectionTarget: styled.div`

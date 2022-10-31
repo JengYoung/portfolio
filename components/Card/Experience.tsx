@@ -1,8 +1,8 @@
 import React, { MutableRefObject } from 'react';
 import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 
 import CopyStyle from '@components/Text';
-import { css } from '@emotion/react';
 
 export enum CardsState {
   invisible = 'invisible',
