@@ -1,6 +1,7 @@
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import React, { ReactNode, useEffect, useRef, useState } from 'react';
+
 import useIntersectionObserver, {
   UseIntersectionCallbackType,
 } from '@hooks/useIntersectionObserver';
@@ -35,6 +36,7 @@ const sizes = {
   lg: '1.5rem',
   xl: '2rem',
   xxl: '4rem',
+  xxxl: '10rem',
 } as const;
 
 const Text = styled.div<TextInterface>`

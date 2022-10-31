@@ -1,5 +1,6 @@
-import { BaseHeader } from '@components/Header';
 import React, { ReactElement } from 'react';
+
+import { BaseHeader } from '@components/Header';
 
 import { LayoutInterface } from './types';
 
