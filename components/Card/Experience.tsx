@@ -103,6 +103,7 @@ const Styled = {
   `,
   Title: styled(CopyStyle.XLarge)`
     margin-right: 0.5rem;
+    line-height: 1.5;
     color: black;
   `,
   Period: styled.span`
