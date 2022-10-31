@@ -1,26 +1,41 @@
-import CopyStyle from '@components/Text';
+import React, { MutableRefObject } from 'react';
 import styled from '@emotion/styled';
-import React from 'react';
+
+import CopyStyle from '@components/Text';
+import { css } from '@emotion/react';
+
+export enum CardsState {
+  invisible = 'invisible',
+  visible = 'visible',
+  out = 'out',
+}
+
+export type CardsStateValueType = keyof typeof CardsState;
 
 interface ExperienceCardProps {
   period: string;
   skills: string[];
   contents: string[];
+  state: CardsStateValueType;
 }
-const ExperienceCard = ({ period, skills, contents }: ExperienceCardProps) => {
+
+const ExperienceCard = (
+  { period, skills, contents, state }: ExperienceCardProps,
+  ref: MutableRefObject<HTMLElement>
+) => {
   return (
-    <Styled.Container>
-      <Styled.Title></Styled.Title>
+    <Styled.Container state={state}>
+      <Styled.Title>{state}</Styled.Title>
       <div>
         <CopyStyle.SubCopy>기간</CopyStyle.SubCopy>
         {period}
 
         <CopyStyle.SubCopy>사용기술</CopyStyle.SubCopy>
-        <Styled.List>
+        <Styled.Tags>
           {skills.map((skill) => (
             <Styled.Tag key={skill}>{skill}</Styled.Tag>
           ))}
-        </Styled.List>
+        </Styled.Tags>
 
         <CopyStyle.SubCopy>내용</CopyStyle.SubCopy>
         <Styled.List>
@@ -32,18 +47,54 @@ const ExperienceCard = ({ period, skills, contents }: ExperienceCardProps) => {
     </Styled.Container>
   );
 };
-
 const Styled = {
-  Container: styled.article`
-    width: 100%;
-    height: 100%;
-    padding: 2rem;
-    border: 1px solid #ddd;
+  Container: styled.article<{ state: CardsStateValueType }>`
+    position: absolute;
 
+    width: 500px;
+    height: 500px;
+
+    padding: 2rem;
+    color: black;
+    background: white;
+
+    border: 1px solid #fff;
     border-radius: 20px;
+    transition: all 1s;
+    transform: scale(0);
+
+    ${({ state }) => {
+      switch (state) {
+        case CardsState.invisible: {
+          return css`
+            opacity: 0;
+            transform: scale(0);
+          `;
+        }
+
+        case CardsState.visible: {
+          return css`
+            opacity: 1;
+            transform: scale(1);
+          `;
+        }
+
+        case CardsState.out: {
+          return css`
+            transition: transform 1s;
+            transform: translateZ(5400px) translateX(-100vw) scale(1);
+          `;
+        }
+
+        default: {
+          return '';
+        }
+      }
+    }}
   `,
   Title: styled(CopyStyle.MainCopy)`
     margin-bottom: 2rem;
+    color: black;
   `,
   List: styled.ul`
     padding: 0;
@@ -54,10 +105,16 @@ const Styled = {
     margin: 0;
     list-style: none;
   `,
+  Tags: styled.ul`
+    display: flex;
+    padding: 0;
+    margin: 0;
+  `,
   Tag: styled.div`
     padding: 0.5rem 0.75rem;
     background: #ddd;
     border-radius: 1rem;
   `,
 };
+
 export default ExperienceCard;
