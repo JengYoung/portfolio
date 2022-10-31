@@ -17,30 +17,33 @@ interface ExperienceCardProps {
   skills: string[];
   contents: string[];
   state: CardsStateValueType;
+  title: string;
 }
 
 const ExperienceCard = (
-  { period, skills, contents, state }: ExperienceCardProps,
+  { period, skills, contents, state, title }: ExperienceCardProps,
   ref: MutableRefObject<HTMLElement>
 ) => {
   return (
     <Styled.Container state={state}>
-      <Styled.Title>{state}</Styled.Title>
+      <Styled.Header>
+        <Styled.Title>{title}</Styled.Title>
+        <Styled.Period>🗓 {period}</Styled.Period>
+      </Styled.Header>
       <div>
-        <CopyStyle.SubCopy>기간</CopyStyle.SubCopy>
-        {period}
-
-        <CopyStyle.SubCopy>사용기술</CopyStyle.SubCopy>
+        <Styled.SubCopy>사용기술</Styled.SubCopy>
         <Styled.Tags>
           {skills.map((skill) => (
             <Styled.Tag key={skill}>{skill}</Styled.Tag>
           ))}
         </Styled.Tags>
 
-        <CopyStyle.SubCopy>내용</CopyStyle.SubCopy>
+        <Styled.SubCopy>내용</Styled.SubCopy>
         <Styled.List>
           {contents.map((content) => (
-            <Styled.Description key={content}>{content}</Styled.Description>
+            <Styled.Description
+              key={content}
+            >{`- ${content}`}</Styled.Description>
           ))}
         </Styled.List>
       </div>
@@ -54,13 +57,12 @@ const Styled = {
     width: 500px;
     height: 500px;
 
-    padding: 2rem;
+    padding: 1rem 2rem;
     color: black;
     background: white;
 
     border: 1px solid #fff;
     border-radius: 20px;
-    transition: all 1s;
     transform: scale(0);
 
     ${({ state }) => {
@@ -68,6 +70,7 @@ const Styled = {
         case CardsState.invisible: {
           return css`
             opacity: 0;
+            transition: transform 1s;
             transform: scale(0);
           `;
         }
@@ -75,12 +78,14 @@ const Styled = {
         case CardsState.visible: {
           return css`
             opacity: 1;
+            transition: transform 1s;
             transform: scale(1);
           `;
         }
 
         case CardsState.out: {
           return css`
+            opacity: 1;
             transition: transform 1s;
             transform: translateZ(5400px) translateX(-100vw) scale(1);
           `;
@@ -92,9 +97,24 @@ const Styled = {
       }
     }}
   `,
-  Title: styled(CopyStyle.MainCopy)`
-    margin-bottom: 2rem;
+  Header: styled.header`
+    display: flex;
+    align-items: baseline;
+  `,
+  Title: styled(CopyStyle.XLarge)`
+    margin-right: 0.5rem;
     color: black;
+  `,
+  Period: styled.span`
+    color: #888;
+  `,
+  SubCopy: styled(CopyStyle.Default)`
+    font-weight: bold;
+    color: black;
+
+    &:not(:first-child) {
+      margin-top: 1rem;
+    }
   `,
   List: styled.ul`
     padding: 0;
@@ -102,17 +122,22 @@ const Styled = {
   `,
   Description: styled.li`
     padding: 0;
-    margin: 0;
+    margin: 0.25rem 0;
     list-style: none;
   `,
   Tags: styled.ul`
     display: flex;
+    flex-wrap: wrap;
     padding: 0;
     margin: 0;
   `,
   Tag: styled.div`
-    padding: 0.5rem 0.75rem;
-    background: #ddd;
+    flex-shrink: 0;
+    padding: 0.25rem 0.75rem;
+    margin: 0.125rem;
+    font-size: 0.75rem;
+    color: white;
+    background: #333;
     border-radius: 1rem;
   `,
 };
