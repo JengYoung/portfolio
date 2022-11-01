@@ -1,9 +1,8 @@
-import { Metaballs } from '@components/Metaball';
-import {
-  MetaballBaseInterface,
-  StaticBubbleInterface,
-} from '@components/Metaball/types';
 import { useEffect } from 'react';
+
+import { Metaballs } from '@components/Metaball';
+import { MetaballBaseInterface, StaticBubbleInterface } from '@components/Metaball/types';
+
 import useCanvas, { UseCanvasParams } from './useCanvas';
 
 interface UseMetaballOptions {
@@ -57,8 +56,7 @@ const useMetaball = ({
 
     const { width, height } = canvasRef.current;
 
-    const { bubbleNum, absorbBallNum, canvasWidth, canvasHeight } =
-      options ?? {};
+    const { bubbleNum, absorbBallNum, canvasWidth, canvasHeight } = options ?? {};
 
     const mainMetaballProp = {
       mainMetaballState: mainMetaball ?? {
@@ -77,8 +75,8 @@ const useMetaball = ({
     if (!linearGradient) return;
 
     if (gradient) {
-      gradient.forEach((gradient, idx) => {
-        linearGradient?.addColorStop(idx, gradient);
+      gradient.forEach((nowGradient, idx) => {
+        linearGradient?.addColorStop(idx, nowGradient);
       });
     }
 
@@ -99,8 +97,6 @@ const useMetaball = ({
     }
 
     animate(metaballs, linearGradient);
-
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [ctx]);
 };
 

@@ -1,6 +1,6 @@
 import readonly from '../readonly';
 
-const Chosungs = [
+const Chosungs = readonly([
   'ㄱ',
   'ㄲ',
   'ㄴ',
@@ -20,9 +20,10 @@ const Chosungs = [
   'ㅌ',
   'ㅍ',
   'ㅎ',
-];
+]);
 
-const Jungsungs = [
+/* eslint-disable-next-line @typescript-eslint/no-unused-vars */
+const Jungsungs = readonly([
   'ㅏ',
   'ㅐ',
   'ㅑ',
@@ -44,9 +45,9 @@ const Jungsungs = [
   'ㅡ',
   'ㅢ',
   'ㅣ',
-];
+]);
 
-const Jongsungs = [
+const Jongsungs = readonly([
   '',
   'ㄱ',
   'ㄲ',
@@ -75,7 +76,7 @@ const Jongsungs = [
   'ㅌ',
   'ㅍ',
   'ㅎ',
-];
+]);
 
 const DoubleJongsungs: { [index: string]: any } = {
   ㄲ: 'ㄱ',
@@ -133,9 +134,7 @@ export const getTypingAnimationTextArr = (text: string) => {
     if (DoubleJongsungs[jongsungChar]) {
       const jongsungHeadChar = Jongsungs.indexOf(DoubleJongsungs[jongsungChar]);
 
-      const nextChar = String.fromCharCode(
-        chosungPlusJungsung + jongsungHeadChar
-      );
+      const nextChar = String.fromCharCode(chosungPlusJungsung + jongsungHeadChar);
 
       arr.push(now + nextChar);
     }

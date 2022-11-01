@@ -4,17 +4,15 @@ import { BaseHeader } from '@components/Header';
 
 import { LayoutInterface } from './types';
 
-const BaseLayout = ({ children }: LayoutInterface) => {
+function BaseLayout({ children }: LayoutInterface) {
   return (
     <>
-      <BaseHeader></BaseHeader>
+      <BaseHeader />
       <main>{children}</main>
     </>
   );
-};
+}
 
-export const getBaseLayout = (page: ReactElement) => {
-  return <BaseLayout>{page}</BaseLayout>;
-};
+export const getBaseLayout = (page: ReactElement) => <BaseLayout>{page}</BaseLayout>;
 
 export default BaseLayout;

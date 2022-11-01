@@ -1,14 +1,15 @@
-import React, { MutableRefObject } from 'react';
-import styled from '@emotion/styled';
 import { css } from '@emotion/react';
+import React from 'react';
+
+import styled from '@emotion/styled';
 
 import CopyStyle from '@components/Text';
 
-export enum CardsState {
-  invisible = 'invisible',
-  visible = 'visible',
-  out = 'out',
-}
+export const CardsState = {
+  invisible: 'invisible',
+  visible: 'visible',
+  out: 'out',
+} as const;
 
 export type CardsStateValueType = keyof typeof CardsState;
 
@@ -20,36 +21,6 @@ interface ExperienceCardProps {
   title: string;
 }
 
-const ExperienceCard = (
-  { period, skills, contents, state, title }: ExperienceCardProps,
-  ref: MutableRefObject<HTMLElement>
-) => {
-  return (
-    <Styled.Container state={state}>
-      <Styled.Header>
-        <Styled.Title>{title}</Styled.Title>
-        <Styled.Period>🗓 {period}</Styled.Period>
-      </Styled.Header>
-      <div>
-        <Styled.SubCopy>사용기술</Styled.SubCopy>
-        <Styled.Tags>
-          {skills.map((skill) => (
-            <Styled.Tag key={skill}>{skill}</Styled.Tag>
-          ))}
-        </Styled.Tags>
-
-        <Styled.SubCopy>내용</Styled.SubCopy>
-        <Styled.List>
-          {contents.map((content) => (
-            <Styled.Description
-              key={content}
-            >{`- ${content}`}</Styled.Description>
-          ))}
-        </Styled.List>
-      </div>
-    </Styled.Container>
-  );
-};
 const Styled = {
   Container: styled.article<{ state: CardsStateValueType }>`
     position: absolute;
@@ -139,5 +110,31 @@ const Styled = {
     border-radius: 1rem;
   `,
 };
+
+function ExperienceCard({ period, skills, contents, state, title }: ExperienceCardProps) {
+  return (
+    <Styled.Container state={state}>
+      <Styled.Header>
+        <Styled.Title>{title}</Styled.Title>
+        <Styled.Period>🗓 {period}</Styled.Period>
+      </Styled.Header>
+      <div>
+        <Styled.SubCopy>사용기술</Styled.SubCopy>
+        <Styled.Tags>
+          {skills.map((skill) => (
+            <Styled.Tag key={skill}>{skill}</Styled.Tag>
+          ))}
+        </Styled.Tags>
+
+        <Styled.SubCopy>내용</Styled.SubCopy>
+        <Styled.List>
+          {contents.map((content) => (
+            <Styled.Description key={content}>{`- ${content}`}</Styled.Description>
+          ))}
+        </Styled.List>
+      </div>
+    </Styled.Container>
+  );
+}
 
 export default ExperienceCard;

@@ -1,6 +1,8 @@
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
 import { getTypingAnimationTextArr } from '@utils/animations/typing';
 import readonly from '@utils/readonly';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+
 import useInterval from './useInterval';
 
 interface UseTypingTextParam {
@@ -28,9 +30,10 @@ const useTypingText = ({ texts, delay }: UseTypingTextParam) => {
     }))
   );
 
-  const nowFlagIndex = useMemo(() => {
-    return textsArrIndex.filter(({ isEnded }) => isEnded).length;
-  }, [textsArrIndex]);
+  const nowFlagIndex = useMemo(
+    () => textsArrIndex.filter(({ isEnded }) => isEnded).length,
+    [textsArrIndex]
+  );
 
   const timerCallback = useCallback(() => {
     setTextsArrIndex((state) =>
@@ -64,9 +67,9 @@ const useTypingText = ({ texts, delay }: UseTypingTextParam) => {
   }, [nowFlagIndex, timerId, textsArr, textsArrIndex]);
 
   useEffect(() => {
-    if (timerId.current) return;
+    if (timerId.current) return undefined;
     if (textsArrIndex.every(({ isEnded }) => isEnded)) {
-      return;
+      return undefined;
     }
 
     savedCallback.current = timerCallback;
@@ -77,8 +80,6 @@ const useTypingText = ({ texts, delay }: UseTypingTextParam) => {
     return () => {
       clearInterval(timerId.current as NodeJS.Timeout);
     };
-
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [savedCallback, timerCallback]);
 
   return {
