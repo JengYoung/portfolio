@@ -1,5 +1,2 @@
-export { getBaseLayout } from './BaseLayout';
-export { getIntroLayout } from './IntroLayout';
-
-export { default as BaseLayout } from './BaseLayout';
-export { default as IntroLayout } from './IntroLayout';
+export { default as BaseLayout, getBaseLayout } from './BaseLayout';
+export { default as IntroLayout, getIntroLayout } from './IntroLayout';

@@ -4,7 +4,7 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  extends: ['plugin:react/recommended', 'airbnb', 'prettier'],
+  extends: ['next/core-web-vitals', 'plugin:react/recommended', 'airbnb', 'prettier'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaFeatures: {
@@ -38,10 +38,7 @@ module.exports = {
     /**
      *
      */
-    'react/jsx-filename-extension': [
-      2,
-      { extensions: ['.js', '.jsx', '.ts', '.tsx'] },
-    ],
+    'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
     /**
      * @inner: React를 끄고 싶지 않으나, 해당 에러가 나옴.
      * @see: https://stackoverflow.com/questions/63818415/react-was-used-before-it-was-defined
