@@ -1,19 +1,17 @@
-import { useMemo, useRef } from 'react';
-import styled from '@emotion/styled';
+import React, { useMemo, useRef } from 'react';
 
 import Head from 'next/head';
 import Link from 'next/link';
 
-import type { NextPageWithLayout } from '@pages/_app';
+import styled from '@emotion/styled';
 
+import { ForwardedCanvas } from '@components/Metaball/Canvas';
+import { GradientType } from '@components/Metaball/types';
+import CopyStyle from '@components/Text';
 import { getIntroLayout } from '@components/layouts';
 
-import { GradientType } from '@components/Metaball/types';
-import { ForwardedCanvas } from '@components/Metaball/Canvas';
-import CopyStyle from '@components/Text';
-
-import useTypingText from '@hooks/useTypingText';
 import useMetaball from '@hooks/useMetaball';
+import useTypingText from '@hooks/useTypingText';
 import useWindow from '@hooks/useWindow';
 
 const Page = styled.div`
@@ -76,7 +74,7 @@ const Button = styled.button`
   }
 `;
 
-const HomePage: NextPageWithLayout = () => {
+function HomePage() {
   const initialGradientColors: GradientType = ['#770084', '#ab0746'];
   const metaballGradientColors: GradientType = ['#9000ff', '#ff3dbb'];
   const { windowState } = useWindow(['innerWidth', 'innerHeight']);
@@ -105,10 +103,7 @@ const HomePage: NextPageWithLayout = () => {
   const { textsArr, textsArrIndex } = useTypingText({ texts, delay: 50 });
 
   const buttonClassName = useMemo(
-    () =>
-      textsArrIndex.some((obj) => obj.isEnded)
-        ? 'button--visible'
-        : 'button--invisible',
+    () => (textsArrIndex.some((obj) => obj.isEnded) ? 'button--visible' : 'button--invisible'),
     [textsArrIndex]
   );
 
@@ -123,7 +118,7 @@ const HomePage: NextPageWithLayout = () => {
         <Container className="page__intro-copy">
           <Inner>
             {textsArr.map((text, index) => (
-              <Catchphrase key={index}>
+              <Catchphrase key={text.join('') + Date.now()}>
                 {text[textsArrIndex[index].idx]}
               </Catchphrase>
             ))}
@@ -139,14 +134,11 @@ const HomePage: NextPageWithLayout = () => {
         width={windowState.innerWidth}
         height={windowState.innerHeight}
         ref={greetRef}
-      ></ForwardedCanvas>
+      />
     </>
   );
-};
+}
 
-/**
- * @see: ../
- */
 HomePage.getLayout = getIntroLayout;
 
 export default HomePage;

@@ -1,7 +1,9 @@
-import '@styles/globals.css';
-import type { AppProps } from 'next/app';
-import { ReactElement, ReactNode } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
+
 import { NextPage } from 'next';
+import type { AppProps } from 'next/app';
+
+import '@styles/globals.css';
 
 /**
  * @description
@@ -20,6 +22,8 @@ type AppPropsWithLayout = AppProps & {
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
 
+  // NOTE: 이는 Next.js에서 기본적으로 주어진 코드이므로 그냥 사용하려 한다.
+  /* eslint-disable-next-line react/jsx-props-no-spreading */
   return getLayout(<Component {...pageProps} />);
 }
 

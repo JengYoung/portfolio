@@ -1,6 +1,8 @@
-import CopyStyle from '@components/Text';
 import { css } from '@emotion/react';
+
 import styled from '@emotion/styled';
+
+import CopyStyle from '@components/Text';
 
 const CommonStyle = {
   Header: css`

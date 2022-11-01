@@ -1,7 +1,6 @@
-import { Bubble } from '.';
-
 import { getDist } from '@utils/math';
 
+import { Bubble } from './Bubble';
 import { StaticBubbleInterface, StaticBubbleStateInterface } from './types';
 
 /**
@@ -21,6 +20,8 @@ import { StaticBubbleInterface, StaticBubbleStateInterface } from './types';
 
 export class StaticBubble extends Bubble implements StaticBubbleInterface {
   state: StaticBubbleStateInterface;
+
+  #stickyWeight = 1.2;
 
   constructor({ ctx, x, y, r, v, to }: StaticBubbleInterface) {
     super({ ctx, x, y, r, v });
@@ -43,7 +44,7 @@ export class StaticBubble extends Bubble implements StaticBubbleInterface {
   }
 
   get stickyWeight() {
-    return 1.2;
+    return this.#stickyWeight;
   }
 
   /**

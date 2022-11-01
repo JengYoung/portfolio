@@ -1,11 +1,13 @@
-import useHeader from '@hooks/useHeader';
-import useWindow from '@hooks/useWindow';
+import React from 'react';
+
 import Link from 'next/link';
 
-import React from 'react';
-import { StyledBase } from '.';
+import useHeader from '@hooks/useHeader';
+import useWindow from '@hooks/useWindow';
 
-const Base = () => {
+import { StyledBase } from './styles';
+
+function Base() {
   const Links = [
     {
       name: 'HOME',
@@ -42,6 +44,6 @@ const Base = () => {
       </StyledBase.Links>
     </StyledBase.Header>
   );
-};
+}
 
 export default Base;

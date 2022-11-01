@@ -1,4 +1,5 @@
 import React, { createRef, useRef, useState } from 'react';
+
 import styled from '@emotion/styled';
 
 import { ExperienceCard } from '@components/Card';
@@ -132,7 +133,34 @@ const dataset = [
   },
 ];
 
-const ExpriencePage = () => {
+const Styled = {
+  Container: styled.section`
+    width: 100%;
+    height: 1600vh;
+    perspective: 10000px;
+  `,
+  IntersectionTarget: styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+  `,
+  Scene: styled.section`
+    position: fixed;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+    perspective: 10000px;
+  `,
+};
+
+function ExpriencePage() {
   const [cardsState, setCardsState] = useState<CardsStateValueType[]>(
     new Array(dataset.length).fill(CardsState.invisible)
   );
@@ -151,24 +179,20 @@ const ExpriencePage = () => {
         lastIntersecting.current = idx;
 
         return CardsState.visible;
-      } else {
-        if (value === CardsState.visible) {
-          return lastIntersecting.current >= idx
-            ? CardsState.out
-            : CardsState.invisible;
-        }
+      }
+      if (value === CardsState.visible) {
+        return lastIntersecting.current >= idx ? CardsState.out : CardsState.invisible;
       }
 
       return value;
     };
 
-  const useCallbackRef = (idx: number) => {
-    return useRef<IntersectionObserverCallback>((entries) => {
+  const useCallbackRef = (idx: number) =>
+    useRef<IntersectionObserverCallback>((entries) => {
       entries.forEach((entry) => {
         setCardsState((state) => state.map(updateState(idx, entry)));
       });
     });
-  };
 
   /**
    * NOTE: 이건 바꾸면 문제가 발생하므로 데이터가 바뀐다면 계속해서 개수가 바뀐만큼 추가해주어야 한다. 헷갈리지 않도록 넘버링을 한다.
@@ -216,49 +240,19 @@ const ExpriencePage = () => {
             period={`${data.period.start} ~ ${data.period.end}`}
             skills={data.skills}
             contents={data.contents}
-          ></ExperienceCard>
+          />
         ))}
       </Styled.Scene>
 
       <Styled.Container>
         {dataset.map((data, i) => (
-          <Styled.IntersectionTarget
-            key={data.id}
-            ref={cardRefs.current[i]}
-          ></Styled.IntersectionTarget>
+          <Styled.IntersectionTarget key={data.id} ref={cardRefs.current[i]} />
         ))}
       </Styled.Container>
     </>
   );
-};
+}
 
 ExpriencePage.getLayout = getBaseLayout;
-
-const Styled = {
-  Container: styled.section`
-    width: 100%;
-    height: 1600vh;
-    perspective: 10000px;
-  `,
-  IntersectionTarget: styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100vh;
-  `,
-  Scene: styled.section`
-    position: fixed;
-    top: 0;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100vh;
-    perspective: 10000px;
-  `,
-};
 
 export default ExpriencePage;
