@@ -16,15 +16,10 @@
 ## 🖥 **기술 스택**
 
 <img src="https://img.shields.io/badge/TypeScript-2F73BF?style=for-the-badge&logo=typescript&logoColor=white">
-&nbsp;
 <img src="https://img.shields.io/badge/React-5ED2F3?style=for-the-badge&logo=react&logoColor=white"> 
-&nbsp;
 <img src="https://img.shields.io/badge/Next.js-black?style=for-the-badge&logo=Next.js&logoColor=white">
-&nbsp;
 <img src="https://img.shields.io/badge/@emotion-CC67BB?style=for-the-badge&logo=emotion-js&logoColor=white">
-&nbsp;
 <img src="https://img.shields.io/badge/github actions-black?style=for-the-badge&logo=github-actions&logoColor=white">
-&nbsp;
 <img src="https://img.shields.io/badge/AWS(S3, Route 53, CloudFront)-black?style=for-the-badge&logo=amazon&logoColor=white">
 
 &nbsp;
@@ -32,6 +27,7 @@
 ## 📝 **와이어프레임**
 
 [포트폴리오 와이어프레임](./docs/wireframe.md)에 기술되어 있어요!
+다만 이는 이미지 위주의 내용이라, [Figma](https://www.figma.com/file/hl7Y6CCjVpxKSErbojMVWd/Untitled?node-id=0%3A1)를 참고하시길 바랍니다!
 
 &nbsp;
 
