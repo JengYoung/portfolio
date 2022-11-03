@@ -10,6 +10,7 @@
     "lint:fix": "next lint --fix",
     "stylelint:fix": "stylelint --fix \"**/*.tsx\"",
     "lint:all": "next lint && yarn stylelint \"**/*.tsx\"",
+    "prettier:all": "prettier --write **/*.{tsx,ts,js,json,md,html} --ignore-unknown",
     "postinstall": "husky install",
     "export": "next build && next export"
   },

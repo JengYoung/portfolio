@@ -26,5 +26,8 @@ jobs:
       - name: Install dependencies
         run: yarn
 
+      - name: Codes formatting By Prettier
+        run: yarn prettier:all
+
       - name: Check ESLint, Stylelint
         run: yarn lint:all
