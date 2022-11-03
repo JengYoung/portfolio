@@ -5,4 +5,5 @@
 
 혹시, 이 정보가 부족하시다면 [Figma](https://www.figma.com/file/hl7Y6CCjVpxKSErbojMVWd/Untitled?node-id=0%3A1)를 참조해주세요.
 
-![font-and-colors](font-and-colors.webp)
+![fonts](fonts.webp)
+![colors](colors.webp)
