@@ -1,6 +1,6 @@
 ---
 name: 💄 스타일
-about: 마크업, 혹은 레이아웃의 세부 변경이 필요한가요?
+about: 포맷팅, 컨벤션과 같은 일관성을 위한 작업이 필요한가요?
 title: '[💄 Style] '
 labels: '💄 Style'
 assignees: ''

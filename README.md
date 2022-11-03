@@ -15,12 +15,7 @@
 
 ## 🖥 **기술 스택**
 
-<img src="https://img.shields.io/badge/TypeScript-2F73BF?style=for-the-badge&logo=typescript&logoColor=white">
-<img src="https://img.shields.io/badge/React-5ED2F3?style=for-the-badge&logo=react&logoColor=white"> 
-<img src="https://img.shields.io/badge/Next.js-black?style=for-the-badge&logo=Next.js&logoColor=white">
-<img src="https://img.shields.io/badge/@emotion-CC67BB?style=for-the-badge&logo=emotion-js&logoColor=white">
-<img src="https://img.shields.io/badge/github actions-black?style=for-the-badge&logo=github-actions&logoColor=white">
-<img src="https://img.shields.io/badge/AWS(S3, Route 53, CloudFront)-black?style=for-the-badge&logo=amazon&logoColor=white">
+<img src="https://img.shields.io/badge/TypeScript-2F73BF?style=for-the-badge&logo=typescript&logoColor=white"> <img src="https://img.shields.io/badge/React-5ED2F3?style=for-the-badge&logo=react&logoColor=white"> <img src="https://img.shields.io/badge/Next.js-black?style=for-the-badge&logo=Next.js&logoColor=white"> <img src="https://img.shields.io/badge/@emotion-CC67BB?style=for-the-badge&logo=emotion-js&logoColor=white"> <img src="https://img.shields.io/badge/github actions-black?style=for-the-badge&logo=github-actions&logoColor=white"> <img src="https://img.shields.io/badge/AWS(S3, Route 53, CloudFront)-black?style=for-the-badge&logo=amazon&logoColor=white">
 
 &nbsp;
 
@@ -55,6 +50,13 @@
 
 &nbsp;
 
+## 브랜치 컨벤션
+
+- 브랜치는 `pf-[[이슈명]]/[[원하는 유니크한 이름]]`으로 정의한다.
+- 만약 중복되는 이름이 존재한다면 `pf-[[이슈명]]/[[원하는 유니크한 이름]]-[[다른 구분지을만한 특징이나 인덱스]]`으로 정의한다.
+
+&nbsp;
+
 ## 🐛 Trouble Shooting
 
 > 문제를 해결할 때마다 추가할 거에요!
@@ -67,7 +69,7 @@
 
 ## 🚦 실행방법
 
-### run in development
+### How to run
 
 ```bash
 # ~/now/path/portfolio
