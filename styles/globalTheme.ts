@@ -4,6 +4,8 @@ const colors = {
     light: '#FFD600',
   },
   subPrimary: '#333',
+  dark: '#000',
+  white: '#eee',
   danger: '#FE0101',
   warning: '#FF7B01',
   success: '#61C454',

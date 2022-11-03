@@ -7,8 +7,8 @@ module.exports = {
   printWidth: 100,
   importOrder: [
     'react',
-    'next*',
-    '@emotion*',
+    'next',
+    '^@emotion/(.*)$',
     '^@pages/(.*)$',
     '^@components/(.*)$',
     '^@hooks/(.*)$',
