@@ -1,3 +1,12 @@
+const viewPort = {
+  mobileMin: '260px',
+  mobileMax: '500px',
+  tabletMin: '501px',
+  tabletMax: '1023px',
+  desktopMin: '1024px',
+  desktopMax: '3000px', // NOTE: Canvas의 최적화를 위해 적용한다.
+};
+
 const colors = {
   primary: {
     dark: '#5200FF',
@@ -41,6 +50,7 @@ const globalTheme = {
   fontWeights,
   heads,
   fontSizes,
+  viewPort,
 };
 
 export default globalTheme;
