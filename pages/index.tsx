@@ -16,6 +16,7 @@ import useWindow from '@hooks/useWindow';
 
 const Page = styled.div`
   width: 100%;
+  max-width: ${({ theme }) => theme.viewPort.desktopMax};
   height: 100%;
 `;
 
