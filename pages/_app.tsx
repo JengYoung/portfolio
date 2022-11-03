@@ -1,8 +1,10 @@
+import { ThemeProvider } from '@emotion/react';
 import React, { ReactElement, ReactNode } from 'react';
 
 import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 
+import globalTheme from '@styles/globalTheme';
 import '@styles/globals.css';
 
 /**
@@ -23,8 +25,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
 
   // NOTE: 이는 Next.js에서 기본적으로 주어진 코드이므로 그냥 사용하려 한다.
-  /* eslint-disable-next-line react/jsx-props-no-spreading */
-  return getLayout(<Component {...pageProps} />);
+  return (
+    /* eslint-disable-next-line react/jsx-props-no-spreading */
+    <ThemeProvider theme={globalTheme}>{getLayout(<Component {...pageProps} />)}</ThemeProvider>
+  );
 }
 
 export default MyApp;
