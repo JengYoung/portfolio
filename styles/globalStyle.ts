@@ -33,6 +33,12 @@ const globalStyle = css`
       background: ${globalTheme.colors.dark};
     }
   }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
 `;
 
 export default globalStyle;
