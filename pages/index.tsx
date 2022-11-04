@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 
 import { ScrollMouse } from '@components/Mouse';
 import { Terminal } from '@components/Terminal';
+
+import { useLocalStorage } from '@hooks/useLocalStorage';
 
 const Styled = {
   Page: styled.div`
@@ -12,7 +14,7 @@ const Styled = {
     justify-content: center;
 
     width: 100%;
-    height: calc(100vh + 1px);
+    height: calc(100vh + 4px);
 
     &::after {
       position: absolute;
@@ -35,7 +37,11 @@ const Styled = {
     left: 50%;
   `,
 };
+
 function HomePage() {
+  const { getItem, setItem } = useLocalStorage();
+  const lastLoginDate = useRef('');
+
   const [isActive, setIsActive] = useState(false);
 
   const onCommand = (e: KeyboardEvent): any => {
@@ -51,10 +57,18 @@ function HomePage() {
   };
 
   useEffect(() => {
+    const GMT_AFTER_REMOVE_REGEX = /( GMT.*$)/g;
+    lastLoginDate.current = getItem(
+      'last-login',
+      new Date().toString().replace(GMT_AFTER_REMOVE_REGEX, '')
+    );
+
     window.addEventListener('keydown', onCommand, false);
     window.addEventListener('scroll', onScroll, { passive: true });
 
     return () => {
+      setItem('last-login', new Date().toString().replace(GMT_AFTER_REMOVE_REGEX, ''));
+
       window.removeEventListener('keydown', onCommand);
       window.removeEventListener('scroll', onScroll);
     };
@@ -64,7 +78,7 @@ function HomePage() {
 
   return (
     <Styled.Page>
-      <Terminal isActive={isActive} />
+      <Terminal isActive={isActive} date={lastLoginDate.current} />
       <Styled.Mouse visible={!isActive} bottom="1rem" left="50%" right="50%" delay={0.3} />
     </Styled.Page>
   );

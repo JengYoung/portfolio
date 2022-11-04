@@ -12,7 +12,11 @@ interface MousePropsInterface {
 }
 
 const Styled = {
-  Container: styled.div<MousePropsInterface>`
+  Container: styled.div<Pick<MousePropsInterface, 'visible'>>`
+    opacity: ${({ visible }) => +visible};
+    transition: all 0.5s;
+  `,
+  Inner: styled.div<MousePropsInterface>`
     position: absolute;
     top: ${({ top }) => top ?? 'auto'};
     right: ${({ right }) => right ?? 'auto'};
@@ -30,8 +34,12 @@ const Styled = {
     border-radius: 40%;
     opacity: 0;
 
-    animation: mouse-visible forwards 1s ease-in;
+    animation: mouse-visible;
+    animation-duration: 1s;
+    animation-timing-function: ease-in;
     animation-delay: ${({ delay }) => delay}s;
+    animation-fill-mode: forwards;
+
     @keyframes mouse-visible {
       0% {
         opacity: 0;
@@ -66,15 +74,17 @@ const Styled = {
 
 function ScrollMouse({ top, bottom, right, left, visible, delay }: MousePropsInterface) {
   return (
-    <Styled.Container
-      visible={visible}
-      top={top}
-      bottom={bottom}
-      right={right}
-      left={left}
-      delay={delay}
-    >
-      <Styled.Wheel />
+    <Styled.Container visible={visible}>
+      <Styled.Inner
+        visible={visible}
+        top={top}
+        bottom={bottom}
+        right={right}
+        left={left}
+        delay={delay}
+      >
+        <Styled.Wheel />
+      </Styled.Inner>
     </Styled.Container>
   );
 }

@@ -17,25 +17,42 @@ enum logColorsEnum {
 
 interface TerminalBodyInterface {
   isActive: boolean;
+  date: string;
 }
 
-function TerminalBody({ isActive }: TerminalBodyInterface) {
-  const logs: { type: keyof typeof logColorsEnum; text: string }[] = [
-    { type: 'ready', text: ' - started url: https://jengyoung.me' },
-    { type: 'info', text: ' - SWC minify release candidate enabled. https://nextjs.link/swcmin' },
-    { type: 'event', text: ' - compiled client and server successfully in 319 ms (178 modules)' },
-    { type: 'event', text: ' - compiled client and server successfully in 319 ms (178 modules)' },
-    { type: 'wait', text: ' - compilling...' },
-    { type: 'event', text: ' - compiled successfully in 16 ms (145 modules)' },
-    { type: 'wait', text: ' - compilling...' },
-    { type: 'event', text: ' - compiled successfully in 8 ms (33 modules)' },
-    { type: 'wait', text: ' - compilling...' },
-    { type: 'event', text: ' - compiled client and server successfully in 43 ms (178 modules)' },
+function TerminalBody({ isActive, date }: TerminalBodyInterface) {
+  const logs: { id: number; type: keyof typeof logColorsEnum; text: string }[] = [
+    { id: 1, type: 'ready', text: ' - started url: https://jengyoung.me' },
+    {
+      id: 2,
+      type: 'info',
+      text: ' - SWC minify release candidate enabled. https://nextjs.link/swcmin',
+    },
+    {
+      id: 3,
+      type: 'event',
+      text: ' - compiled client and server successfully in 319 ms (178 modules)',
+    },
+    {
+      id: 4,
+      type: 'event',
+      text: ' - compiled client and server successfully in 319 ms (178 modules)',
+    },
+    { id: 5, type: 'wait', text: ' - compilling...' },
+    { id: 6, type: 'event', text: ' - compiled successfully in 16 ms (145 modules)' },
+    { id: 7, type: 'wait', text: ' - compilling...' },
+    { id: 8, type: 'event', text: ' - compiled successfully in 8 ms (33 modules)' },
+    { id: 9, type: 'wait', text: ' - compilling...' },
+    {
+      id: 10,
+      type: 'event',
+      text: ' - compiled client and server successfully in 43 ms (178 modules)',
+    },
   ];
 
   return (
     <StyledBody.Container>
-      <div>last login : Tue Nov 1: 22: 53 on hjys915</div>
+      <div>last login : {date}</div>
       <StyledBody.EnterCommand isActive={isActive}>
         PRESS ENTER OR SCROLL {isActive ? 'SUCCESS' : 'DOWN!'}
         {isActive && `: portfolio application start...`}
@@ -67,8 +84,8 @@ function TerminalBody({ isActive }: TerminalBodyInterface) {
         <div>event - compiled successfully in 8 ms (33 modules)</div>
         <div>wait - compiling...</div>
         <div>event - compiled client and server successfully in 43 ms (178 modules)</div> */}
-        {logs.map(({ type, text }) => (
-          <div key="text">
+        {logs.map(({ id, type, text }) => (
+          <div key={id}>
             <StyledBody.LogType color={logColorsEnum[type]}>{type}</StyledBody.LogType>
             {text}
           </div>
