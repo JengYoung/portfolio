@@ -1,6 +1,6 @@
-import { useRecoilState } from 'recoil';
-
 import React from 'react';
+
+import { useRecoilState } from 'recoil';
 
 import { IntroTarminalAtom } from '~/atoms';
 

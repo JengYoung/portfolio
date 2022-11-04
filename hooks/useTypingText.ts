@@ -70,15 +70,13 @@ const useTypingText = ({ texts, delay, immediate }: UseTypingTextParam) => {
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nowFlagIndex, timerId, textsArr, textsArrIndex]);
+  }, [nowFlagIndex, timerId, textsArr, textsArrIndex, isTyping]);
 
   useEffect(() => {
     if (!isTyping || timerId.current) return undefined;
-    // console.log(isTyping, timerId);
     if (textsArrIndex.every(({ isEnded }) => isEnded)) {
       return undefined;
     }
-
     savedCallback.current = timerCallback;
     setTimeout(() => {
       timerId.current = setInterval(savedCallback.current, 50);

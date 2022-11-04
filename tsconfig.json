@@ -23,6 +23,8 @@
       "@pages/*": ["pages/*"],
       "@assets/*": ["assets/*"],
       "@styles/*": ["styles/*"],
+      "@atoms": ["atoms"],
+      "@atoms/*": ["atoms/*"],
       "~/*": ["./*"]
     }
   },

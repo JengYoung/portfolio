@@ -1,17 +1,15 @@
+import React, { useEffect, useMemo, useState } from 'react';
+
 import { useRecoilState } from 'recoil';
 
-import React, { useEffect, useState } from 'react';
+import { IntroTarminalAtom } from '@atoms';
+import { ButtonActionTypeEnum } from '@atoms/intro/terminal';
 
 import useTypingText from '@hooks/useTypingText';
 
 import readonly from '@utils/readonly';
 
-import { IntroTarminalAtom } from '~/atoms';
-import { ButtonActionTypeEnum } from '~/atoms/intro/terminal';
-
 import { StyledBody } from './styles';
-
-// type LogType = 'event' | 'wait' | 'ready' | 'info';
 
 const paths: readonly string[] = readonly(['~', 'portfolio']);
 const colors = ['black', '#0500ff', '#44B400'];
@@ -33,6 +31,7 @@ interface TerminalBodyLogsInterface extends TerminalBodyCommonProp {
   initDelay: number;
 }
 
+const delays = [0, 500, 0, 300, 0, 20, 0, 10, 0, 43];
 function TerminalBodyLogs({ isActive, initDelay }: TerminalBodyLogsInterface) {
   const logs: { id: number; type: keyof typeof logColorsEnum; text: string }[] = readonly([
     { id: 1, type: 'ready', text: ' - started url: https://jengyoung.me' },
@@ -70,11 +69,13 @@ function TerminalBodyLogs({ isActive, initDelay }: TerminalBodyLogsInterface) {
    * log들이 엔터나 스크롤을 하면 순차적으로 나오면서 마치 터미널에서 서버가 활성화되는 효과를 줍니다.
    * 이에 대한 딜레이를 지정해주는 배열입니다.
    */
-  const logDelays: readonly number[] = readonly(
-    [0, 500, 0, 300, 0, 20, 0, 10, 0, 43].reduce(
-      (acc, cur) => [...acc, acc[acc.length - 1] + cur * 0.001],
-      [initDelay + 0.1]
-    )
+  const logDelays: number[] = useMemo(
+    () =>
+      delays.reduce(
+        (acc: number[], cur: number) => [...acc, acc[acc.length - 1] + cur * 0.001],
+        [initDelay + 0.1]
+      ),
+    [initDelay]
   );
 
   useEffect(() => {
@@ -89,20 +90,11 @@ function TerminalBodyLogs({ isActive, initDelay }: TerminalBodyLogsInterface) {
         }, delay * 1000);
       });
     }
+    //
   }, [isActive, logDelays]);
 
   return (
     <StyledBody.Logs isActive={isActive}>
-      {/* <div>ready - started url: https://jengyoung.me</div>
-    <div>info - SWC minify release candidate enabled. https://nextjs.link/swcmin</div>
-    <div>event - compiled client and server successfully in 319 ms (178 modules)</div>
-    <div>event - compiled client and server successfully in 319 ms (178 modules)</div>
-    <div>wait - compiling...</div>
-    <div>event - compiled successfully in 16 ms (145 modules)</div>
-    <div>wait - compiling...</div>
-    <div>event - compiled successfully in 8 ms (33 modules)</div>
-    <div>wait - compiling...</div>
-    <div>event - compiled client and server successfully in 43 ms (178 modules)</div> */}
       {logs.map(({ id, type, text }, idx) => (
         <StyledBody.Log className={logClassNames[idx]} key={id}>
           <StyledBody.LogType color={logColorsEnum[type]}>{type}</StyledBody.LogType>
@@ -137,7 +129,7 @@ function TerminalBody({ isActive, date }: TerminalBodyInterface) {
         PRESS ENTER OR SCROLL{' '}
         {(isActive ? 'SUCCESS' : 'DOWN!') +
           (mode === ButtonActionTypeEnum.orange || mode === ButtonActionTypeEnum.red
-            ? 'PRESS ENTER OR SCROLL DOWN!'.repeat(100)
+            ? 'PRESS ENTER OR SCROLL DOWN!'.repeat(10)
             : '')}
         {isActive && `: portfolio application start...`}
       </StyledBody.EnterCommand>

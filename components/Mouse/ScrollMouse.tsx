@@ -22,8 +22,8 @@ const Styled = {
     right: ${({ right }) => right ?? 'auto'};
     bottom: ${({ bottom }) => bottom ?? 'auto'};
     left: ${({ left }) => left ?? 'auto'};
+
     display: flex;
-    /* display: ${({ visible }) => (visible ? 'flex' : 'none')}; */
     justify-content: center;
     width: 2.25em;
     height: 3em;
@@ -32,6 +32,7 @@ const Styled = {
 
     border: 2px solid ${({ theme }) => theme.colors.subPrimary};
     border-radius: 40%;
+
     opacity: 0;
 
     animation: mouse-visible;
