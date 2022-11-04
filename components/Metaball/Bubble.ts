@@ -58,12 +58,12 @@ export class Bubble extends Metaball {
     return this.state.isBurst;
   }
 
-  burst() {
+  burst(base: Omit<MetaballBaseInterface, 'r'>) {
     if (this.scale >= this.maxScale) {
       this.setState({
-        x: this.ctx.canvas.width / 2,
-        y: this.ctx.canvas.height / 2,
-        r: getRandom(50, 100, { allowNagative: false }),
+        x: base.x,
+        y: base.y,
+        r: getRandom(50, 150, { allowNagative: false }),
         v: [getRandom(0.2, 1, { allowNagative: true }), getRandom(0.2, 1, { allowNagative: true })],
         scale: 1,
         opacity: 1,
@@ -90,7 +90,7 @@ export class Bubble extends Metaball {
 
   animate(base: MetaballBaseInterface): void {
     if (this.isBurst) {
-      this.burst();
+      this.burst({ x: base.x, y: base.y });
       return;
     }
 
