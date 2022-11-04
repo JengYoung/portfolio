@@ -19,7 +19,6 @@ const useIntersectionObserver = (
 
     observer.observe(target);
 
-    /*  */
     return () => {
       observer.disconnect();
     };

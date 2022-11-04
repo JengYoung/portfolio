@@ -1,144 +1,131 @@
-import React, { useMemo, useRef } from 'react';
+import { css } from '@emotion/react';
+import React, { useEffect, useRef, useState } from 'react';
 
-import Head from 'next/head';
-import Link from 'next/link';
+import { useRecoilState } from 'recoil';
 
 import styled from '@emotion/styled';
 
-import { ForwardedCanvas } from '@components/Metaball/Canvas';
-import { GradientType } from '@components/Metaball/types';
-import CopyStyle from '@components/Text';
-import { getIntroLayout } from '@components/layouts';
+import { ScrollMouse } from '@components/Mouse';
+import { Terminal } from '@components/Terminal';
 
-import useMetaball from '@hooks/useMetaball';
-import useTypingText from '@hooks/useTypingText';
-import useWindow from '@hooks/useWindow';
+import { useLocalStorage } from '@hooks/useLocalStorage';
 
-const Page = styled.div`
-  width: 100%;
-  height: 100%;
-`;
+import { IntroTarminalAtom } from '~/atoms';
+import { ButtonActionTypeEnum, TerminalModeType } from '~/atoms/intro/terminal';
 
-const Container = styled.div`
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100vh;
-`;
+const modeGradients = {
+  ANGRY: {
+    start: '#FF0000',
+    end: '#250864',
+  },
+  SHAKING: {
+    start: '#FFD600',
+    end: '#FF5C00',
+  },
+  null: {
+    start: '#FFD600',
+    end: '#FF5C00',
+  },
+};
 
-const Inner = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 300px;
-`;
+const Styled = {
+  Page: styled.div<{ mode: TerminalModeType }>`
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-const Catchphrase = styled.div`
-  font-family: 'Gowun Batang', serif;
-  font-size: 2rem;
-  line-height: 1.5;
-`;
+    width: 100%;
+    height: calc(100vh + 4px);
 
-const Button = styled.button`
-  ${CopyStyle.Large}
-  display: block;
+    &::before,
+    &::after {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: -1000;
 
-  width: 5rem;
-  height: 5rem;
-
-  font-weight: 700;
-
-  background: #333;
-
-  border: 0;
-  border-radius: 50%;
-
-  transition: all 1s;
-
-  &.button--visible {
-    opacity: 1;
-
-    &:hover {
-      color: #333;
-      cursor: pointer;
-      background: white;
+      content: '';
     }
-  }
-  &.button--invisible {
-    opacity: 0;
-    transform: rotate(90deg) scale(0.75);
-  }
-`;
+
+    /* mode */
+    &::before {
+      ${({ mode }) =>
+        mode !== ButtonActionTypeEnum.green &&
+        mode !== null &&
+        css`
+          background: linear-gradient(
+            ${modeGradients[mode].start} 15%,
+            ${modeGradients[mode].end} 85% 100%
+          );
+        `};
+      opacity: ${({ mode }) => (mode === null ? 0 : 1)};
+      transition: all 1s;
+    }
+
+    /* default */
+    &::after {
+      background: ${({ theme }) =>
+        `linear-gradient(${theme.colors.primary.dark} 15%, ${theme.colors.primary.light} 85% 100%)`};
+      opacity: ${({ mode }) => (mode === null ? 1 : 0)};
+      transition: all 1s;
+    }
+  `,
+  Mouse: styled(ScrollMouse)`
+    position: absolute;
+    right: 50%;
+    bottom: 0;
+    left: 50%;
+  `,
+};
 
 function HomePage() {
-  const initialGradientColors: GradientType = ['#770084', '#ab0746'];
-  const metaballGradientColors: GradientType = ['#9000ff', '#ff3dbb'];
-  const { windowState } = useWindow(['innerWidth', 'innerHeight']);
+  const [{ mode }] = useRecoilState(IntroTarminalAtom);
 
-  const greetRef = useRef(null);
+  const { getItem, setItem } = useLocalStorage();
+  const lastLoginDate = useRef('');
 
-  const texts = ['안녕하세요!', '프론트엔드 개발자', '황재영입니다.'];
+  const [isActive, setIsActive] = useState(false);
 
-  useMetaball({
-    canvasRef: greetRef,
-    gradient: initialGradientColors,
-    metaballGradient: metaballGradientColors,
-    mainMetaball: {
-      x: windowState.innerWidth / 2,
-      y: windowState.innerHeight / 2,
-      r: 200,
-    },
-    options: {
-      bubbleNum: 4,
-      absorbBallNum: 5,
-      canvasWidth: windowState.innerWidth,
-      canvasHeight: windowState.innerHeight,
-    },
-  });
+  const onCommand = (e: KeyboardEvent): any => {
+    if (isActive || e.key !== 'Enter') return;
 
-  const { textsArr, textsArrIndex } = useTypingText({ texts, delay: 50 });
+    setIsActive(() => true);
+  };
 
-  const buttonClassName = useMemo(
-    () => (textsArrIndex.some((obj) => obj.isEnded) ? 'button--visible' : 'button--invisible'),
-    [textsArrIndex]
-  );
+  const onScroll = () => {
+    if (isActive) return;
+
+    setIsActive(() => true);
+  };
+
+  useEffect(() => {
+    const GMT_AFTER_REMOVE_REGEX = /( GMT.*$)/g;
+    lastLoginDate.current = getItem(
+      'last-login',
+      new Date().toString().replace(GMT_AFTER_REMOVE_REGEX, '')
+    );
+
+    window.addEventListener('keydown', onCommand, false);
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    return () => {
+      setItem('last-login', new Date().toString().replace(GMT_AFTER_REMOVE_REGEX, ''));
+
+      window.removeEventListener('keydown', onCommand);
+      window.removeEventListener('scroll', onScroll);
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <>
-      <Page className="page">
-        <Head>
-          <title>Jengyoung&apos;s Portfolio 🙆🏻</title>
-          <meta name="description" content="front-end developer portfolio" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        <Container className="page__intro-copy">
-          <Inner>
-            {textsArr.map((text, index) => (
-              <Catchphrase key={text.join('') + Date.now()}>
-                {text[textsArrIndex[index].idx]}
-              </Catchphrase>
-            ))}
-          </Inner>
-
-          <Button className={buttonClassName}>
-            <Link href="/about">CLICK</Link>
-          </Button>
-        </Container>
-      </Page>
-
-      <ForwardedCanvas
-        width={windowState.innerWidth}
-        height={windowState.innerHeight}
-        ref={greetRef}
-      />
-    </>
+    <Styled.Page mode={mode}>
+      <Terminal isActive={isActive} date={lastLoginDate.current} />
+      <Styled.Mouse visible={!isActive} bottom="1rem" left="50%" right="50%" delay={0.3} />
+    </Styled.Page>
   );
 }
-
-HomePage.getLayout = getIntroLayout;
 
 export default HomePage;

@@ -4,6 +4,8 @@ import React, { ReactElement, ReactNode } from 'react';
 import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 
+import { RecoilRoot } from 'recoil';
+
 import { globalStyle, globalTheme } from '@styles/index';
 
 /**
@@ -27,8 +29,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <ThemeProvider theme={globalTheme}>
       <Global styles={globalStyle} />
-      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-      {getLayout(<Component {...pageProps} />)}
+      <RecoilRoot>
+        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+        {getLayout(<Component {...pageProps} />)}
+      </RecoilRoot>
     </ThemeProvider>
   );
 }

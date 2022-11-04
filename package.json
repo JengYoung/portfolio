@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "stylelint:fix": "stylelint --fix \"**/*.tsx\"",
+    "stylelint:fix": "stylelint --fix \"**/*.{tsx,ts}\"",
     "lint:all": "next lint && yarn stylelint \"**/*.tsx\"",
     "prettier:all": "prettier --write **/*.{tsx,ts,js,json,md,html} --ignore-unknown",
     "postinstall": "husky install",
@@ -20,6 +20,7 @@
     "next": "12.2.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "recoil": "^0.7.6",
     "three": "^0.145.0"
   },
   "devDependencies": {
@@ -55,7 +56,10 @@
   },
   "packageManager": "yarn@3.2.4",
   "lint-staged": {
-    "*.tsx": "eslint --fix",
-    "*.ts": "eslint --fix"
+    "*.{tsx,ts}": [
+      "prettier --write **/*.{tsx,ts,js,json,md,html} --ignore-unknown",
+      "eslint --fix",
+      "stylelint --fix"
+    ]
   }
 }

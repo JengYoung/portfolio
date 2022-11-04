@@ -15,6 +15,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "jsxImportSource": "@emotion/react",
     "paths": {
       "@utils/*": ["utils/*"],
       "@hooks/*": ["hooks/*"],
@@ -22,6 +23,8 @@
       "@pages/*": ["pages/*"],
       "@assets/*": ["assets/*"],
       "@styles/*": ["styles/*"],
+      "@atoms": ["atoms"],
+      "@atoms/*": ["atoms/*"],
       "~/*": ["./*"]
     }
   },

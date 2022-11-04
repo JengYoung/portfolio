@@ -1,3 +1,5 @@
+export type CustomTheme = typeof globalTheme;
+
 const viewPort = {
   mobileMin: '260px',
   mobileMax: '500px',
@@ -51,6 +53,6 @@ const globalTheme = {
   heads,
   fontSizes,
   viewPort,
-};
+} as const;
 
 export default globalTheme;
