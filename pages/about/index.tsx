@@ -16,10 +16,6 @@ import globalTheme from '@styles/globalTheme';
 
 const ContainerCSS = css`
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 
   max-width: 1440px;
   height: 100vh;
@@ -36,6 +32,10 @@ const Styled = {
   `,
   Introduction: styled.section`
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     ${ContainerCSS}
   `,
   IntroductionMainCopy: styled.h1`
@@ -54,14 +54,13 @@ const Styled = {
   `,
 
   Features: styled.section`
+    ${ContainerCSS}
+    box-sizing: border-box;
     width: 100%;
     height: 520px;
-    padding: 0;
-    /* ${ContainerCSS} */
-    background: green;
+    background-color: white;
   `,
   FeaturesTitle: styled.div`
-    padding: 0 5.25rem;
     svg text {
       font-family: 'Anton', sans-serif;
       font-size: 5rem;
@@ -84,6 +83,30 @@ const Styled = {
       100% {
         fill: ${({ theme }) => theme.colors.primary.light};
         stroke-dashoffset: 0;
+      }
+    }
+  `,
+  FeaturesDetailContainer: styled.div`
+    width: 100%;
+    height: calc(100% - 100px);
+    overflow: hidden;
+    perspective: 100vw;
+  `,
+  FeaturesDetailInner: styled.div`
+    width: 100%;
+    height: 100%;
+    background: ${({ theme }) => theme.colors.primary.light};
+    transition: all 3s;
+    transform-origin: center;
+    animation: test 3s infinite ease;
+    @keyframes test {
+      0% {
+        transform: translate(-100vw, 0.125rem) rotateX(90deg);
+        transform-origin: top;
+      }
+      50% {
+        transform: translate(0, 0.125rem) rotateX(90deg);
+        transform-origin: top;
       }
     }
   `,
@@ -241,6 +264,9 @@ function AboutPage() {
             </text>
           </svg>
         </Styled.FeaturesTitle>
+        <Styled.FeaturesDetailContainer>
+          <Styled.FeaturesDetailInner />
+        </Styled.FeaturesDetailContainer>
       </Styled.Features>
     </Styled.Page>
   );
