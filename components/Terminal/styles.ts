@@ -77,8 +77,15 @@ export const StyledBody = {
 
     background: ${({ theme }) => theme.colors.dark};
   `,
-  EnterCommand: styled.span`
+  EnterCommand: styled.span<{ isActive: boolean }>`
     animation: highlight-enter-command 1s infinite;
+    animation-fill-mode: forwards;
+    ${({ isActive, theme }) =>
+      isActive &&
+      css`
+        color: ${theme.colors.success};
+        animation: none;
+      `}
 
     @keyframes highlight-enter-command {
       0% {
@@ -135,9 +142,17 @@ export const StyledBody = {
   Command: styled.div`
     margin-left: 1.5rem;
   `,
-  Cursor: styled.div`
+  Cursor: styled.div<{ isActive: boolean }>`
     width: 0.75rem;
     height: 1.5rem;
     background-color: ${({ theme }) => theme.colors.white};
+    display: ${({ isActive }) => (isActive ? 'none' : 'block')};
+  `,
+  Logs: styled.div<{ isActive: boolean }>`
+    display: ${({ isActive }) => (isActive ? 'block' : 'none')};
+  `,
+  LogType: styled.strong<{ color: string }>`
+    color: ${({ color }) => color};
+    font-weight: ${({ theme }) => theme.fontWeights.default};
   `,
 };

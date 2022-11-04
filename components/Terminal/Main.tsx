@@ -4,11 +4,14 @@ import TerminalBody from './Body';
 import TerminalHeader from './Header';
 import { StyledTerminal } from './styles';
 
-function Terminal() {
+interface TerminalPropsInterface {
+  isActive: boolean;
+}
+function Terminal({ isActive }: TerminalPropsInterface) {
   return (
     <StyledTerminal.Container>
       <TerminalHeader />
-      <TerminalBody />
+      <TerminalBody isActive={isActive} />
     </StyledTerminal.Container>
   );
 }
