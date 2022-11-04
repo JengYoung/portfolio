@@ -5,7 +5,9 @@ import styled from '@emotion/styled';
 
 import { ForwardedCanvas } from '@components/Metaball';
 import { GradientType } from '@components/Metaball/types';
+import { ScrollMouse } from '@components/Mouse';
 import { CollapsedText } from '@components/Text';
+import Gummy from '@components/Text/Gummy';
 
 import useMetaball from '@hooks/useMetaball';
 import useWindow from '@hooks/useWindow';
@@ -19,8 +21,10 @@ const ContainerCSS = css`
   align-items: center;
   justify-content: center;
 
-  width: 100%;
-  height: 100%;
+  max-width: 1440px;
+  height: 100vh;
+  max-height: 1024px;
+  margin: 0 auto;
 `;
 
 const Styled = {
@@ -45,7 +49,44 @@ const Styled = {
       font-weight: ${theme.heads[2].weight};
     `}
   `,
-  // Feature: styled.section``,
+  Name: styled.span`
+    color: ${({ theme }) => theme.colors.primary.dark} !important;
+  `,
+
+  Features: styled.section`
+    width: 100%;
+    height: 520px;
+    padding: 0;
+    /* ${ContainerCSS} */
+    background: green;
+  `,
+  FeaturesTitle: styled.div`
+    padding: 0 5.25rem;
+    svg text {
+      font-family: 'Anton', sans-serif;
+      font-size: 5rem;
+      fill: transparent;
+      stroke: ${({ theme }) => theme.colors.primary.light};
+      stroke-dasharray: 750;
+      stroke-dashoffset: 750;
+      stroke-width: 3px;
+      animation: stroke 3.5s linear;
+      animation-fill-mode: forwards;
+    }
+
+    @keyframes stroke {
+      0% {
+        stroke-dashoffset: 700;
+      }
+      70% {
+        fill: ${({ theme }) => theme.colors.primary.light};
+      }
+      100% {
+        fill: ${({ theme }) => theme.colors.primary.light};
+        stroke-dashoffset: 0;
+      }
+    }
+  `,
 };
 function AboutPage() {
   const { windowState } = useWindow(['innerWidth', 'innerHeight']);
@@ -55,7 +96,7 @@ function AboutPage() {
   );
 
   const minHeight = useMemo(
-    () => Math.min(1024, windowState.innerHeight),
+    () => Math.min(1024, windowState.innerHeight ?? 0),
     [windowState.innerHeight]
   );
 
@@ -153,16 +194,54 @@ function AboutPage() {
   return (
     <Styled.Page>
       <Styled.Introduction>
-        <CollapsedText x={windowState.innerWidth + 500} y={0} direction="LEFT">
-          <Styled.IntroductionMainCopy>프론트엔드 개발자</Styled.IntroductionMainCopy>
+        <CollapsedText x={(windowState.innerWidth ?? 0) + 500} y={0} direction="LEFT">
+          <Styled.IntroductionMainCopy>
+            <Gummy texts="프론트엔드&nbsp;개발자" delay={1.5} />
+          </Styled.IntroductionMainCopy>
         </CollapsedText>
 
         <CollapsedText x={-500} y={0} direction="RIGHT">
-          <Styled.IntroductionMainCopy>황재영입니다</Styled.IntroductionMainCopy>
+          <Styled.IntroductionMainCopy>
+            <Styled.Name>
+              <Gummy texts="황재영" delay={1.5} options={{ isGummy: true, infinite: true }} />
+            </Styled.Name>
+            <Gummy texts="입니다" delay={1.5} />
+          </Styled.IntroductionMainCopy>
         </CollapsedText>
 
         <ForwardedCanvas width={minWidth} height={minHeight} ref={canvasRef} />
+        <ScrollMouse bottom="1rem" delay={1.5} visible />
       </Styled.Introduction>
+      <Styled.Features>
+        <Styled.FeaturesTitle>
+          <svg width={600} height={100} viewBox="0 0 600 100">
+            <text x="0" y="100%">
+              F
+            </text>
+            <text x="45" y="100%">
+              E
+            </text>
+            <text x="90" y="100%">
+              A
+            </text>
+            <text x="135" y="100%">
+              T
+            </text>
+            <text x="180" y="100%">
+              U
+            </text>
+            <text x="230" y="100%">
+              R
+            </text>
+            <text x="275" y="100%">
+              E
+            </text>
+            <text x="320" y="100%">
+              S
+            </text>
+          </svg>
+        </Styled.FeaturesTitle>
+      </Styled.Features>
     </Styled.Page>
   );
 }
