@@ -56,7 +56,7 @@
   },
   "packageManager": "yarn@3.2.4",
   "lint-staged": {
-    "*.tsx": "eslint --fix",
-    "*.ts": "eslint --fix"
+    "*.tsx": "lint:fix",
+    "*.ts": "lint:fix"
   }
 }
