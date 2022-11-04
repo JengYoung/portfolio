@@ -142,14 +142,24 @@ export const StyledBody = {
   Command: styled.div`
     margin-left: 1.5rem;
   `,
-  Cursor: styled.div<{ isActive: boolean }>`
+  Cursor: styled.div<{ isActive: boolean; delay: number }>`
+    visibility: ${({ isActive }) => (isActive ? 'hidden' : 'visible')};
+    transition-delay: ${({ delay }) => delay}s;
+
     width: 0.75rem;
     height: 1.5rem;
+
     background-color: ${({ theme }) => theme.colors.white};
-    display: ${({ isActive }) => (isActive ? 'none' : 'block')};
   `,
-  Logs: styled.div<{ isActive: boolean }>`
+  Logs: styled.ul<{ isActive: boolean }>`
     display: ${({ isActive }) => (isActive ? 'block' : 'none')};
+  `,
+  Log: styled.li`
+    display: none;
+
+    &.log--visible {
+      display: block;
+    }
   `,
   LogType: styled.strong<{ color: string }>`
     color: ${({ color }) => color};

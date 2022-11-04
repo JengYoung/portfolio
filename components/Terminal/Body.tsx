@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
+import useTypingText from '@hooks/useTypingText';
 
 import readonly from '@utils/readonly';
 
@@ -15,13 +17,19 @@ enum logColorsEnum {
   info = '#0DC0CB',
 }
 
-interface TerminalBodyInterface {
+interface TerminalBodyCommonProp {
   isActive: boolean;
+}
+interface TerminalBodyInterface extends TerminalBodyCommonProp {
   date: string;
 }
 
-function TerminalBody({ isActive, date }: TerminalBodyInterface) {
-  const logs: { id: number; type: keyof typeof logColorsEnum; text: string }[] = [
+interface TerminalBodyLogsInterface extends TerminalBodyCommonProp {
+  initDelay: number;
+}
+
+function TerminalBodyLogs({ isActive, initDelay }: TerminalBodyLogsInterface) {
+  const logs: { id: number; type: keyof typeof logColorsEnum; text: string }[] = readonly([
     { id: 1, type: 'ready', text: ' - started url: https://jengyoung.me' },
     {
       id: 2,
@@ -48,7 +56,68 @@ function TerminalBody({ isActive, date }: TerminalBodyInterface) {
       type: 'event',
       text: ' - compiled client and server successfully in 43 ms (178 modules)',
     },
-  ];
+  ]);
+
+  const [logClassNames, setLogClassNames] = useState(new Array(logs.length).fill(''));
+
+  const logDelays: readonly number[] = readonly(
+    [100, 500, 0, 300, 0, 20, 0, 10, 0, 43].reduce(
+      (acc, cur) => [...acc, acc[acc.length - 1] + cur * 0.001],
+      [initDelay]
+    )
+  );
+
+  useEffect(() => {
+    if (isActive) {
+      logDelays.forEach((delay, idx) => {
+        setTimeout(() => {
+          setLogClassNames((state) =>
+            state.map((className, i) =>
+              i === idx ? [className, 'log--visible'].join(' ') : className
+            )
+          );
+        }, delay * 1000);
+      });
+    }
+  }, [isActive, logDelays]);
+
+  return (
+    <StyledBody.Logs isActive={isActive}>
+      {/* <div>ready - started url: https://jengyoung.me</div>
+    <div>info - SWC minify release candidate enabled. https://nextjs.link/swcmin</div>
+    <div>event - compiled client and server successfully in 319 ms (178 modules)</div>
+    <div>event - compiled client and server successfully in 319 ms (178 modules)</div>
+    <div>wait - compiling...</div>
+    <div>event - compiled successfully in 16 ms (145 modules)</div>
+    <div>wait - compiling...</div>
+    <div>event - compiled successfully in 8 ms (33 modules)</div>
+    <div>wait - compiling...</div>
+    <div>event - compiled client and server successfully in 43 ms (178 modules)</div> */}
+      {logs.map(({ id, type, text }, idx) => (
+        <StyledBody.Log className={logClassNames[idx]} key={id}>
+          <StyledBody.LogType color={logColorsEnum[type]}>{type}</StyledBody.LogType>
+          {text}
+        </StyledBody.Log>
+      ))}
+    </StyledBody.Logs>
+  );
+}
+
+function TerminalBody({ isActive, date }: TerminalBodyInterface) {
+  const TYPING_TEXT = 'yarn dev';
+  const TYPING_DELAY = 50;
+
+  const FIRST_TYPING_TOTAL_DELAY = TYPING_TEXT.length * TYPING_DELAY * 0.001;
+
+  const { textsArr, textsArrIndex, setIsTyping } = useTypingText({
+    texts: [TYPING_TEXT],
+    delay: TYPING_DELAY,
+    immediate: false,
+  });
+
+  useEffect(() => {
+    setIsTyping(() => isActive);
+  }, [isActive, setIsTyping]);
 
   return (
     <StyledBody.Container>
@@ -69,29 +138,15 @@ function TerminalBody({ isActive, date }: TerminalBodyInterface) {
           ))}
         </StyledBody.Arrows>
 
-        <StyledBody.Command>yarn dev</StyledBody.Command>
-        <StyledBody.Cursor isActive={isActive} />
+        <StyledBody.Command>
+          {isActive && textsArr.map((text, idx) => text[textsArrIndex[idx].idx])}
+        </StyledBody.Command>
+        <StyledBody.Cursor isActive={isActive} delay={FIRST_TYPING_TOTAL_DELAY + 0.05} />
       </StyledBody.InputLineContainer>
 
-      <StyledBody.Logs isActive={isActive}>
-        {/* <div>ready - started url: https://jengyoung.me</div>
-        <div>info - SWC minify release candidate enabled. https://nextjs.link/swcmin</div>
-        <div>event - compiled client and server successfully in 319 ms (178 modules)</div>
-        <div>event - compiled client and server successfully in 319 ms (178 modules)</div>
-        <div>wait - compiling...</div>
-        <div>event - compiled successfully in 16 ms (145 modules)</div>
-        <div>wait - compiling...</div>
-        <div>event - compiled successfully in 8 ms (33 modules)</div>
-        <div>wait - compiling...</div>
-        <div>event - compiled client and server successfully in 43 ms (178 modules)</div> */}
-        {logs.map(({ id, type, text }) => (
-          <div key={id}>
-            <StyledBody.LogType color={logColorsEnum[type]}>{type}</StyledBody.LogType>
-            {text}
-          </div>
-        ))}
-      </StyledBody.Logs>
-      <StyledBody.Cursor isActive={!isActive} />
+      <TerminalBodyLogs initDelay={FIRST_TYPING_TOTAL_DELAY} isActive={isActive} />
+
+      <StyledBody.Cursor isActive={!isActive} delay={FIRST_TYPING_TOTAL_DELAY + 0.05} />
     </StyledBody.Container>
   );
 }
