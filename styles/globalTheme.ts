@@ -29,10 +29,10 @@ const fontWeights = {
 };
 
 const heads = {
-  1: ['64px', fontWeights.extrabold],
-  2: ['48px', fontWeights.bold],
-  3: ['40px', fontWeights.bold],
-  4: ['32px', fontWeights.bold],
+  1: { size: '64px', weight: fontWeights.extrabold },
+  2: { size: '48px', weight: fontWeights.bold },
+  3: { size: '40px', weight: fontWeights.bold },
+  4: { size: '32px', weight: fontWeights.bold },
 };
 
 const fontSizes = {

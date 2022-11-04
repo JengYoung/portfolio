@@ -116,23 +116,25 @@ export class Metaballs implements MetaballsInterface {
         ctx: this.ctx,
         x: this.mainMetaball.x,
         y: this.mainMetaball.y,
-        r: 250,
-        v: [getRandom(0.5, 1, { allowNagative: true }), getRandom(0.5, 1, { allowNagative: true })],
+        r: 130,
+        v: [
+          getRandom(0.1, 0.2, { allowNagative: true }),
+          getRandom(0.1, 0.2, { allowNagative: true }),
+        ],
       });
 
       this.#absorbedMetaBalls.push(metaball);
     }
 
     for (let i = 0; i < this.bubbleNum; i += 1) {
+      const nextY = -getRandom(0.3, 1, { allowNagative: true });
+      const nextX = (nextY < -0.3 ? -1 : 1) * getRandom(0.3, 1, { allowNagative: true });
       const metaball = new Bubble({
         ctx: this.ctx,
         x: this.mainMetaball.state.x,
         y: this.mainMetaball.state.y,
         r: getRandom(50, 100, { allowNagative: false }),
-        v: [
-          getRandom(0.3, 1, { allowNagative: true }),
-          -getRandom(0.3, 1, { allowNagative: true }),
-        ],
+        v: [nextX, nextY],
       });
 
       this.#bubbles.push(metaball);

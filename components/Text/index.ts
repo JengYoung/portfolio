@@ -79,4 +79,6 @@ const CopyStyle = {
   SubCopy,
 };
 
+export { default as CollapsedText } from './Collapsed';
+
 export default CopyStyle;

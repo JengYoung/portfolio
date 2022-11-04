@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
 const MetaballCanvas = styled.canvas`
   position: absolute;
   top: 0;
-  /* z-index: -9999; */
+  z-index: -9999;
 `;
 
 interface ForwardedCanvasPropsInterface {
