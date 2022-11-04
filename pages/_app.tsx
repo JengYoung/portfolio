@@ -1,3 +1,5 @@
+import { RecoilRoot } from 'recoil';
+
 import { Global, ThemeProvider } from '@emotion/react';
 import React, { ReactElement, ReactNode } from 'react';
 
@@ -27,8 +29,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <ThemeProvider theme={globalTheme}>
       <Global styles={globalStyle} />
-      {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-      {getLayout(<Component {...pageProps} />)}
+      <RecoilRoot>
+        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
+        {getLayout(<Component {...pageProps} />)}
+      </RecoilRoot>
     </ThemeProvider>
   );
 }

@@ -2,16 +2,50 @@ import { css } from '@emotion/react';
 
 import styled from '@emotion/styled';
 
+import { ButtonActionTypeEnum, TerminalModeType } from '~/atoms/intro/terminal';
+
 export const TerminalHeaderHeight = '2rem';
 
 export const StyledTerminal = {
-  Container: styled.article`
+  Container: styled.article<{ mode: TerminalModeType }>`
     width: 800px;
     height: 540px;
 
-    border-radius: 20px;
-
     overflow: hidden;
+
+    border-radius: 20px;
+    transition: all 0.5s;
+
+    ${({ mode }) => {
+      if (mode === ButtonActionTypeEnum.red) {
+        return css`
+          transform: skew(-0.125turn, 40deg);
+        `;
+      }
+      if (mode === ButtonActionTypeEnum.orange) {
+        return css`
+          transform: scale(0.95);
+          animation: terminal-shaking 0.1s;
+          animation-iteration-count: 9;
+
+          @keyframes terminal-shaking {
+            0% {
+              transform: scale(0.95) translateX(0.5rem);
+            }
+            10% {
+              transform: scale(0.95) translateX(0.5rem);
+            }
+          }
+        `;
+      }
+      if (mode === ButtonActionTypeEnum.green) {
+        return css`
+          width: 100vw;
+          height: 100vh;
+        `;
+      }
+      return ``;
+    }}
   `,
 };
 
@@ -62,9 +96,9 @@ export const StyledTerminalHeader = {
 };
 
 const ArrowHeadCSS = (color: string) => css`
-  border-left: 1rem solid ${color};
   border-top: 0.75rem solid transparent;
   border-bottom: 0.75rem solid transparent;
+  border-left: 1rem solid ${color};
 `;
 
 export const StyledBody = {
@@ -77,7 +111,8 @@ export const StyledBody = {
 
     background: ${({ theme }) => theme.colors.dark};
   `,
-  EnterCommand: styled.span<{ isActive: boolean }>`
+  EnterCommand: styled.div<{ isActive: boolean }>`
+    word-wrap: break-word;
     animation: highlight-enter-command 1s infinite;
     animation-fill-mode: forwards;
     ${({ isActive, theme }) =>
@@ -85,7 +120,7 @@ export const StyledBody = {
       css`
         color: ${theme.colors.success};
         animation: none;
-      `}
+      `};
 
     @keyframes highlight-enter-command {
       0% {
@@ -103,8 +138,8 @@ export const StyledBody = {
     }
   `,
   InputLineContainer: styled.div`
-    display: flex;
     position: relative;
+    display: flex;
   `,
   Arrows: styled.ul`
     position: relative;
@@ -115,16 +150,16 @@ export const StyledBody = {
   Arrow: styled.li<{ tailColor: string; color: string }>`
     position: relative;
     height: 1.5rem;
+    padding-right: 0.5rem;
 
     padding-left: 1.5rem;
-    padding-right: 0.5rem;
 
     background-color: ${({ color }) => color};
 
     &::before,
     &::after {
-      content: '';
       position: absolute;
+      content: '';
     }
 
     &::before {
@@ -143,13 +178,12 @@ export const StyledBody = {
     margin-left: 1.5rem;
   `,
   Cursor: styled.div<{ isActive: boolean; delay: number }>`
-    visibility: ${({ isActive }) => (isActive ? 'hidden' : 'visible')};
-    transition-delay: ${({ delay }) => delay}s;
-
     width: 0.75rem;
     height: 1.5rem;
+    visibility: ${({ isActive }) => (isActive ? 'hidden' : 'visible')};
 
     background-color: ${({ theme }) => theme.colors.white};
+    transition-delay: ${({ delay }) => delay}s;
   `,
   Logs: styled.ul<{ isActive: boolean }>`
     display: ${({ isActive }) => (isActive ? 'block' : 'none')};
@@ -162,7 +196,7 @@ export const StyledBody = {
     }
   `,
   LogType: styled.strong<{ color: string }>`
-    color: ${({ color }) => color};
     font-weight: ${({ theme }) => theme.fontWeights.default};
+    color: ${({ color }) => color};
   `,
 };

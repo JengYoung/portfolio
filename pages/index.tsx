@@ -1,3 +1,6 @@
+import { useRecoilState } from 'recoil';
+
+import { css } from '@emotion/react';
 import React, { useEffect, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
@@ -7,8 +10,26 @@ import { Terminal } from '@components/Terminal';
 
 import { useLocalStorage } from '@hooks/useLocalStorage';
 
+import { IntroTarminalAtom } from '~/atoms';
+import { ButtonActionTypeEnum, TerminalModeType } from '~/atoms/intro/terminal';
+
+const modeGradients = {
+  ANGRY: {
+    start: '#FF0000',
+    end: '#250864',
+  },
+  SHAKING: {
+    start: '#FFD600',
+    end: '#FF5C00',
+  },
+  null: {
+    start: '#FFD600',
+    end: '#FF5C00',
+  },
+};
+
 const Styled = {
-  Page: styled.div`
+  Page: styled.div<{ mode: TerminalModeType }>`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -16,6 +37,7 @@ const Styled = {
     width: 100%;
     height: calc(100vh + 4px);
 
+    &::before,
     &::after {
       position: absolute;
       top: 0;
@@ -25,9 +47,29 @@ const Styled = {
       z-index: -1000;
 
       content: '';
+    }
 
+    /* mode */
+    &::before {
+      ${({ mode }) =>
+        mode !== ButtonActionTypeEnum.green &&
+        mode !== null &&
+        css`
+          background: linear-gradient(
+            ${modeGradients[mode].start} 15%,
+            ${modeGradients[mode].end} 85% 100%
+          );
+        `};
+      opacity: ${({ mode }) => (mode === null ? 0 : 1)};
+      transition: all 1s;
+    }
+
+    /* default */
+    &::after {
       background: ${({ theme }) =>
         `linear-gradient(${theme.colors.primary.dark} 15%, ${theme.colors.primary.light} 85% 100%)`};
+      opacity: ${({ mode }) => (mode === null ? 1 : 0)};
+      transition: all 1s;
     }
   `,
   Mouse: styled(ScrollMouse)`
@@ -39,6 +81,8 @@ const Styled = {
 };
 
 function HomePage() {
+  const [{ mode }] = useRecoilState(IntroTarminalAtom);
+
   const { getItem, setItem } = useLocalStorage();
   const lastLoginDate = useRef('');
 
@@ -77,7 +121,7 @@ function HomePage() {
   }, []);
 
   return (
-    <Styled.Page>
+    <Styled.Page mode={mode}>
       <Terminal isActive={isActive} date={lastLoginDate.current} />
       <Styled.Mouse visible={!isActive} bottom="1rem" left="50%" right="50%" delay={0.3} />
     </Styled.Page>

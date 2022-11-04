@@ -15,6 +15,7 @@ module.exports = {
     '^@assets/(.*)$',
     '^@styles/(.*)$',
     '^@utils/(.*)$',
+    '^~/(.*)$',
     '^[./]',
   ],
   importOrderSeparation: true,

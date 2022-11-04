@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "stylelint:fix": "stylelint --fix \"**/*.tsx\"",
+    "stylelint:fix": "stylelint --fix \"**/*.{tsx,ts}\"",
     "lint:all": "next lint && yarn stylelint \"**/*.tsx\"",
     "prettier:all": "prettier --write **/*.{tsx,ts,js,json,md,html} --ignore-unknown",
     "postinstall": "husky install",
@@ -56,7 +56,10 @@
   },
   "packageManager": "yarn@3.2.4",
   "lint-staged": {
-    "*.tsx": "lint:fix",
-    "*.ts": "lint:fix"
+    "*.{tsx,ts}": [
+      "prettier --write **/*.{tsx,ts,js,json,md,html} --ignore-unknown",
+      "eslint --fix",
+      "stylelint --fix"
+    ]
   }
 }

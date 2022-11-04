@@ -35,8 +35,8 @@ const globalStyle = css`
   }
 
   ul {
-    margin: 0;
     padding: 0;
+    margin: 0;
     list-style: none;
   }
 `;

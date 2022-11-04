@@ -1,8 +1,13 @@
+import { useRecoilState } from 'recoil';
+
 import React, { useEffect, useState } from 'react';
 
 import useTypingText from '@hooks/useTypingText';
 
 import readonly from '@utils/readonly';
+
+import { IntroTarminalAtom } from '~/atoms';
+import { ButtonActionTypeEnum } from '~/atoms/intro/terminal';
 
 import { StyledBody } from './styles';
 
@@ -60,10 +65,15 @@ function TerminalBodyLogs({ isActive, initDelay }: TerminalBodyLogsInterface) {
 
   const [logClassNames, setLogClassNames] = useState(new Array(logs.length).fill(''));
 
+  /**
+   * @description
+   * log들이 엔터나 스크롤을 하면 순차적으로 나오면서 마치 터미널에서 서버가 활성화되는 효과를 줍니다.
+   * 이에 대한 딜레이를 지정해주는 배열입니다.
+   */
   const logDelays: readonly number[] = readonly(
-    [100, 500, 0, 300, 0, 20, 0, 10, 0, 43].reduce(
+    [0, 500, 0, 300, 0, 20, 0, 10, 0, 43].reduce(
       (acc, cur) => [...acc, acc[acc.length - 1] + cur * 0.001],
-      [initDelay]
+      [initDelay + 0.1]
     )
   );
 
@@ -104,6 +114,7 @@ function TerminalBodyLogs({ isActive, initDelay }: TerminalBodyLogsInterface) {
 }
 
 function TerminalBody({ isActive, date }: TerminalBodyInterface) {
+  const [{ mode }] = useRecoilState(IntroTarminalAtom);
   const TYPING_TEXT = 'yarn dev';
   const TYPING_DELAY = 50;
 
@@ -123,7 +134,11 @@ function TerminalBody({ isActive, date }: TerminalBodyInterface) {
     <StyledBody.Container>
       <div>last login : {date}</div>
       <StyledBody.EnterCommand isActive={isActive}>
-        PRESS ENTER OR SCROLL {isActive ? 'SUCCESS' : 'DOWN!'}
+        PRESS ENTER OR SCROLL{' '}
+        {(isActive ? 'SUCCESS' : 'DOWN!') +
+          (mode === ButtonActionTypeEnum.orange || mode === ButtonActionTypeEnum.red
+            ? 'PRESS ENTER OR SCROLL DOWN!'.repeat(100)
+            : '')}
         {isActive && `: portfolio application start...`}
       </StyledBody.EnterCommand>
 

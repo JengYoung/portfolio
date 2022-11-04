@@ -10,6 +10,13 @@
     "typescript",
     "typescriptreact"
   ],
+  "stylelint.validate": [
+    "css",
+    "less",
+    "postcss",
+    "typescriptreact",
+    "typescript"
+  ],
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,
