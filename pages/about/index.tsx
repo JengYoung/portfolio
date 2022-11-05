@@ -67,7 +67,7 @@ const Styled = {
     padding-top: 100px;
     background-color: white;
   `,
-  FeaturesTitle: styled.div`
+  FeatureHeader: styled.div`
     svg text {
       font-family: 'Anton', sans-serif;
       font-size: 5rem;
@@ -95,17 +95,105 @@ const Styled = {
       }
     }
   `,
-  FeaturesDetailContainer: styled.div`
+  FeaturesContainer: styled.div`
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
 
     width: 100%;
     height: 520px;
+    padding: 10rem;
 
     overflow: hidden;
+  `,
+  FeatureContainer: styled.div`
+    position: relative;
+    z-index: 10;
 
-    perspective: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 270px;
+    height: 270px;
+  `,
+  FeatureDetail: styled.div`
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 2rem;
+    padding-top: 1rem;
+  `,
+  FeatureHead: styled.h1`
+    margin-bottom: 0.5rem;
+    ${({ theme }) => css`
+      font-size: ${theme.heads[4].size};
+      font-weight: ${theme.heads[4].weight};
+    `}
+    color: black;
+  `,
+  Description: styled.span`
+    text-align: center;
+
+    ${({ theme }) => css`
+      font-size: ${theme.fontSizes.l};
+      word-break: keep-all;
+    `}
+  `,
+  FeatureLines: styled.div`
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 100%;
   `,
 
+  FeatureLine: styled.div`
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+
+    border: 2px solid #fff;
+    border-radius: 40% 60% 65% 35% / 40% 45% 55% 60%;
+    box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.1);
+
+    opacity: 0.5;
+    transition: all 1s;
+
+    @keyframes rotatedBox1 {
+      0% {
+        transform: rotate(60deg);
+      }
+      100% {
+        transform: rotate(420deg);
+      }
+    }
+    @keyframes rotatedBox2 {
+      0% {
+        transform: rotate(480deg);
+      }
+      100% {
+        transform: rotate(120deg);
+      }
+    }
+
+    &:nth-of-type(1) {
+      transform: rotate(60deg);
+    }
+    &:nth-of-type(2) {
+      transform: rotate(120deg);
+    }
+
+    .feature__lines--rotate {
+      &:nth-of-type(1) {
+        animation: rotatedBox1 5s infinite linear;
+      }
+      &:nth-of-type(2) {
+        animation: rotatedBox2 12s infinite linear;
+      }
+    }
+  `,
   FeatureBackground: styled.div`
     position: absolute;
 
@@ -117,6 +205,7 @@ const Styled = {
     transition: all 0.3s;
 
     &:first-of-type {
+      top: 0;
       border-top: 2px solid ${({ theme }) => theme.colors.primary.light};
       animation: feature-move-right 2s ease-out;
     }
@@ -270,10 +359,12 @@ function AboutPage() {
             <Gummy texts="입니다" delay={1.5} />
           </CollapsedText>
         </Styled.IntroductionMainCopy>
+
         <ScrollMouse bottom="1rem" delay={1.5} visible />
       </Styled.Introduction>
+
       <Styled.Features>
-        <Styled.FeaturesTitle>
+        <Styled.FeatureHeader>
           <svg width={600} height={100} viewBox="0 0 600 100">
             <text x="0" y="100%">
               F
@@ -300,12 +391,60 @@ function AboutPage() {
               S
             </text>
           </svg>
-        </Styled.FeaturesTitle>
-        <Styled.FeaturesDetailContainer>
+        </Styled.FeatureHeader>
+
+        <Styled.FeaturesContainer>
           <Styled.FeatureBackground />
+
+          <Styled.FeatureContainer>
+            <Styled.FeatureDetail>
+              <Styled.FeatureHead>💡</Styled.FeatureHead>
+              <Styled.FeatureHead>호기심</Styled.FeatureHead>
+              <Styled.Description>
+                항상 새로운 것들에 호기심을 갖고, 기존과 비교하며 개선해나가요 😉
+              </Styled.Description>
+            </Styled.FeatureDetail>
+            <Styled.FeatureLines>
+              <Styled.FeatureLine />
+              <Styled.FeatureLine />
+              <Styled.FeatureLine />
+            </Styled.FeatureLines>
+          </Styled.FeatureContainer>
+
+          <Styled.FeatureContainer>
+            <Styled.FeatureDetail>
+              <Styled.FeatureHead>📝</Styled.FeatureHead>
+              <Styled.FeatureHead>문서화</Styled.FeatureHead>
+              <Styled.Description>
+                모르는 것들을 찾으면, 기록하며 배워나가는 습관을 갖고 있어요 🥸
+              </Styled.Description>
+            </Styled.FeatureDetail>
+            <Styled.FeatureLines>
+              <Styled.FeatureLine />
+              <Styled.FeatureLine />
+              <Styled.FeatureLine />
+            </Styled.FeatureLines>
+          </Styled.FeatureContainer>
+
+          <Styled.FeatureContainer>
+            <Styled.FeatureDetail>
+              <Styled.FeatureHead>🏄‍♂️</Styled.FeatureHead>
+              <Styled.FeatureHead>꾸준함</Styled.FeatureHead>
+              <Styled.Description>
+                현재에 안주하지 않아요. 항상 더 나은 방향으로 성장하는 것을 즐겨요 🥰
+              </Styled.Description>
+            </Styled.FeatureDetail>
+            <Styled.FeatureLines>
+              <Styled.FeatureLine />
+              <Styled.FeatureLine />
+              <Styled.FeatureLine />
+            </Styled.FeatureLines>
+          </Styled.FeatureContainer>
+
           <Styled.FeatureBackground />
-        </Styled.FeaturesDetailContainer>
+        </Styled.FeaturesContainer>
       </Styled.Features>
+
       <Styled.Introduction />
     </Styled.Page>
   );
