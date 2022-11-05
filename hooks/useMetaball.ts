@@ -101,7 +101,7 @@ const useMetaball = ({
 
     animate(metaballs, linearGradient);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ctx]);
+  }, [ctx, canvasRef.current]);
 };
 
 export default useMetaball;

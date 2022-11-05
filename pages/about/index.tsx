@@ -32,15 +32,21 @@ const Styled = {
   `,
   Introduction: styled.section`
     position: relative;
+
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+
+    background-color: white;
+    border: 0;
     ${ContainerCSS}
   `,
   IntroductionMainCopy: styled.h1`
     position: relative;
     top: 100px;
+
+    z-index: 10;
+
     margin: 0;
     line-height: 1.5;
 
@@ -50,26 +56,29 @@ const Styled = {
     `}
   `,
   Name: styled.span`
-    color: ${({ theme }) => theme.colors.primary.dark} !important;
+    color: ${({ theme }) => theme.colors.primary.dark};
   `,
 
   Features: styled.section`
     ${ContainerCSS}
+
     box-sizing: border-box;
     width: 100%;
-    height: 520px;
+    padding-top: 100px;
     background-color: white;
   `,
   FeaturesTitle: styled.div`
     svg text {
       font-family: 'Anton', sans-serif;
       font-size: 5rem;
+
       fill: transparent;
       stroke: ${({ theme }) => theme.colors.primary.light};
       stroke-dasharray: 750;
       stroke-dashoffset: 750;
       stroke-width: 3px;
-      animation: stroke 3.5s linear;
+
+      animation: stroke 2s cubic-bezier(0.39, 0.575, 0.565, 1);
       animation-fill-mode: forwards;
     }
 
@@ -87,26 +96,55 @@ const Styled = {
     }
   `,
   FeaturesDetailContainer: styled.div`
+    position: relative;
+
     width: 100%;
-    height: calc(100% - 100px);
+    height: 520px;
+
     overflow: hidden;
+
     perspective: 100vw;
   `,
-  FeaturesDetailInner: styled.div`
+
+  FeatureBackground: styled.div`
+    position: absolute;
+
     width: 100%;
-    height: 100%;
-    background: ${({ theme }) => theme.colors.primary.light};
-    transition: all 3s;
-    transform-origin: center;
-    animation: test 3s infinite ease;
-    @keyframes test {
+    height: 50%;
+
+    background-color: ${({ theme }) => theme.colors.primary.light};
+
+    transition: all 0.3s;
+
+    &:first-of-type {
+      border-top: 2px solid ${({ theme }) => theme.colors.primary.light};
+      animation: feature-move-right 2s ease-out;
+    }
+    &:last-of-type {
+      bottom: 0;
+      border-bottom: 2px solid ${({ theme }) => theme.colors.primary.light};
+      animation: feature-move-left 2s ease-out;
+    }
+
+    @keyframes feature-move-left {
       0% {
-        transform: translate(-100vw, 0.125rem) rotateX(90deg);
-        transform-origin: top;
+        background-color: transparent;
+        transform: translate(-100vw);
       }
-      50% {
-        transform: translate(0, 0.125rem) rotateX(90deg);
-        transform-origin: top;
+      60% {
+        background-color: transparent;
+        transform: translate(0vw);
+      }
+    }
+
+    @keyframes feature-move-right {
+      0% {
+        background-color: transparent;
+        transform: translate(100vw);
+      }
+      60% {
+        background-color: transparent;
+        transform: translate(0vw);
       }
     }
   `,
@@ -217,22 +255,21 @@ function AboutPage() {
   return (
     <Styled.Page>
       <Styled.Introduction>
-        <CollapsedText x={(windowState.innerWidth ?? 0) + 500} y={0} direction="LEFT">
-          <Styled.IntroductionMainCopy>
+        <ForwardedCanvas width={minWidth} height={minHeight} ref={canvasRef} />
+        <Styled.IntroductionMainCopy>
+          <CollapsedText x={(windowState.innerWidth ?? 0) + 500} y={0} direction="LEFT">
             <Gummy texts="프론트엔드&nbsp;개발자" delay={1.5} />
-          </Styled.IntroductionMainCopy>
-        </CollapsedText>
+          </CollapsedText>
+        </Styled.IntroductionMainCopy>
 
-        <CollapsedText x={-500} y={0} direction="RIGHT">
-          <Styled.IntroductionMainCopy>
+        <Styled.IntroductionMainCopy>
+          <CollapsedText x={-500} y={0} direction="RIGHT">
             <Styled.Name>
               <Gummy texts="황재영" delay={1.5} options={{ isGummy: true, infinite: true }} />
             </Styled.Name>
             <Gummy texts="입니다" delay={1.5} />
-          </Styled.IntroductionMainCopy>
-        </CollapsedText>
-
-        <ForwardedCanvas width={minWidth} height={minHeight} ref={canvasRef} />
+          </CollapsedText>
+        </Styled.IntroductionMainCopy>
         <ScrollMouse bottom="1rem" delay={1.5} visible />
       </Styled.Introduction>
       <Styled.Features>
@@ -265,9 +302,11 @@ function AboutPage() {
           </svg>
         </Styled.FeaturesTitle>
         <Styled.FeaturesDetailContainer>
-          <Styled.FeaturesDetailInner />
+          <Styled.FeatureBackground />
+          <Styled.FeatureBackground />
         </Styled.FeaturesDetailContainer>
       </Styled.Features>
+      <Styled.Introduction />
     </Styled.Page>
   );
 }

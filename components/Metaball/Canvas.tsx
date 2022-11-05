@@ -4,10 +4,12 @@ import dynamic from 'next/dynamic';
 
 import styled from '@emotion/styled';
 
-const MetaballCanvas = styled.canvas`
+const MetaballCanvas = styled.canvas<{ width: number; height: number }>`
   position: absolute;
   top: 0;
-  z-index: -9999;
+  z-index: 1;
+  width: ${({ width }) => width}px;
+  height: ${({ height }) => height}px;
 `;
 
 interface ForwardedCanvasPropsInterface {
