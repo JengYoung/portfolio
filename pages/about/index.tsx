@@ -41,6 +41,7 @@ interface FeaturesHeaderTextInterface {
 }
 
 interface SkillInterface {
+  id: number;
   name: string;
   src: string;
   checks: string[];
@@ -167,8 +168,8 @@ const Styled = {
     ${({ theme }) => css`
       font-size: ${theme.heads[4].size};
       font-weight: ${theme.heads[4].weight};
+      color: ${theme.colors.dark};
     `}
-    color: black;
   `,
   Description: styled.span`
     text-align: center;
@@ -277,6 +278,8 @@ const Styled = {
 
   SkillSection: styled.section`
     position: relative;
+    align-items: center;
+    overflow: hidden;
     ${ContainerCSS}
   `,
   SkllContainer: styled.div`
@@ -299,6 +302,51 @@ const Styled = {
       transform-origin: left;
     `}
   `,
+
+  NowSkillImageContainer: styled.div`
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 600px;
+    height: 600px;
+    transform: rotate(-30deg);
+  `,
+  NowSkillDetailContainer: styled.section`
+    position: relative;
+    flex-direction: column;
+    height: 100%;
+    padding: 5rem;
+    margin-top: 5rem;
+  `,
+  NowSkillImageName: styled.div`
+    position: relative;
+    z-index: 10;
+
+    width: 100%;
+
+    margin: 0;
+    line-height: 1.5;
+    ${({ theme }) => css`
+      color: ${theme.colors.subPrimary};
+      text-shadow: 5px 5px ${theme.colors.primary.light};
+    `}
+
+    ${({ theme }) => css`
+      font-size: calc(${theme.heads[1].size} * 2);
+      font-weight: ${theme.heads[1].weight};
+    `}
+  `,
+  NowSkillDescriptions: styled.ul`
+    margin-top: 1rem;
+  `,
+  NowSkillDescription: styled.li`
+    ${({ theme }) => css`
+      font-size: ${theme.fontSizes.l};
+      font-weight: ${theme.fontWeights.default};
+      color: ${theme.colors.subPrimary};
+    `}
+  `,
+
   Skills: styled.ul`
     position: absolute;
     right: 0;
@@ -309,31 +357,33 @@ const Styled = {
     height: 5rem;
     padding: 0 1rem;
     margin: 0 7.5rem;
+    overflow: scroll;
     background-color: rgba(0, 0, 0, 0.58);
     border-radius: 20px;
   `,
   SkillContainer: styled.li`
-    width: 4rem;
-    height: 4rem;
+    display: flex;
     margin-right: 1rem;
   `,
+
   ImageContainer: styled.div`
     display: flex;
+    /* flex-shrink: 0; */
     align-items: center;
     justify-content: center;
     width: 4rem;
     height: 4rem;
     padding: 0.5rem;
     overflow: hidden;
+    cursor: pointer;
     background-color: rgba(256, 256, 256, 0.8);
-    /* border: 1px solid white; */
     border-radius: 20px;
   `,
+
   Separator: styled.div`
     width: 1px;
-    height: 4rem;
     padding: 1rem 0;
-    margin-right: 1rem;
+    margin-left: 1rem;
     ${({ theme }) => css`
       background-color: ${theme.colors.white};
     `}
@@ -577,6 +627,17 @@ function AboutPage() {
     };
   }, [headerState.isActive, headerState.y]);
 
+  const [nowActiveSkill, setNowActiveSkill] = useState<SkillInterface>({
+    id: 0,
+    name: '',
+    src: '',
+    checks: [],
+  });
+
+  const onClickSkill = (skill: SkillInterface) => {
+    setNowActiveSkill(() => skill);
+  };
+
   const Skills = {
     HTML5: 'HTML5',
     CSS3: 'CSS3',
@@ -585,7 +646,6 @@ function AboutPage() {
     React: 'React',
     Vue3: 'Vue3',
     NextJS: 'NextJS',
-    CSSInJS: 'CSS in JS',
     Storybook: 'Storybook',
     Quasar: 'Quasar',
     NodeJS: 'Node.js',
@@ -596,6 +656,7 @@ function AboutPage() {
 
   const skills: SkillInterface[] = [
     {
+      id: 0,
       name: Skills.HTML5,
       src: '/html.png',
       checks: [
@@ -605,6 +666,7 @@ function AboutPage() {
       ],
     },
     {
+      id: 1,
       name: Skills.CSS3,
       src: '/css3.png',
       checks: [
@@ -616,6 +678,7 @@ function AboutPage() {
       ],
     },
     {
+      id: 2,
       name: Skills.JavaScript,
       src: '/javascript.png',
       checks: [
@@ -625,6 +688,7 @@ function AboutPage() {
       ],
     },
     {
+      id: 3,
       name: Skills.TypeScript,
       src: '/typescript.png',
       checks: [
@@ -634,6 +698,7 @@ function AboutPage() {
       ],
     },
     {
+      id: 4,
       name: Skills.React,
       src: '/react.png',
       checks: [
@@ -646,6 +711,7 @@ function AboutPage() {
       ],
     },
     {
+      id: 5,
       name: Skills.Vue3,
       src: '/vue3.png',
       checks: [
@@ -658,6 +724,7 @@ function AboutPage() {
       ],
     },
     {
+      id: 6,
       name: Skills.NextJS,
       src: '/nextjs.png',
       checks: [
@@ -666,6 +733,7 @@ function AboutPage() {
       ],
     },
     {
+      id: 7,
       name: Skills.Quasar,
       src: '/quasar.svg',
       checks: [
@@ -675,6 +743,7 @@ function AboutPage() {
       ],
     },
     {
+      id: 8,
       name: Skills.Storybook,
       src: '/storybook.png',
       checks: [
@@ -683,6 +752,7 @@ function AboutPage() {
       ],
     },
     {
+      id: 9,
       name: Skills.NodeJS,
       src: '/nodejs.png',
       checks: [
@@ -692,6 +762,7 @@ function AboutPage() {
       ],
     },
     {
+      id: 10,
       name: Skills.AWS,
       src: '/aws.png',
       checks: [
@@ -700,6 +771,7 @@ function AboutPage() {
       ],
     },
     {
+      id: 11,
       name: Skills.CICD,
       src: '/github-actions.png',
       checks: [
@@ -735,7 +807,7 @@ function AboutPage() {
         <Styled.FeatureHeader>
           <svg width={600} height={100} viewBox="0 0 600 100">
             {featuresHeaderTexts.map((text) => (
-              <text key={text.x} x={text.x} y={text.y}>
+              <text key={text.x + text.y + text.value} x={text.x} y={text.y}>
                 {text.value}
               </text>
             ))}
@@ -770,18 +842,36 @@ function AboutPage() {
         <Styled.SkillHeader ref={skillHeaderRef} headerState={headerState}>
           SKILLS
         </Styled.SkillHeader>
+
+        {nowActiveSkill.src && (
+          <Styled.NowSkillDetailContainer>
+            <Styled.NowSkillImageName>
+              <CollapsedText x={-500} y={0} direction="LEFT">
+                <Gummy key={nowActiveSkill.name} texts={nowActiveSkill.name} delay={1.5} />
+              </CollapsedText>
+            </Styled.NowSkillImageName>
+
+            <Styled.NowSkillDescriptions>
+              {nowActiveSkill.checks.map((check) => (
+                <Styled.NowSkillDescription>- {check}</Styled.NowSkillDescription>
+              ))}
+            </Styled.NowSkillDescriptions>
+
+            <Styled.NowSkillImageContainer>
+              <Image src={nowActiveSkill.src} layout="fill" objectFit="contain" />
+            </Styled.NowSkillImageContainer>
+          </Styled.NowSkillDetailContainer>
+        )}
         <Styled.Skills>
           {skills.map((skill) => (
-            <>
-              <Styled.SkillContainer key={skill.name}>
-                <Styled.ImageContainer>
-                  <Image objectFit="contain" src={skill.src} alt="vercel" width="58" height="58" />
-                </Styled.ImageContainer>
-              </Styled.SkillContainer>
-              {[Skills.TypeScript, Skills.Vue3, Skills.Quasar].some((v) => v === skill.name) && (
-                <Styled.Separator />
-              )}
-            </>
+            <Styled.SkillContainer key={skill.id}>
+              <Styled.ImageContainer onClick={() => onClickSkill(skill)}>
+                <Image objectFit="contain" src={skill.src} alt="vercel" width="58" height="58" />
+              </Styled.ImageContainer>
+              {[Skills.TypeScript, Skills.Vue3, Skills.Quasar].some(
+                (name) => name === skill.name
+              ) && <Styled.Separator key={skill.src} />}
+            </Styled.SkillContainer>
           ))}
         </Styled.Skills>
       </Styled.SkillSection>

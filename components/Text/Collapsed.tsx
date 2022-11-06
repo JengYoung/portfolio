@@ -140,7 +140,8 @@ function Collapsed({ children, x, y, direction }: CollapsedProps) {
 
   const setIsMoveCallback = useCallback(() => {
     setIsMove(() => true);
-  }, []);
+  }, [setIsMove]);
+
   const callbackRef = useRef<UseIntersectionCallbackType>((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
