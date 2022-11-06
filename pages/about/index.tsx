@@ -447,15 +447,24 @@ const Styled = {
 
   Separator: styled.div`
     width: 1px;
-    padding: 1rem 0;
+    margin: 1rem 0;
     margin-left: 1rem;
     ${({ theme }) => css`
       background-color: ${theme.colors.white};
     `}
   `,
+
+  MouseContainer: styled.div`
+    position: relative;
+    z-index: 11;
+    display: flex;
+    justify-content: center;
+  `,
 };
 
 function AboutPage() {
+  const [isMouseVisible, setIsMouseVisible] = useState(true);
+
   const { windowState } = useWindow(['innerWidth', 'innerHeight']);
   const minWidth = useMemo(
     () => Math.min(1440, windowState.innerWidth ?? 0),
@@ -672,6 +681,8 @@ function AboutPage() {
         }));
         return;
       }
+
+      setIsMouseVisible(() => false);
       setHeaderState((state) => ({
         ...state,
         rotate: 0,
@@ -872,7 +883,6 @@ function AboutPage() {
         </Styled.IntroductionSubCopy>
         <Styled.ProfileImage src="profile.gif" alt="프로필" />
       </Styled.Introduction>
-      <ScrollMouse bottom="1rem" delay={1.5} visible />
 
       <Styled.Features>
         <Styled.FeatureHeader>
@@ -958,6 +968,9 @@ function AboutPage() {
           })}
         </Styled.Skills>
       </Styled.SkillSection>
+      <Styled.MouseContainer>
+        <ScrollMouse bottom="1rem" delay={1.5} visible={isMouseVisible} />
+      </Styled.MouseContainer>
     </Styled.Page>
   );
 }
