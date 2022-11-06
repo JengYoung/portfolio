@@ -114,22 +114,27 @@ export class Metaballs implements MetaballsInterface {
     for (let i = 0; i < this.absorbBallNum; i += 1) {
       const metaball = new Metaball({
         ctx: this.ctx,
-        x: this.canvasWidth / 2,
-        y: this.canvasHeight / 2,
-        r: 200,
-        v: [getRandom(0, 1, { allowNagative: true }), getRandom(0, 1, { allowNagative: true })],
+        x: this.mainMetaball.x,
+        y: this.mainMetaball.y,
+        r: 130,
+        v: [
+          getRandom(0.1, 0.2, { allowNagative: true }),
+          getRandom(0.1, 0.2, { allowNagative: true }),
+        ],
       });
 
       this.#absorbedMetaBalls.push(metaball);
     }
 
     for (let i = 0; i < this.bubbleNum; i += 1) {
+      const nextY = -getRandom(0.3, 1, { allowNagative: true });
+      const nextX = (nextY < -0.3 ? -1 : 1) * getRandom(0.3, 1, { allowNagative: true });
       const metaball = new Bubble({
         ctx: this.ctx,
-        x: this.canvasWidth / 2,
-        y: this.canvasHeight / 2,
+        x: this.mainMetaball.state.x,
+        y: this.mainMetaball.state.y,
         r: getRandom(50, 100, { allowNagative: false }),
-        v: [getRandom(0.3, 1, { allowNagative: true }), getRandom(0.3, 1, { allowNagative: true })],
+        v: [nextX, nextY],
       });
 
       this.#bubbles.push(metaball);
@@ -192,7 +197,10 @@ export class Metaballs implements MetaballsInterface {
 
     this.bubbles.forEach((ball, idx) => {
       if (ball.isBurst) {
-        ball.burst();
+        ball.burst({
+          x: this.mainMetaball.state.x,
+          y: this.mainMetaball.state.y,
+        });
       } else {
         const mainMetaballPath = ball.update(this.mainMetaball);
         if (mainMetaballPath !== null) ball.renderCurve(mainMetaballPath);

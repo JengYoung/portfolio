@@ -11,7 +11,7 @@ import {
 export class Metaball implements MetaballInterface {
   state: MetaballStateInterface;
 
-  #absorbWeight = 170;
+  #absorbWeight = 120;
 
   #stickyWeight = 1.25;
 
@@ -23,7 +23,10 @@ export class Metaball implements MetaballInterface {
       x,
       y,
       r,
-      v: [getRandom(0.3, 1, { allowNagative: true }), getRandom(0.3, 1, { allowNagative: true })],
+      v: [
+        getRandom(0.1, 0.2, { allowNagative: true }),
+        getRandom(0.1, 0.2, { allowNagative: true }),
+      ],
     };
   }
 
@@ -175,8 +178,8 @@ export class Metaball implements MetaballInterface {
       const nextYDirection = this.v[1] >= 0 ? -1 : 1;
 
       const nextV: [number, number] = [
-        nextXDirection * getRandom(0, 0.5, { allowNagative: false }),
-        nextYDirection * getRandom(0, 0.5, { allowNagative: false }),
+        nextXDirection * getRandom(0.2, 0.5, { allowNagative: false }),
+        nextYDirection * getRandom(0.2, 0.5, { allowNagative: false }),
       ];
 
       this.setState({

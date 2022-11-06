@@ -17,7 +17,7 @@ export class Bubble extends Metaball {
 
   #stickyWeight = 1.1;
 
-  #burstWeight = 1.5;
+  #burstWeight = 1.2;
 
   constructor({ ctx, x, y, r, v, options = { burst: true } }: BubblePropInterface) {
     super({ ctx, x, y, r, v });
@@ -58,13 +58,16 @@ export class Bubble extends Metaball {
     return this.state.isBurst;
   }
 
-  burst() {
+  burst(base: Omit<MetaballBaseInterface, 'r'>) {
     if (this.scale >= this.maxScale) {
+      const nextY = -getRandom(0.3, 1, { allowNagative: true });
+      const nextX = (nextY < -0.5 ? -1 : 1) * getRandom(0.3, 1, { allowNagative: true });
+
       this.setState({
-        x: this.ctx.canvas.width / 2,
-        y: this.ctx.canvas.height / 2,
+        x: base.x,
+        y: base.y,
         r: getRandom(50, 100, { allowNagative: false }),
-        v: [getRandom(0.2, 1, { allowNagative: true }), getRandom(0.2, 1, { allowNagative: true })],
+        v: [nextX, nextY],
         scale: 1,
         opacity: 1,
         isBurst: false,
@@ -90,7 +93,7 @@ export class Bubble extends Metaball {
 
   animate(base: MetaballBaseInterface): void {
     if (this.isBurst) {
-      this.burst();
+      this.burst({ x: base.x, y: base.y });
       return;
     }
 

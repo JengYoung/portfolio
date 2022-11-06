@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { Metaballs } from '@components/Metaball';
 import { MetaballBaseInterface, StaticBubbleInterface } from '@components/Metaball/types';
@@ -36,20 +36,23 @@ const useMetaball = ({
     baseFillColor,
   });
 
-  const animate = (metaballs: Metaballs, linearGradient: CanvasGradient) => {
-    if (ctx === null || canvasRef.current === null) return;
+  const animate = useCallback(
+    (metaballs: Metaballs, linearGradient: CanvasGradient) => {
+      if (ctx === null || canvasRef.current === null) return;
 
-    ctx.save();
+      ctx.save();
 
-    ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+      ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
-    metaballs.render(ctx);
-    metaballs.animate();
+      metaballs.render(ctx);
+      metaballs.animate();
 
-    ctx.restore();
+      ctx.restore();
 
-    requestAnimationFrame(() => animate(metaballs, linearGradient));
-  };
+      requestAnimationFrame(() => animate(metaballs, linearGradient));
+    },
+    [canvasRef, ctx]
+  );
 
   useEffect(() => {
     if (ctx === null || canvasRef.current === null) return;
@@ -97,7 +100,8 @@ const useMetaball = ({
     }
 
     animate(metaballs, linearGradient);
-  }, [ctx]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ctx, canvasRef.current]);
 };
 
 export default useMetaball;

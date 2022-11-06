@@ -17,7 +17,7 @@ const Styled = {
     transition: all 0.5s;
   `,
   Inner: styled.div<MousePropsInterface>`
-    position: absolute;
+    position: fixed;
     top: ${({ top }) => top ?? 'auto'};
     right: ${({ right }) => right ?? 'auto'};
     bottom: ${({ bottom }) => bottom ?? 'auto'};
