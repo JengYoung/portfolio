@@ -76,7 +76,7 @@ const Styled = {
   `,
   IntroductionMainCopy: styled.h1`
     position: relative;
-    top: 100px;
+    top: 50px;
 
     z-index: 10;
 
@@ -87,6 +87,29 @@ const Styled = {
       font-size: ${theme.heads[2].size};
       font-weight: ${theme.heads[2].weight};
     `}
+  `,
+  IntroductionSubCopy: styled.h1`
+    position: relative;
+    top: 4rem;
+    z-index: 10;
+    margin: 0;
+    line-height: 1.5;
+    text-align: center;
+
+    ${({ theme }) => css`
+      font-size: ${theme.fontSizes.l};
+      font-weight: ${theme.fontWeights.default};
+    `}
+  `,
+  ProfileImage: styled.img`
+    position: absolute;
+    top: calc((100% + 20px) / 2);
+    left: calc((100% - 280px) / 2);
+
+    z-index: 10;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
   `,
   Name: styled.span`
     color: ${({ theme }) => theme.colors.primary.dark};
@@ -457,7 +480,7 @@ function AboutPage() {
     metaballGradient: metaballGradientColors,
     mainMetaball: {
       x: minWidth / 2,
-      y: minHeight / 2 + 100,
+      y: minHeight / 2 + 150,
       r: 150,
     },
     staticBubbles: [
@@ -842,6 +865,12 @@ function AboutPage() {
             <Gummy texts="입니다" delay={1.5} />
           </CollapsedText>
         </Styled.IntroductionMainCopy>
+        <Styled.IntroductionSubCopy>
+          <div>부족함을 알기에, 더 나은 자신을 위해 꾸준히 공부해요.</div>
+          <div>최적화와 새로운 것들에 호기심을 가지며</div>
+          <div>더 나은 UX를 제공하며 성장할 팀을 찾고 있어요.</div>
+        </Styled.IntroductionSubCopy>
+        <Styled.ProfileImage src="profile.gif" alt="프로필" />
       </Styled.Introduction>
       <ScrollMouse bottom="1rem" delay={1.5} visible />
 
