@@ -363,7 +363,17 @@ const Styled = {
   `,
   SkillContainer: styled.li`
     display: flex;
+    justify-content: center;
+    height: 100%;
     margin-right: 1rem;
+  `,
+  Skill: styled.div`
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
   `,
 
   ImageContainer: styled.div`
@@ -371,13 +381,45 @@ const Styled = {
     /* flex-shrink: 0; */
     align-items: center;
     justify-content: center;
-    width: 4rem;
-    height: 4rem;
+    width: 3.5rem;
+    height: 3.5rem;
     padding: 0.5rem;
     overflow: hidden;
     cursor: pointer;
     background-color: rgba(256, 256, 256, 0.8);
     border-radius: 20px;
+
+    &:hover {
+      animation: element-jump 1s infinite;
+      @keyframes element-jump {
+        0% {
+          transform: scaleX(1) scaleY(1);
+        }
+        20% {
+          transform: scaleX(1.2) scaleY(0.8);
+        }
+        40% {
+          transform: scaleX(0.9) scaleY(1.1) translateY(-0.5rem);
+        }
+        60% {
+          transform: scaleX(1.05) scaleY(0.95) translateY(0);
+        }
+        80% {
+          transform: scaleX(0.97) scaleY(1.03);
+        }
+        100% {
+          transform: scaleX(1) scaleY(1);
+        }
+      }
+    }
+  `,
+  ActiveDot: styled.div`
+    position: absolute;
+    bottom: 2px;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
   `,
 
   Separator: styled.div`
@@ -863,16 +905,28 @@ function AboutPage() {
           </Styled.NowSkillDetailContainer>
         )}
         <Styled.Skills>
-          {skills.map((skill) => (
-            <Styled.SkillContainer key={skill.id}>
-              <Styled.ImageContainer onClick={() => onClickSkill(skill)}>
-                <Image objectFit="contain" src={skill.src} alt="vercel" width="58" height="58" />
-              </Styled.ImageContainer>
-              {[Skills.TypeScript, Skills.Vue3, Skills.Quasar].some(
-                (name) => name === skill.name
-              ) && <Styled.Separator key={skill.src} />}
-            </Styled.SkillContainer>
-          ))}
+          {skills.map((skill) => {
+            const isSeparate = [Skills.TypeScript, Skills.Vue3, Skills.Quasar].some(
+              (name) => name === skill.name
+            );
+            return (
+              <Styled.SkillContainer key={skill.id}>
+                <Styled.Skill>
+                  <Styled.ImageContainer onClick={() => onClickSkill(skill)}>
+                    <Image
+                      objectFit="contain"
+                      src={skill.src}
+                      alt="vercel"
+                      width="58"
+                      height="58"
+                    />
+                  </Styled.ImageContainer>
+                  {nowActiveSkill.name === skill.name && <Styled.ActiveDot />}
+                </Styled.Skill>
+                {isSeparate && <Styled.Separator key={skill.src} />}
+              </Styled.SkillContainer>
+            );
+          })}
         </Styled.Skills>
       </Styled.SkillSection>
     </Styled.Page>
