@@ -1,6 +1,8 @@
 import { css } from '@emotion/react';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
+import Image from 'next/image';
+
 import styled from '@emotion/styled';
 
 import { ForwardedCanvas } from '@components/Metaball';
@@ -15,7 +17,15 @@ import useWindow from '@hooks/useWindow';
 
 import globalTheme from '@styles/globalTheme';
 
+import readonly from '@utils/readonly';
 import throttle from '@utils/throttle';
+
+interface FeatureInterface {
+  id: number;
+  emoji: string;
+  title: string;
+  description: string;
+}
 
 interface HeaderStateInterface {
   rotate: number;
@@ -23,6 +33,19 @@ interface HeaderStateInterface {
   scale: number;
   opacity: number;
 }
+
+interface FeaturesHeaderTextInterface {
+  x: number;
+  y: string;
+  value: string;
+}
+
+interface SkillInterface {
+  name: string;
+  src: string;
+  checks: string[];
+}
+
 const ContainerCSS = css`
   position: relative;
 
@@ -258,7 +281,7 @@ const Styled = {
   `,
   SkllContainer: styled.div`
     width: 100%;
-    height: ${({ theme }) => css`calc(100% - ${theme.heads[1].size} * 4)`};
+    /* height: ${({ theme }) => css`calc(100% - ${theme.heads[1].size} * 4)`}; */
     overflow: hidden;
   `,
   SkillHeader: styled.header<{ headerState: HeaderStateInterface }>`
@@ -274,6 +297,45 @@ const Styled = {
       opacity: ${headerState.opacity};
       transform: rotate(${headerState.rotate}deg) scale(${headerState.scale});
       transform-origin: left;
+    `}
+  `,
+  Skills: styled.ul`
+    position: absolute;
+    right: 0;
+    bottom: 1.5rem;
+    left: 0;
+    display: flex;
+    align-items: center;
+    height: 5rem;
+    padding: 0 1rem;
+    margin: 0 7.5rem;
+    background-color: rgba(0, 0, 0, 0.58);
+    border-radius: 20px;
+  `,
+  SkillContainer: styled.li`
+    width: 4rem;
+    height: 4rem;
+    margin-right: 1rem;
+  `,
+  ImageContainer: styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    padding: 0.5rem;
+    overflow: hidden;
+    background-color: rgba(256, 256, 256, 0.8);
+    /* border: 1px solid white; */
+    border-radius: 20px;
+  `,
+  Separator: styled.div`
+    width: 1px;
+    height: 4rem;
+    padding: 1rem 0;
+    margin-right: 1rem;
+    ${({ theme }) => css`
+      background-color: ${theme.colors.white};
     `}
   `,
 };
@@ -381,6 +443,70 @@ function AboutPage() {
     },
   });
 
+  const featuresHeaderTexts: FeaturesHeaderTextInterface[] = [
+    {
+      x: 0,
+      y: '100%',
+      value: 'F',
+    },
+    {
+      x: 42.5,
+      y: '100%',
+      value: 'E',
+    },
+    {
+      x: 90,
+      y: '100%',
+      value: 'A',
+    },
+    {
+      x: 135,
+      y: '100%',
+      value: 'T',
+    },
+    {
+      x: 182.5,
+      y: '100%',
+      value: 'U',
+    },
+    {
+      x: 235,
+      y: '100%',
+      value: 'R',
+    },
+    {
+      x: 285,
+      y: '100%',
+      value: 'E',
+    },
+    {
+      x: 330,
+      y: '100%',
+      value: 'S',
+    },
+  ];
+
+  const features: FeatureInterface[] = readonly([
+    {
+      id: 0,
+      emoji: '💡',
+      title: '호기심',
+      description: '항상 새로운 것들에 호기심을 갖고, 기존과 비교하며 개선해나가요 😉',
+    },
+    {
+      id: 1,
+      emoji: '📝',
+      title: '문서화',
+      description: '모르는 것들을 찾으면, 기록하며 배워나가는 습관을 갖고 있어요 🥸',
+    },
+    {
+      id: 2,
+      emoji: '🏄‍♂️',
+      title: '꾸준함',
+      description: '현재에 안주하지 않아요. 항상 더 나은 방향으로 성장하는 것을 즐겨요 🥰',
+    },
+  ]);
+
   const skillHeaderRef = useRef<HTMLHeadElement>(null);
   const [headerState, setHeaderState] = useState({
     isActive: false,
@@ -393,17 +519,10 @@ function AboutPage() {
 
   const skillHeaderCallback = useRef<IntersectionObserverCallback>((entries) => {
     entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        setHeaderState((state) => ({
-          ...state,
-          isActive: true,
-        }));
-      } else {
-        setHeaderState((state) => ({
-          ...state,
-          isActive: false,
-        }));
-      }
+      setHeaderState((state) => ({
+        ...state,
+        isActive: entry.isIntersecting,
+      }));
     });
   });
 
@@ -458,6 +577,139 @@ function AboutPage() {
     };
   }, [headerState.isActive, headerState.y]);
 
+  const Skills = {
+    HTML5: 'HTML5',
+    CSS3: 'CSS3',
+    JavaScript: 'JavaScript',
+    TypeScript: 'TypeScript',
+    React: 'React',
+    Vue3: 'Vue3',
+    NextJS: 'NextJS',
+    CSSInJS: 'CSS in JS',
+    Storybook: 'Storybook',
+    Quasar: 'Quasar',
+    NodeJS: 'Node.js',
+    AWS: 'AWS',
+    YarnBerry: 'Yarn berry',
+    CICD: 'CICD',
+  } as const;
+
+  const skills: SkillInterface[] = [
+    {
+      name: Skills.HTML5,
+      src: '/html.png',
+      checks: [
+        '주요 태그들이 의미하는 특성을 이해하고 있어요.',
+        '효율적으로 구조를 짜고, 시멘틱하게 작성할 수 있어요.',
+        'HTML의 파싱과정을 이해하고 있어요.',
+      ],
+    },
+    {
+      name: Skills.CSS3,
+      src: '/css3.png',
+      checks: [
+        'SCSS 구문을 사용할 수 있어요.',
+        'CSS 개발 방법론(BEM, CMACSS, SMASS)를 알고 있어요.',
+        'CSS 최적화의 중요성을 이해하고 리플로우를 최소화하려 노력해요.',
+        'flex와 grid를 자유자재로 사용할 수 있어요.',
+        '미디어 쿼리를 사용할 수 있어요.',
+      ],
+    },
+    {
+      name: Skills.JavaScript,
+      src: '/javascript.png',
+      checks: [
+        'ECMAScript의 동향을 꾸준히 체크하고 있어요.',
+        '문제가 주어지면 자바스크립트로 구현하는 데 익숙해요.',
+        'this, 클로저, 실행 컨텍스트 등의 전반적인 자바스크립트 동작을 이해하고 있어요.',
+      ],
+    },
+    {
+      name: Skills.TypeScript,
+      src: '/typescript.png',
+      checks: [
+        '프로젝트에서 타입스크립트를 다루는 데 어려움이 없어요.',
+        '중복되는 인터페이스 구조 생성을 지양하고 타입의 재사용을 지향해요.',
+        'any를 지양하며, type assertion을 남발하지 않아요.',
+      ],
+    },
+    {
+      name: Skills.React,
+      src: '/react.png',
+      checks: [
+        '라이프사이클과 재조정 과정을 이해하고 있어요',
+        '함수형 컴포넌트를 사용할 수 있어요',
+        '커스텀 훅을 사용하여 재사용성을 높여요.',
+        '전역 상태 관리의 원리를 이해하고 있어요.',
+        'Redux를 사용할 수 있어요',
+        '컴포넌트의 재사용을 지향하며 코드를 작성해요.',
+      ],
+    },
+    {
+      name: Skills.Vue3,
+      src: '/vue3.png',
+      checks: [
+        'Vue의 라이프사이클을 이해하고 있어요.',
+        'Vue2와 최신 Vue3의 문법을 이해하고 있어요.',
+        '레거시 코드를 Vue3로 마이그레이션한 경험이 있어요.',
+        'Composition API로 재사용 가능한 코드를 작성할 수 있어요.',
+        'Vuex와 Pinia를 다룰 수 있어요.',
+        '컴포넌트의 재사용을 지향하며 코드를 작성해요.',
+      ],
+    },
+    {
+      name: Skills.NextJS,
+      src: '/nextjs.png',
+      checks: [
+        'CSR, SSR, SSG, ISR의 차이점을 이해하고 있어요.',
+        'NextJS가 주는 여러 최적화를 다룰 수 있어요.',
+      ],
+    },
+    {
+      name: Skills.Quasar,
+      src: '/quasar.svg',
+      checks: [
+        'Quasar가 주는 컴포넌트, CSS 기능들을 이해하고 있어요',
+        'Quasar 기반 반응형 웹을 구축한 경험을 갖고 있어요.',
+        'Icongenie 등을 다룰 수 있으며, 하이브리드 앱 유지 보수 경험이 있어요.',
+      ],
+    },
+    {
+      name: Skills.Storybook,
+      src: '/storybook.png',
+      checks: [
+        'React와 Vue에서 모두 처음부터 구성하고 사용할 수 있어요.',
+        'Control을 이용하여 테스트할 수 있는 스토리북을 만들어요.',
+      ],
+    },
+    {
+      name: Skills.NodeJS,
+      src: '/nodejs.png',
+      checks: [
+        'Express.js와 Koa.js를 사용해본 경험이 있어요',
+        'Node.js의 이벤트 루프를 이해하고 있어요.',
+        'REST API로 클라이언트와 통신하는 서버를 만들 수 있어요.',
+      ],
+    },
+    {
+      name: Skills.AWS,
+      src: '/aws.png',
+      checks: [
+        'S3를 이용하여 스토리지 사용 및 정적 웹사이트를 호스팅 및 배포할 수 있어요.',
+        'CloudFront를 다룰 수 있어요.',
+      ],
+    },
+    {
+      name: Skills.CICD,
+      src: '/github-actions.png',
+      checks: [
+        '클라이언트 훅과 서버 훅을 이해하고 있어요.',
+        'Git hook을 기반으로 husky와 github-action을 다룰 수 있어요.',
+        'AWS와 연동하여 배포 자동화를 할 수 있어요.',
+      ],
+    },
+  ];
+
   return (
     <Styled.Page>
       <Styled.Introduction>
@@ -476,88 +728,38 @@ function AboutPage() {
             <Gummy texts="입니다" delay={1.5} />
           </CollapsedText>
         </Styled.IntroductionMainCopy>
-
-        <ScrollMouse bottom="1rem" delay={1.5} visible />
       </Styled.Introduction>
+      <ScrollMouse bottom="1rem" delay={1.5} visible />
 
       <Styled.Features>
         <Styled.FeatureHeader>
           <svg width={600} height={100} viewBox="0 0 600 100">
-            <text x="0" y="100%">
-              F
-            </text>
-            <text x="42.5" y="100%">
-              E
-            </text>
-            <text x="90" y="100%">
-              A
-            </text>
-            <text x="135" y="100%">
-              T
-            </text>
-            <text x="182.5" y="100%">
-              U
-            </text>
-            <text x="235" y="100%">
-              R
-            </text>
-            <text x="285" y="100%">
-              E
-            </text>
-            <text x="330" y="100%">
-              S
-            </text>
+            {featuresHeaderTexts.map((text) => (
+              <text key={text.x} x={text.x} y={text.y}>
+                {text.value}
+              </text>
+            ))}
           </svg>
         </Styled.FeatureHeader>
 
         <Styled.FeaturesContainer>
           <Styled.FeatureBackground />
 
-          <Styled.FeatureContainer>
-            <Styled.FeatureDetail>
-              <Styled.FeatureHead>💡</Styled.FeatureHead>
-              <Styled.FeatureHead>호기심</Styled.FeatureHead>
-              <Styled.Description>
-                항상 새로운 것들에 호기심을 갖고, 기존과 비교하며 개선해나가요 😉
-              </Styled.Description>
-            </Styled.FeatureDetail>
+          {features.map((feature) => (
+            <Styled.FeatureContainer key={feature.id}>
+              <Styled.FeatureDetail>
+                <Styled.FeatureHead>{feature.emoji}</Styled.FeatureHead>
+                <Styled.FeatureHead>{feature.title}</Styled.FeatureHead>
+                <Styled.Description>{feature.description}</Styled.Description>
+              </Styled.FeatureDetail>
 
-            <Styled.FeatureLines>
-              <Styled.FeatureLine />
-              <Styled.FeatureLine />
-              <Styled.FeatureLine />
-            </Styled.FeatureLines>
-          </Styled.FeatureContainer>
-
-          <Styled.FeatureContainer>
-            <Styled.FeatureDetail>
-              <Styled.FeatureHead>📝</Styled.FeatureHead>
-              <Styled.FeatureHead>문서화</Styled.FeatureHead>
-              <Styled.Description>
-                모르는 것들을 찾으면, 기록하며 배워나가는 습관을 갖고 있어요 🥸
-              </Styled.Description>
-            </Styled.FeatureDetail>
-            <Styled.FeatureLines>
-              <Styled.FeatureLine />
-              <Styled.FeatureLine />
-              <Styled.FeatureLine />
-            </Styled.FeatureLines>
-          </Styled.FeatureContainer>
-
-          <Styled.FeatureContainer>
-            <Styled.FeatureDetail>
-              <Styled.FeatureHead>🏄‍♂️</Styled.FeatureHead>
-              <Styled.FeatureHead>꾸준함</Styled.FeatureHead>
-              <Styled.Description>
-                현재에 안주하지 않아요. 항상 더 나은 방향으로 성장하는 것을 즐겨요 🥰
-              </Styled.Description>
-            </Styled.FeatureDetail>
-            <Styled.FeatureLines>
-              <Styled.FeatureLine />
-              <Styled.FeatureLine />
-              <Styled.FeatureLine />
-            </Styled.FeatureLines>
-          </Styled.FeatureContainer>
+              <Styled.FeatureLines>
+                <Styled.FeatureLine />
+                <Styled.FeatureLine />
+                <Styled.FeatureLine />
+              </Styled.FeatureLines>
+            </Styled.FeatureContainer>
+          ))}
 
           <Styled.FeatureBackground />
         </Styled.FeaturesContainer>
@@ -568,6 +770,20 @@ function AboutPage() {
         <Styled.SkillHeader ref={skillHeaderRef} headerState={headerState}>
           SKILLS
         </Styled.SkillHeader>
+        <Styled.Skills>
+          {skills.map((skill) => (
+            <>
+              <Styled.SkillContainer key={skill.name}>
+                <Styled.ImageContainer>
+                  <Image objectFit="contain" src={skill.src} alt="vercel" width="58" height="58" />
+                </Styled.ImageContainer>
+              </Styled.SkillContainer>
+              {[Skills.TypeScript, Skills.Vue3, Skills.Quasar].some((v) => v === skill.name) && (
+                <Styled.Separator />
+              )}
+            </>
+          ))}
+        </Styled.Skills>
       </Styled.SkillSection>
     </Styled.Page>
   );
