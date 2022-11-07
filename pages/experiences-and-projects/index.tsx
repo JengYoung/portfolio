@@ -1,8 +1,6 @@
 import { css } from '@emotion/react';
 import React, { createRef, useEffect, useRef, useState } from 'react';
 
-import Image from 'next/image';
-
 import styled from '@emotion/styled';
 
 import Gummy from '@components/Text/Gummy';
@@ -195,9 +193,83 @@ const StyledExperienceIntro = {
   `,
 };
 
+const StyledGitGraph = {
+  Container: styled.article`
+    display: flex;
+    width: 100%;
+    height: 100%;
+    margin-left: 50%;
+  `,
+  Branch: {
+    Container: styled.div`
+      flex-shrink: 0;
+      width: 100%;
+      height: 100%;
+    `,
+    Start: styled.div`
+      width: 3rem;
+      height: 3rem;
+      border: 2px solid ${({ theme }) => theme.colors.success};
+      /* border-top: 0; */
+      border-bottom: 0;
+      border-left: 0;
+      border-top-right-radius: 5rem;
+    `,
+    Body: styled.div<{ commitCount: number }>`
+      width: 3rem;
+      height: ${({ commitCount }) => `calc(5 * ${commitCount}rem)`};
+      border-right: 2px solid ${({ theme }) => theme.colors.success};
+    `,
+    End: styled.div`
+      width: 3rem;
+      height: 3rem;
+      border: 2px solid ${({ theme }) => theme.colors.success};
+      border-top: 0;
+      border-left: 0;
+      border-bottom-right-radius: 5rem;
+    `,
+  },
+  Histories: {
+    Container: styled.div<{ length: number }>`
+      width: 100%;
+      height: 100%;
+    `,
+  },
+  History: {
+    Container: styled.div`
+      position: relative;
+      display: flex;
+      padding: 1rem 0;
+      margin-left: calc(1.5rem + 2px);
+    `,
+    Dot: styled.div`
+      flex-shrink: 0;
+      width: 2.5rem;
+      height: 2.5rem;
+      margin-right: 0.75rem;
+      background-color: ${({ theme }) => theme.colors.success};
+      border-radius: 50%;
+    `,
+    CommitMessage: styled.span`
+      align-self: center;
+      width: 100%;
+      font-size: ${({ theme }) => theme.fontSizes.l};
+      font-weight: ${({ theme }) => theme.fontWeights.default};
+    `,
+    Line: styled.div`
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: calc(1.5rem - 4px);
+
+      border: 1px solid ${({ theme }) => theme.colors.success};
+    `,
+  },
+};
+
 function ExperiencesAndProjectsPage() {
   const [textReversed, setTextReversed] = useState(false);
-  const [nowPassedExperienceIndex, setNowPassedExperienceIndex] = useState(-1);
+  // const [nowPassedExperienceIndex, setNowPassedExperienceIndex] = useState(-1);
 
   useEffect(() => {
     setTextReversed(() => true);
@@ -360,7 +432,8 @@ function ExperiencesAndProjectsPage() {
 
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          setNowPassedExperienceIndex((nowIndex) => Math.max(nowIndex, idx));
+          console.log(idx);
+          // setNowPassedExperienceIndex((nowIndex) => Math.max(nowIndex, idx));
         }
       });
     });
@@ -404,48 +477,23 @@ function ExperiencesAndProjectsPage() {
 
         <StyledExperienceIntro.LineContainer length={experienceRefs.current.length}>
           <StyledExperienceIntro.Line length={experienceRefs.current.length} />
-          {experienceRefs.current.map((_, i) => (
-            <StyledExperienceIntro.ExperienceContainer key={experiences[i].id}>
-              <StyledExperienceIntro.ImageContainer index={i}>
-                <Image src="/nextjs.png" layout="fill" objectFit="contain" />
-              </StyledExperienceIntro.ImageContainer>
-              <StyledExperienceIntro.Circle
-                visible={nowPassedExperienceIndex >= i}
-                ref={experienceRefs.current[i]}
-                index={i}
-              />
-              <StyledExperienceIntro.Details>
-                <StyledExperienceIntro.DetailHeader>테스트</StyledExperienceIntro.DetailHeader>
-                <StyledExperienceIntro.DetailDescriptions>
-                  <StyledExperienceIntro.DetailDescription>
-                    테스트1
-                  </StyledExperienceIntro.DetailDescription>
-                  <StyledExperienceIntro.DetailDescription>
-                    테스트1
-                  </StyledExperienceIntro.DetailDescription>
-                  <StyledExperienceIntro.DetailDescription>
-                    테스트1
-                  </StyledExperienceIntro.DetailDescription>
-                  <StyledExperienceIntro.DetailDescription>
-                    테스트1테스트1테스트1테스트1테스트1테스트1테스트1테스트1
-                  </StyledExperienceIntro.DetailDescription>
-                  <StyledExperienceIntro.DetailDescription>
-                    테스트1
-                  </StyledExperienceIntro.DetailDescription>
-                  <StyledExperienceIntro.DetailDescription>
-                    테스트1
-                  </StyledExperienceIntro.DetailDescription>
-                  <StyledExperienceIntro.DetailDescription>
-                    테스트1
-                  </StyledExperienceIntro.DetailDescription>
-                  <StyledExperienceIntro.DetailDescription>
-                    테스트1
-                  </StyledExperienceIntro.DetailDescription>
-                  <StyledExperienceIntro.DetailDescription>
-                    테스트1
-                  </StyledExperienceIntro.DetailDescription>
-                </StyledExperienceIntro.DetailDescriptions>
-              </StyledExperienceIntro.Details>
+          {experiences.map((nowExperience) => (
+            <StyledExperienceIntro.ExperienceContainer key={nowExperience.id}>
+              <StyledGitGraph.Container>
+                <StyledGitGraph.Branch.Container>
+                  <StyledGitGraph.Branch.Start />
+                  {nowExperience.contents.map((content) => (
+                    <StyledGitGraph.History.Container>
+                      <StyledGitGraph.History.Dot />
+                      <StyledGitGraph.History.CommitMessage>
+                        {content}
+                      </StyledGitGraph.History.CommitMessage>
+                      <StyledGitGraph.History.Line />
+                    </StyledGitGraph.History.Container>
+                  ))}
+                  <StyledGitGraph.Branch.End />
+                </StyledGitGraph.Branch.Container>
+              </StyledGitGraph.Container>
             </StyledExperienceIntro.ExperienceContainer>
           ))}
         </StyledExperienceIntro.LineContainer>
