@@ -3,6 +3,7 @@ import React, { createRef, useEffect, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 
+import { CollapsedText } from '@components/Text';
 import Gummy from '@components/Text/Gummy';
 
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
@@ -47,15 +48,22 @@ const StyledPage = {
     height: 100%;
     min-height: inherit;
   `,
-  FillYellow: styled.section`
+  ProjectIntro: styled.section`
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* justify-content: center; */
     width: 100%;
     height: 1024px;
     overflow: hidden;
+  `,
+  Projects: styled.section`
+    position: relative;
+    width: 1440px;
+    height: 100vh;
+    overflow: hidden;
+    background-color: ${({ theme }) => theme.colors.primary.light};
+    perspective: 100vw;
   `,
 };
 
@@ -142,11 +150,10 @@ const StyledExperience = {
   `,
   ExperienceContainer: styled.article`
     position: relative;
-    /* top: 300px; */
     display: flex;
+
     width: 100%;
     height: 100%;
-    /* min-height: 100vh; */
     margin: 5rem 0;
   `,
   /* height: ${EXPERIENCE_CIRCLE_INTERVAL_SIZE}px; */
@@ -335,7 +342,7 @@ const StyledGitGraph = {
   },
 };
 
-const StyledFillYellow = {
+const StyledProjectIntro = {
   Ball: styled.div<{ ballScale: number }>`
     top: 90%;
     width: 3rem;
@@ -348,10 +355,36 @@ const StyledFillYellow = {
   `,
   Title: styled(Title)`
     position: relative;
-    top: 10%;
+    perspective: 1000vw;
+    top: 50%;
     z-index: 99;
     align-self: center;
-    color: ${({ theme }) => theme.colors.primary.dark};
+    color: ${({ theme }) => theme.colors.subPrimary};
+  `,
+};
+
+const StyledProject = {
+  Cards: styled.ul`
+    display: flex;
+    transition: all 1s;
+    transform: rotateX(60deg) rotateY(0deg) rotateZ(30deg) translate3d(-1200px, 300px, 300px);
+    &:first-of-type {
+      transform: rotateX(60deg) rotateY(0deg) rotateZ(30deg) translate3d(-1200px, 0, 0px);
+    }
+    &:last-of-type {
+      transform: rotateX(60deg) rotateY(0deg) rotateZ(30deg) translate3d(-1200px, 600px, 600px);
+    }
+  `,
+  Card: styled.li`
+    top: 0;
+    flex-shrink: 0;
+    width: 600px;
+    height: 400px;
+    margin-right: 3rem;
+    background-color: blue;
+    box-shadow: 12px 12px 20px 4px rgba(0, 0, 0, 0.5);
+    transform-origin: center;
+    /* transform-style: preserve-3d; */
   `,
 };
 
@@ -556,7 +589,7 @@ function ExperiencesAndProjectsPage() {
   const [ballScale, setBallScale] = useState(1);
   useEffect(() => {
     if (targetRef.current === null) return undefined;
-    const { innerHeight } = window;
+    const { innerHeight, scrollY } = window;
     const rootMargin = innerHeight * 0.1;
 
     const onScroll = throttle(() => {
@@ -568,9 +601,13 @@ function ExperiencesAndProjectsPage() {
 
       if (isIntersecting) return;
 
+      console.log(Math.max(1, ((innerHeight - top - rootMargin) / height) * 50));
       setBallScale(() => Math.max(1, ((innerHeight - top - rootMargin) / height) * 50));
     }, 20);
 
+    if (scrollY !== 0) {
+      onScroll();
+    }
     window.addEventListener('scroll', onScroll, { passive: true });
 
     return () => {
@@ -626,12 +663,37 @@ function ExperiencesAndProjectsPage() {
           ))}
         </StyledExperience.LineContainer>
 
-        <StyledPage.FillYellow ref={targetRef}>
-          <StyledFillYellow.Ball ballScale={ballScale} />
-          <StyledFillYellow.Title>
-            <Gummy texts="Projects" delay={0} />
-          </StyledFillYellow.Title>
-        </StyledPage.FillYellow>
+        <StyledPage.ProjectIntro ref={targetRef}>
+          <StyledProjectIntro.Ball ballScale={ballScale} />
+          <StyledProjectIntro.Title>
+            <CollapsedText x={500} y={0} direction="RIGHT">
+              Projects
+            </CollapsedText>
+          </StyledProjectIntro.Title>
+        </StyledPage.ProjectIntro>
+
+        <StyledPage.Projects>
+          <StyledProject.Cards>
+            <StyledProject.Card />
+            <StyledProject.Card />
+            <StyledProject.Card />
+            <StyledProject.Card />
+          </StyledProject.Cards>
+
+          <StyledProject.Cards>
+            <StyledProject.Card />
+            <StyledProject.Card />
+            <StyledProject.Card />
+            <StyledProject.Card />
+          </StyledProject.Cards>
+
+          <StyledProject.Cards>
+            <StyledProject.Card />
+            <StyledProject.Card />
+            <StyledProject.Card />
+            <StyledProject.Card />
+          </StyledProject.Cards>
+        </StyledPage.Projects>
       </StyledExperience.Container>
     </StyledPage.Container>
   );
