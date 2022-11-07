@@ -8,6 +8,7 @@ import Gummy from '@components/Text/Gummy';
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
 
 import readonly from '@utils/readonly';
+import throttle from '@utils/throttle';
 
 // interface ProjectInterface {
 //   id: number;
@@ -33,8 +34,6 @@ interface ExperienceInterface {
   contents: string[];
 }
 
-const EXPERIENCE_CIRCLE_INTERVAL_SIZE = 768;
-
 const StyledPage = {
   Container: styled.div`
     display: flex;
@@ -46,25 +45,40 @@ const StyledPage = {
     width: 100%;
     max-width: 1440px;
     height: 100%;
+    min-height: inherit;
+  `,
+  FillYellow: styled.section`
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* justify-content: center; */
+    width: 100%;
+    height: 1024px;
+    overflow: hidden;
   `,
 };
 
-const StyledExperienceIntro = {
+const Title = styled.header`
+  font-size: ${({ theme }) => `calc(${theme.fontSizes.max} * 4)`};
+  font-weight: ${({ theme }) => theme.fontWeights.extrabold};
+`;
+
+const StyledExperience = {
   Container: styled(StyledPage.Inner)`
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     width: 100%;
     height: 100%;
     background-color: ${({ theme }) => theme.colors.primary.dark};
   `,
-  TitleContainer: styled.div`
-    font-size: ${({ theme }) => `calc(${theme.fontSizes.max} * 4)`};
-    font-weight: ${({ theme }) => theme.fontWeights.extrabold};
+
+  TitleContainer: styled(Title)`
     color: ${({ theme }) => theme.colors.primary.light};
   `,
+
   ReverseText: styled.strong<{ reversed: boolean }>`
     display: inline-block;
     font-size: inherit;
@@ -108,29 +122,34 @@ const StyledExperienceIntro = {
         }
       `}
   `,
+  /* height: ${({ length }) => `${EXPERIENCE_CIRCLE_INTERVAL_SIZE * (length + 1)}px`}; */
   LineContainer: styled.div<{ length: number }>`
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-    height: ${({ length }) => `${EXPERIENCE_CIRCLE_INTERVAL_SIZE * (length + 1)}px`};
-    overflow: hidden;
+    height: inherit;
+    padding-bottom: 10rem;
+    /* overflow: hidden; */
   `,
   Line: styled.div<{ length: number }>`
     position: absolute;
     top: 0;
     width: 1px;
-    height: ${({ length }) => `${EXPERIENCE_CIRCLE_INTERVAL_SIZE * length}px`};
+    height: inherit;
     background-color: ${({ theme }) => theme.colors.primary.light};
   `,
   ExperienceContainer: styled.article`
     position: relative;
-    top: 300px;
+    /* top: 300px; */
     display: flex;
     width: 100%;
-    height: ${EXPERIENCE_CIRCLE_INTERVAL_SIZE}px;
+    height: 100%;
+    /* min-height: 100vh; */
+    margin: 5rem 0;
   `,
+  /* height: ${EXPERIENCE_CIRCLE_INTERVAL_SIZE}px; */
   Circle: styled.div<{ index: number; visible: boolean }>`
     z-index: 1;
     width: 3rem;
@@ -193,6 +212,22 @@ const StyledExperienceIntro = {
   `,
 };
 
+const Commit = styled.div`
+  position: absolute;
+  top: -1.5rem;
+  left: -1.5rem;
+  display: flex;
+  line-height: 1;
+  color: ${({ theme }) => theme.colors.primary.light};
+`;
+
+const Branch = styled.div`
+  position: relative;
+  width: 3rem;
+  height: 3rem;
+  border: 2px solid ${({ theme }) => theme.colors.success};
+`;
+
 const StyledGitGraph = {
   Container: styled.article`
     display: flex;
@@ -206,14 +241,31 @@ const StyledGitGraph = {
       width: 100%;
       height: 100%;
     `,
-    Start: styled.div`
-      width: 3rem;
+    MergedCommitContainer: styled.div`
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      width: 100%;
       height: 3rem;
-      border: 2px solid ${({ theme }) => theme.colors.success};
-      /* border-top: 0; */
+    `,
+    MergedBranch: styled(Branch)`
       border-bottom: 0;
       border-left: 0;
       border-top-right-radius: 5rem;
+    `,
+
+    BasedBranch: styled(Branch)`
+      border-top: 0;
+      border-left: 0;
+      border-bottom-right-radius: 5rem;
+    `,
+    MergedCommit: styled(Commit)`
+      top: -1.5rem;
+      left: -1.5rem;
+    `,
+    BasedCommit: styled(Commit)`
+      top: 1.5rem;
+      left: -1.5rem;
     `,
     Body: styled.div<{ commitCount: number }>`
       width: 3rem;
@@ -242,19 +294,35 @@ const StyledGitGraph = {
       padding: 1rem 0;
       margin-left: calc(1.5rem + 2px);
     `,
-    Dot: styled.div`
+
+    Dot: styled.div<{ main?: boolean; period?: string }>`
+      position: relative;
+      display: flex;
       flex-shrink: 0;
-      width: 2.5rem;
-      height: 2.5rem;
+      width: ${({ main }) => `${main ? '3rem' : '2.5rem'}`};
+      height: ${({ main }) => `${main ? '3rem' : '2.5rem'}`};
       margin-right: 0.75rem;
-      background-color: ${({ theme }) => theme.colors.success};
+      background-color: ${({ main, theme }) =>
+        main ? theme.colors.primary.light : theme.colors.success};
       border-radius: 50%;
+      &:before {
+        position: absolute;
+        left: -6rem;
+        z-index: 99;
+        display: block;
+        align-self: center;
+        width: 5rem;
+        text-align: right;
+        content: '${({ period }) => period}';
+      }
     `,
-    CommitMessage: styled.span`
+    CommitMessage: styled.span<{ main?: boolean }>`
       align-self: center;
+      justify-items: flex-end;
       width: 100%;
-      font-size: ${({ theme }) => theme.fontSizes.l};
-      font-weight: ${({ theme }) => theme.fontWeights.default};
+      font-size: ${({ main, theme }) => (main ? theme.fontSizes.xxl : theme.fontSizes.l)};
+      font-weight: ${({ main, theme }) =>
+        main ? theme.heads[4].weight : theme.fontWeights.default};
     `,
     Line: styled.div`
       position: absolute;
@@ -265,6 +333,26 @@ const StyledGitGraph = {
       border: 1px solid ${({ theme }) => theme.colors.success};
     `,
   },
+};
+
+const StyledFillYellow = {
+  Ball: styled.div<{ ballScale: number }>`
+    top: 90%;
+    width: 3rem;
+    height: 3rem;
+    background-color: ${({ theme }) => theme.colors.primary.light};
+    border-radius: 50%;
+    transition: all 0.2s;
+    transform: ${({ ballScale }) => `scale(${ballScale})`};
+    transform-origin: top;
+  `,
+  Title: styled(Title)`
+    position: relative;
+    top: 10%;
+    z-index: 99;
+    align-self: center;
+    color: ${({ theme }) => theme.colors.primary.dark};
+  `,
 };
 
 function ExperiencesAndProjectsPage() {
@@ -281,7 +369,7 @@ function ExperiencesAndProjectsPage() {
   //     title: '웹 포트폴리오 사이트',
   //     period: {
   //       start: '2022.10',
-  //       end: '현재',
+  //       end: '진행 중',
   //     },
   //     skills: [
   //       'Next.js',
@@ -309,7 +397,7 @@ function ExperiencesAndProjectsPage() {
   //     title: 'JS, React 유틸 라이브러리',
   //     period: {
   //       start: '2022.08',
-  //       end: '현재',
+  //       end: '진행 중',
   //     },
   //     skills: ['Vanilla JS', 'React', 'Three.js', 'yarn berry'],
   //     contents: [
@@ -326,7 +414,7 @@ function ExperiencesAndProjectsPage() {
   //     title: 'Vue 디자인 시스템 구축',
   //     period: {
   //       start: '2022.05',
-  //       end: '현재',
+  //       end: '진행 중',
   //     },
   //     skills: ['Vue3', 'Storybook'],
   //     contents: [
@@ -340,6 +428,23 @@ function ExperiencesAndProjectsPage() {
   const experiences: readonly ExperienceInterface[] = readonly([
     {
       id: 0,
+      type: '스터디',
+      title: '자바스크립트 스터디',
+      period: {
+        start: '2022.08',
+        end: '2022.11',
+      },
+      skills: ['Vanilla JS', 'React', 'Three.js', 'yarn berry'],
+      contents: [
+        '모던 자바스크립트 Deep Dive를 기반으로 4개월 간 진행',
+        'Git 관리 전략 설계 및 문서화, 이슈 및 PR Template을 제작하여 자유로운 논의 제안',
+        '중간 과제를 서로 출제하며 톺아나가는 방식 제안 및 실행',
+        '주마다 Tech Blog에 탐구한 지식들 정리하여 게재',
+      ],
+    },
+
+    {
+      id: 1,
       type: '프론트엔드 개발자',
       title: '컨트롤클로더 프론트엔드 개발자',
       period: {
@@ -358,42 +463,25 @@ function ExperiencesAndProjectsPage() {
     },
 
     {
-      id: 1,
-      type: '스터디',
-      title: '자바스크립트 스터디',
-      period: {
-        start: '2022.08',
-        end: '2022.11',
-      },
-      skills: ['Vanilla JS', 'React', 'Three.js', 'yarn berry'],
-      contents: [
-        '모던 자바스크립트 Deep Dive를 기반으로 4개월 간 진행',
-        'Git 관리 전략 설계 및 문서화, 이슈 및 PR Template을 제작하여 자유로운 논의 제안',
-        '중간 과제를 통해 배운 지식들을 응용하는 문화 제안 및 조성',
-        '주마다 Tech Blog에 탐구한 지식들 정리하여 게재',
-      ],
-    },
-
-    {
       id: 2,
       type: '스터디',
       title: '알고리즘 스터디',
       period: {
         start: '2021.09',
-        end: '현재',
+        end: '진행 중',
       },
       skills: ['Vanilla JS'],
       contents: [
         '꾸준히 문제해결 능력을 기르고자 알고리즘 스터디 진행',
         '프로그래머스 기준 Lv1 ~ Lv4까지 진행 중',
-        '현재까지도 진행 중이며, 개발 경험도 함께 공유하며 성장 중',
+        '진행 중까지도 진행 중이며, 개발 경험도 함께 공유하며 성장 중',
       ],
     },
 
     {
       id: 3,
       type: '교육',
-      title: '프로그래머스 K-Digital Training 프론트엔드 엔지니어링 데브코스 1기',
+      title: '프로그래머스 프론트엔드 엔지니어링 데브코스 1기',
       period: {
         start: '2021.07',
         end: '2021.11',
@@ -464,26 +552,59 @@ function ExperiencesAndProjectsPage() {
     experienceOptions
   );
 
+  const targetRef = useRef<HTMLElement>(null);
+  const [ballScale, setBallScale] = useState(1);
+  useEffect(() => {
+    if (targetRef.current === null) return undefined;
+    const { innerHeight } = window;
+    const rootMargin = innerHeight * 0.1;
+
+    const onScroll = throttle(() => {
+      if (targetRef.current === null) return;
+
+      const { top, height } = targetRef.current.getBoundingClientRect();
+
+      const isIntersecting = top + rootMargin >= innerHeight;
+
+      if (isIntersecting) return;
+
+      setBallScale(() => Math.max(1, ((innerHeight - top - rootMargin) / height) * 50));
+    }, 20);
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+    };
+  }, []);
+
   return (
     <StyledPage.Container>
-      <StyledExperienceIntro.Container>
-        <StyledExperienceIntro.TitleContainer>
+      <StyledExperience.Container>
+        <StyledExperience.TitleContainer>
           <Gummy texts="exper" delay={0} />
-          <StyledExperienceIntro.ReverseText reversed={textReversed}>
-            i
-          </StyledExperienceIntro.ReverseText>
+          <StyledExperience.ReverseText reversed={textReversed}>i</StyledExperience.ReverseText>
           <Gummy texts="ences" delay={0} />
-        </StyledExperienceIntro.TitleContainer>
+        </StyledExperience.TitleContainer>
 
-        <StyledExperienceIntro.LineContainer length={experienceRefs.current.length}>
-          <StyledExperienceIntro.Line length={experienceRefs.current.length} />
+        <StyledExperience.LineContainer length={experienceRefs.current.length}>
+          <StyledExperience.Line length={experienceRefs.current.length} />
           {experiences.map((nowExperience) => (
-            <StyledExperienceIntro.ExperienceContainer key={nowExperience.id}>
+            <StyledExperience.ExperienceContainer key={nowExperience.id}>
               <StyledGitGraph.Container>
                 <StyledGitGraph.Branch.Container>
-                  <StyledGitGraph.Branch.Start />
+                  <StyledGitGraph.Branch.MergedCommitContainer>
+                    <StyledGitGraph.Branch.MergedBranch />
+                    <StyledGitGraph.Branch.MergedCommit>
+                      <StyledGitGraph.History.Dot main period={nowExperience.period.end} />
+                      <StyledGitGraph.History.CommitMessage main>
+                        {nowExperience.title}
+                      </StyledGitGraph.History.CommitMessage>
+                    </StyledGitGraph.Branch.MergedCommit>
+                  </StyledGitGraph.Branch.MergedCommitContainer>
+
                   {nowExperience.contents.map((content) => (
-                    <StyledGitGraph.History.Container>
+                    <StyledGitGraph.History.Container key={content}>
                       <StyledGitGraph.History.Dot />
                       <StyledGitGraph.History.CommitMessage>
                         {content}
@@ -491,13 +612,27 @@ function ExperiencesAndProjectsPage() {
                       <StyledGitGraph.History.Line />
                     </StyledGitGraph.History.Container>
                   ))}
-                  <StyledGitGraph.Branch.End />
+
+                  <StyledGitGraph.Branch.MergedCommitContainer>
+                    <StyledGitGraph.Branch.BasedBranch />
+                    <StyledGitGraph.Branch.BasedCommit>
+                      <StyledGitGraph.History.Dot main period={nowExperience.period.start} />
+                      <StyledGitGraph.History.CommitMessage main />
+                    </StyledGitGraph.Branch.BasedCommit>
+                  </StyledGitGraph.Branch.MergedCommitContainer>
                 </StyledGitGraph.Branch.Container>
               </StyledGitGraph.Container>
-            </StyledExperienceIntro.ExperienceContainer>
+            </StyledExperience.ExperienceContainer>
           ))}
-        </StyledExperienceIntro.LineContainer>
-      </StyledExperienceIntro.Container>
+        </StyledExperience.LineContainer>
+
+        <StyledPage.FillYellow ref={targetRef}>
+          <StyledFillYellow.Ball ballScale={ballScale} />
+          <StyledFillYellow.Title>
+            <Gummy texts="Projects" delay={0} />
+          </StyledFillYellow.Title>
+        </StyledPage.FillYellow>
+      </StyledExperience.Container>
     </StyledPage.Container>
   );
 }
