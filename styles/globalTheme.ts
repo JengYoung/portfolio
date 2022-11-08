@@ -20,6 +20,7 @@ const colors = {
   danger: '#FE0101',
   warning: '#FF7B01',
   success: '#61C454',
+  headerColor: '#caeeff',
 };
 
 const fontWeights = {

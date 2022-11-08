@@ -3,6 +3,7 @@ import React, { createRef, useEffect, useRef, useState } from 'react';
 
 import styled from '@emotion/styled';
 
+import { Browser } from '@components/Browser';
 import { CollapsedText } from '@components/Text';
 import Gummy from '@components/Text/Gummy';
 
@@ -59,7 +60,8 @@ const StyledPage = {
   `,
   Projects: styled.section`
     position: relative;
-    width: 1440px;
+    width: 100%;
+    max-width: 1440px;
     height: 100vh;
     overflow: hidden;
     background-color: ${({ theme }) => theme.colors.primary.light};
@@ -365,26 +367,46 @@ const StyledProjectIntro = {
 
 const StyledProject = {
   Cards: styled.ul`
+    position: relative;
+    z-index: 999999;
     display: flex;
+    width: 100%;
+    height: 400px;
+    background-color: black;
     transition: all 1s;
-    transform: rotateX(60deg) rotateY(0deg) rotateZ(30deg) translate3d(-1200px, 300px, 300px);
+    perspective: 100%;
+
     &:first-of-type {
-      transform: rotateX(60deg) rotateY(0deg) rotateZ(30deg) translate3d(-1200px, 0, 0px);
+      transform: rotateX(60deg) rotateY(0deg) rotateZ(30deg) translate3d(0, 0px, 0px);
     }
+
+    transform: rotateX(60deg) rotateY(0deg) rotateZ(30deg) translate3d(0, 300px, 300px);
     &:last-of-type {
-      transform: rotateX(60deg) rotateY(0deg) rotateZ(30deg) translate3d(-1200px, 600px, 600px);
+      transform: rotateX(60deg) rotateY(0deg) rotateZ(30deg) translate3d(0, 600px, 600px);
     }
   `,
   Card: styled.li`
+    /* position: absolute; */
     top: 0;
     flex-shrink: 0;
     width: 600px;
     height: 400px;
     margin-right: 3rem;
-    background-color: blue;
+    background: linear-gradient(#752bed, #ff9993);
     box-shadow: 12px 12px 20px 4px rgba(0, 0, 0, 0.5);
-    transform-origin: center;
-    /* transform-style: preserve-3d; */
+    transition: all 1s;
+    transform-origin: bottom;
+    &:hover {
+      transform: rotateX(180deg) rotateY(0deg) rotateZ(0deg) translate3d(0, -400px, 500px);
+      transform-origin: top;
+    }
+  `,
+  BrowserContainer: styled.div`
+    position: absolute;
+    right: 3rem;
+    display: flex;
+    align-items: center;
+    height: 100%;
   `,
 };
 
@@ -598,10 +620,8 @@ function ExperiencesAndProjectsPage() {
       const { top, height } = targetRef.current.getBoundingClientRect();
 
       const isIntersecting = top + rootMargin >= innerHeight;
-
       if (isIntersecting) return;
 
-      console.log(Math.max(1, ((innerHeight - top - rootMargin) / height) * 50));
       setBallScale(() => Math.max(1, ((innerHeight - top - rootMargin) / height) * 50));
     }, 20);
 
@@ -673,11 +693,18 @@ function ExperiencesAndProjectsPage() {
         </StyledPage.ProjectIntro>
 
         <StyledPage.Projects>
+          {/* <StyledProject.Cards>
+            <StyledProject.Card>앞면</StyledProject.Card>
+            <StyledProject.Card>앞면</StyledProject.Card>
+            <StyledProject.Card>앞면</StyledProject.Card>
+            <StyledProject.Card>앞면</StyledProject.Card>
+          </StyledProject.Cards>
+
           <StyledProject.Cards>
-            <StyledProject.Card />
-            <StyledProject.Card />
-            <StyledProject.Card />
-            <StyledProject.Card />
+            <StyledProject.Card>앞면</StyledProject.Card>
+            <StyledProject.Card>앞면</StyledProject.Card>
+            <StyledProject.Card>앞면</StyledProject.Card>
+            <StyledProject.Card>앞면</StyledProject.Card>
           </StyledProject.Cards>
 
           <StyledProject.Cards>
@@ -685,14 +712,10 @@ function ExperiencesAndProjectsPage() {
             <StyledProject.Card />
             <StyledProject.Card />
             <StyledProject.Card />
-          </StyledProject.Cards>
-
-          <StyledProject.Cards>
-            <StyledProject.Card />
-            <StyledProject.Card />
-            <StyledProject.Card />
-            <StyledProject.Card />
-          </StyledProject.Cards>
+          </StyledProject.Cards> */}
+          <StyledProject.BrowserContainer>
+            <Browser />
+          </StyledProject.BrowserContainer>
         </StyledPage.Projects>
       </StyledExperience.Container>
     </StyledPage.Container>
