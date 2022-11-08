@@ -1,5 +1,5 @@
 import { css } from '@emotion/react';
-import React, { createRef, useEffect, useRef, useState } from 'react';
+import React, { MouseEvent, createRef, useEffect, useRef, useState } from 'react';
 
 import Image from 'next/image';
 
@@ -60,7 +60,7 @@ const StyledPage = {
     height: 1024px;
     overflow: hidden;
   `,
-  Projects: styled.section`
+  Projects: styled.section<{ perspective: { x: number; y: number } }>`
     position: relative;
     width: 100%;
     max-width: 1440px;
@@ -68,26 +68,8 @@ const StyledPage = {
     overflow: hidden;
     background-color: ${({ theme }) => theme.colors.primary.light};
     perspective: 100vw;
-    animation: perspective 3s infinite;
-
-    @keyframes perspective {
-      0% {
-        perspective-origin: 50% 50%;
-        perspective: 120vw;
-      }
-      33% {
-        perspective-origin: 20% 30%;
-        perspective: 150vw;
-      }
-      66% {
-        perspective-origin: 75% 40%;
-        perspective: 150vw;
-      }
-      100% {
-        perspective-origin: 50% 50%;
-        perspective: 120vw;
-      }
-    }
+    perspective-origin: ${({ perspective }) => `${perspective.x}% ${perspective.y}%`};
+    transition: all 0.2s;
   `,
 };
 
@@ -726,6 +708,16 @@ function ExperiencesAndProjectsPage() {
     };
   }, []);
 
+  const [perspective, setPerspective] = useState({ x: 0, y: 0 });
+  const onMouseOver = throttle((e: MouseEvent) => {
+    const { screenX, screenY } = e;
+
+    const nextX = Math.min(Math.max(((1440 - screenX) / 1440) * 100));
+    const nextY = Math.min(Math.max(((1024 - screenY) / 1024) * 100));
+
+    setPerspective(() => ({ x: nextX, y: nextY }));
+  }, 20);
+
   return (
     <StyledPage.Container>
       <StyledExperience.Container>
@@ -783,7 +775,7 @@ function ExperiencesAndProjectsPage() {
           </StyledProjectIntro.Title>
         </StyledPage.ProjectIntro>
 
-        <StyledPage.Projects>
+        <StyledPage.Projects onMouseOverCapture={onMouseOver} perspective={perspective}>
           <StyledProject.Card1>
             <div>
               <Image src="/profile.gif" layout="fill" objectFit="contain" />
@@ -804,6 +796,7 @@ function ExperiencesAndProjectsPage() {
               <Image src="/profile.gif" layout="fill" objectFit="contain" />
             </div>
           </StyledProject.Card4>
+
           <StyledProject.BrowserContainer>
             <Browser nowIndex={-1} />
           </StyledProject.BrowserContainer>

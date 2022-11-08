@@ -161,7 +161,7 @@ const Styled = {
     background-color: ${({ theme }) => theme.colors.subPrimary};
     border-top: 1px solid #ddd;
   `,
-  InitText: styled.p`
+  InitText: styled.div`
     font-size: ${({ theme }) => theme.heads[3].size};
     font-weight: ${({ theme }) => theme.heads[3].weight};
     color: ${({ theme }) => theme.colors.white};
@@ -188,6 +188,7 @@ function Browser({ nowIndex }: BrowserProps) {
           <Styled.TabsInner>
             {[1, 2, 3, 4].map((_, idx) => (
               <Styled.Tab
+                key={_}
                 onClick={() => onClick(idx)}
                 isLeftActive={idx === activeIndex + 1}
                 isRightActive={idx === activeIndex - 1}
