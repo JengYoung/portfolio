@@ -391,11 +391,10 @@ const Card = styled.div`
   position: absolute;
   width: 300px;
   height: 200px;
-  background: linear-gradient(#ff9993, #752bed);
+  background: white;
+  border-radius: 20px;
   transition: all 0.3s;
-  &:hover {
-    transform: none;
-  }
+  transform-style: preserve-3d;
 `;
 
 const StyledProject = {
@@ -407,21 +406,19 @@ const StyledProject = {
     transform: scale(1.4) rotateX(30deg) rotateY(-20deg) rotateZ(-15deg) translate3d(50px, 0, 0);
 
     transform-origin: top;
-
-    &:after {
+    &:before {
       position: absolute;
       bottom: 0;
       left: 0;
-      z-index: -1;
+      z-index: -999;
 
       width: 300px;
       height: 200px;
       content: '';
-      /* background: linear-gradient(#ff9993, #752bed); */
-      background-color: black;
-      filter: blur(150px);
+      background-color: rgba(0, 0, 0, 0.3);
+      filter: blur(50px);
 
-      transform: rotateX(-50deg) rotateY(0deg) rotateZ(-40deg) translate3d(-50px, 100px, 100px);
+      transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate3d(-50px, 50px, -1px);
     }
   `,
   Card2: styled(Card)`
@@ -442,10 +439,10 @@ const StyledProject = {
       width: 300px;
       height: 200px;
       content: '';
-      background-color: black;
-      filter: blur(120px);
+      background-color: rgba(0, 0, 0, 0.5);
+      filter: blur(90px);
 
-      transform: rotateX(-50deg) rotateY(0deg) rotateZ(-40deg) translate3d(-50px, -200px, 100px);
+      transform: scale(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate3d(-50px, -50px, -1px);
     }
   `,
   Card3: styled(Card)`
@@ -454,7 +451,6 @@ const StyledProject = {
     left: 150px;
     width: 300px;
     height: 200px;
-    background: linear-gradient(#ff9993, #752bed);
     transform: scale(1.3) rotateX(50deg) rotateY(50deg) rotateZ(15deg);
     transform-origin: center;
     &:after {
@@ -466,15 +462,39 @@ const StyledProject = {
       width: 300px;
       height: 200px;
       content: '';
-      background-color: black;
-      filter: blur(120px);
+      background-color: rgba(0, 0, 0, 0.5);
+      filter: blur(50px);
 
-      transform: rotateX(-50deg) rotateY(0deg) rotateZ(-40deg) translate3d(-50px, 100px, 100px);
+      transform: rotateX(10deg) rotateY(-30deg) rotateZ(0deg) translate3d(0px, 0px, -100px);
+    }
+  `,
+
+  Card4: styled(Card)`
+    position: absolute;
+    top: 500px;
+    left: 350px;
+    width: 300px;
+    height: 200px;
+    transform: scale(1.5) rotateX(50deg) rotateY(10deg) rotateZ(5deg) translate3d(90px, -50px, 0px);
+    transform-origin: center;
+    &:after {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      z-index: -1;
+
+      width: 300px;
+      height: 200px;
+      content: '';
+      background-color: rgba(0, 0, 0, 0.5);
+      filter: blur(20px);
+      transform: translate3d(-40px, 10px, -1px);
     }
   `,
   BrowserContainer: styled.div`
     position: absolute;
     right: 3rem;
+    z-index: 9999;
     display: flex;
     align-items: center;
     height: 100%;
@@ -765,16 +785,27 @@ function ExperiencesAndProjectsPage() {
 
         <StyledPage.Projects>
           <StyledProject.Card1>
-            <Image src="/profile.gif" layout="fill" objectFit="contain" />
+            <div>
+              <Image src="/profile.gif" layout="fill" objectFit="contain" />
+            </div>
           </StyledProject.Card1>
           <StyledProject.Card2>
-            <Image src="/profile.gif" layout="fill" objectFit="contain" />
+            <div>
+              <Image src="/profile.gif" layout="fill" objectFit="contain" />
+            </div>
           </StyledProject.Card2>
           <StyledProject.Card3>
-            <Image src="/profile.gif" layout="fill" objectFit="contain" />
+            <div>
+              <Image src="/profile.gif" layout="fill" objectFit="contain" />
+            </div>
           </StyledProject.Card3>
+          <StyledProject.Card4>
+            <div>
+              <Image src="/profile.gif" layout="fill" objectFit="contain" />
+            </div>
+          </StyledProject.Card4>
           <StyledProject.BrowserContainer>
-            <Browser />
+            <Browser nowIndex={-1} />
           </StyledProject.BrowserContainer>
         </StyledPage.Projects>
       </StyledExperience.Container>

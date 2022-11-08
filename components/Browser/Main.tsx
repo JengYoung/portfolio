@@ -2,6 +2,12 @@ import React, { useState } from 'react';
 
 import styled from '@emotion/styled';
 
+import Gummy from '@components/Text/Gummy';
+
+interface BrowserProps {
+  nowIndex: number;
+}
+
 const Styled = {
   Container: styled.section`
     /* position: absolute; */
@@ -10,20 +16,13 @@ const Styled = {
     overflow: hidden;
     background: black;
     border-radius: 20px;
+    box-shadow: 0px 8px 12px 4px rgba(0, 0, 0, 0.2);
   `,
   Header: styled.header`
     display: flex;
     align-items: center;
     width: 100%;
     height: 2.5rem;
-    background-color: ${({ theme }) => theme.colors.white};
-  `,
-  Toolbar: styled.section`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 2rem;
     background-color: ${({ theme }) => theme.colors.white};
   `,
   Circles: styled.ul<{ isActive: boolean }>`
@@ -131,6 +130,14 @@ const Styled = {
     white-space: nowrap;
     border-right: ${({ isActive }) => (isActive ? 0 : '1px solid black')};
   `,
+  Toolbar: styled.section`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 2.5rem;
+    background-color: ${({ theme }) => theme.colors.white};
+  `,
   BarDescription: styled.div`
     width: calc(100% - 1rem);
     height: 1.5rem;
@@ -144,9 +151,27 @@ const Styled = {
 
     border-radius: 10px;
   `,
+  Body: styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: calc(100% - 5rem);
+    background-color: ${({ theme }) => theme.colors.subPrimary};
+    border-top: 1px solid #ddd;
+  `,
+  InitText: styled.p`
+    font-size: ${({ theme }) => theme.heads[3].size};
+    font-weight: ${({ theme }) => theme.heads[3].weight};
+    color: ${({ theme }) => theme.colors.white};
+    strong {
+      color: ${({ theme }) => theme.colors.primary.light};
+    }
+  `,
 };
 
-function Browser() {
+function Browser({ nowIndex }: BrowserProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const onClick = (idx: number) => {
     setActiveIndex(() => idx);
@@ -177,9 +202,24 @@ function Browser() {
           </Styled.TabsInner>
         </Styled.TabsContainer>
       </Styled.Header>
+
       <Styled.Toolbar>
         <Styled.BarDescription>설명을 적습니다.</Styled.BarDescription>
       </Styled.Toolbar>
+
+      <Styled.Body>
+        {nowIndex === -1 && (
+          <>
+            <Styled.InitText>왼쪽의 프로젝트를</Styled.InitText>
+            <Styled.InitText>
+              <strong>
+                <Gummy texts="클릭" delay={0} options={{ infinite: true, isGummy: true }} />
+              </strong>
+              해주세요!
+            </Styled.InitText>
+          </>
+        )}
+      </Styled.Body>
     </Styled.Container>
   );
 }
