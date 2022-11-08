@@ -1,6 +1,8 @@
 import { css } from '@emotion/react';
 import React, { createRef, useEffect, useRef, useState } from 'react';
 
+import Image from 'next/image';
+
 import styled from '@emotion/styled';
 
 import { Browser } from '@components/Browser';
@@ -66,6 +68,26 @@ const StyledPage = {
     overflow: hidden;
     background-color: ${({ theme }) => theme.colors.primary.light};
     perspective: 100vw;
+    animation: perspective 3s infinite;
+
+    @keyframes perspective {
+      0% {
+        perspective-origin: 50% 50%;
+        perspective: 120vw;
+      }
+      33% {
+        perspective-origin: 20% 30%;
+        perspective: 150vw;
+      }
+      66% {
+        perspective-origin: 75% 40%;
+        perspective: 150vw;
+      }
+      100% {
+        perspective-origin: 50% 50%;
+        perspective: 120vw;
+      }
+    }
   `,
 };
 
@@ -365,40 +387,89 @@ const StyledProjectIntro = {
   `,
 };
 
+const Card = styled.div`
+  position: absolute;
+  width: 300px;
+  height: 200px;
+  background: linear-gradient(#ff9993, #752bed);
+  transition: all 0.3s;
+  &:hover {
+    transform: none;
+  }
+`;
+
 const StyledProject = {
-  Cards: styled.ul`
-    position: relative;
-    z-index: 999999;
-    display: flex;
-    width: 100%;
-    height: 400px;
-    background-color: black;
-    transition: all 1s;
-    perspective: 100%;
+  Card1: styled(Card)`
+    top: 100px;
+    left: 100px;
+    z-index: 3;
 
-    &:first-of-type {
-      transform: rotateX(60deg) rotateY(0deg) rotateZ(30deg) translate3d(0, 0px, 0px);
-    }
+    transform: scale(1.4) rotateX(30deg) rotateY(-20deg) rotateZ(-15deg) translate3d(50px, 0, 0);
 
-    transform: rotateX(60deg) rotateY(0deg) rotateZ(30deg) translate3d(0, 300px, 300px);
-    &:last-of-type {
-      transform: rotateX(60deg) rotateY(0deg) rotateZ(30deg) translate3d(0, 600px, 600px);
+    transform-origin: top;
+
+    &:after {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      z-index: -1;
+
+      width: 300px;
+      height: 200px;
+      content: '';
+      /* background: linear-gradient(#ff9993, #752bed); */
+      background-color: black;
+      filter: blur(150px);
+
+      transform: rotateX(-50deg) rotateY(0deg) rotateZ(-40deg) translate3d(-50px, 100px, 100px);
     }
   `,
-  Card: styled.li`
-    /* position: absolute; */
-    top: 0;
-    flex-shrink: 0;
-    width: 600px;
-    height: 400px;
-    margin-right: 3rem;
-    background: linear-gradient(#752bed, #ff9993);
-    box-shadow: 12px 12px 20px 4px rgba(0, 0, 0, 0.5);
-    transition: all 1s;
-    transform-origin: bottom;
-    &:hover {
-      transform: rotateX(180deg) rotateY(0deg) rotateZ(0deg) translate3d(0, -400px, 500px);
-      transform-origin: top;
+  Card2: styled(Card)`
+    top: 200px;
+    left: 300px;
+    z-index: 2;
+
+    transform: scale(1.3) rotateX(50deg) rotateY(-20deg) rotateZ(-65deg)
+      translate3d(-50px, 100px, 0px);
+    transform-origin: center;
+
+    &:after {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      z-index: -1;
+
+      width: 300px;
+      height: 200px;
+      content: '';
+      background-color: black;
+      filter: blur(120px);
+
+      transform: rotateX(-50deg) rotateY(0deg) rotateZ(-40deg) translate3d(-50px, -200px, 100px);
+    }
+  `,
+  Card3: styled(Card)`
+    position: absolute;
+    top: 400px;
+    left: 150px;
+    width: 300px;
+    height: 200px;
+    background: linear-gradient(#ff9993, #752bed);
+    transform: scale(1.3) rotateX(50deg) rotateY(50deg) rotateZ(15deg);
+    transform-origin: center;
+    &:after {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      z-index: -1;
+
+      width: 300px;
+      height: 200px;
+      content: '';
+      background-color: black;
+      filter: blur(120px);
+
+      transform: rotateX(-50deg) rotateY(0deg) rotateZ(-40deg) translate3d(-50px, 100px, 100px);
     }
   `,
   BrowserContainer: styled.div`
@@ -693,26 +764,15 @@ function ExperiencesAndProjectsPage() {
         </StyledPage.ProjectIntro>
 
         <StyledPage.Projects>
-          {/* <StyledProject.Cards>
-            <StyledProject.Card>앞면</StyledProject.Card>
-            <StyledProject.Card>앞면</StyledProject.Card>
-            <StyledProject.Card>앞면</StyledProject.Card>
-            <StyledProject.Card>앞면</StyledProject.Card>
-          </StyledProject.Cards>
-
-          <StyledProject.Cards>
-            <StyledProject.Card>앞면</StyledProject.Card>
-            <StyledProject.Card>앞면</StyledProject.Card>
-            <StyledProject.Card>앞면</StyledProject.Card>
-            <StyledProject.Card>앞면</StyledProject.Card>
-          </StyledProject.Cards>
-
-          <StyledProject.Cards>
-            <StyledProject.Card />
-            <StyledProject.Card />
-            <StyledProject.Card />
-            <StyledProject.Card />
-          </StyledProject.Cards> */}
+          <StyledProject.Card1>
+            <Image src="/profile.gif" layout="fill" objectFit="contain" />
+          </StyledProject.Card1>
+          <StyledProject.Card2>
+            <Image src="/profile.gif" layout="fill" objectFit="contain" />
+          </StyledProject.Card2>
+          <StyledProject.Card3>
+            <Image src="/profile.gif" layout="fill" objectFit="contain" />
+          </StyledProject.Card3>
           <StyledProject.BrowserContainer>
             <Browser />
           </StyledProject.BrowserContainer>
