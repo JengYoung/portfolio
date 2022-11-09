@@ -14,25 +14,24 @@ import useIntersectionObserver from '@hooks/useIntersectionObserver';
 import readonly from '@utils/readonly';
 import throttle from '@utils/throttle';
 
-type IntroContents = {
+interface BaseContentsInterface {
+  id: string;
   type: string;
+  title: string;
+  descriptions: string[];
+}
+
+interface IntroContents extends BaseContentsInterface {
   skills: string[];
-  contents: string[];
-};
+}
 
-type DetailContents = {
-  type: string;
-  title: string;
-  contents: string[];
+interface DetailContents extends BaseContentsInterface {
   images?: { src: string; alt: string; contents?: string }[];
-};
+}
 
-type OutroContents = {
-  type: string;
-  title: string;
-  contents: string[];
+interface OutroContents extends BaseContentsInterface {
   links: { url: string; iconSrc: string };
-};
+}
 
 export interface ProjectInterface {
   id: number;
@@ -85,10 +84,11 @@ const StyledPage = {
     width: 100%;
     max-width: 1440px;
     height: 100vh;
+    overflow: hidden;
     background-color: ${({ theme }) => theme.colors.primary.light};
+    transition: all 0.3s;
     perspective: 100vw;
     perspective-origin: ${({ perspective }) => `${perspective.x}% ${perspective.y}%`};
-    transition: all 0.3s;
   `,
 };
 
@@ -400,7 +400,7 @@ const Card = styled.div`
 
 const StyledProject = {
   Card1: styled(Card)`
-    top: 100px;
+    top: 150px;
     left: 100px;
     z-index: 3;
 
@@ -415,11 +415,13 @@ const StyledProject = {
 
       width: 300px;
       height: 200px;
-      content: '';
-      background-color: rgba(0, 0, 0, 0.3);
-      filter: blur(50px);
 
-      transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate3d(-50px, 50px, -1px);
+      content: '';
+
+      border-radius: 20px;
+      box-shadow: -20px 50px 100px rgba(0, 0, 0, 0.3);
+
+      transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate3d(-0px, 0px, -1px);
     }
   `,
   Card2: styled(Card)`
@@ -439,21 +441,25 @@ const StyledProject = {
 
       width: 300px;
       height: 200px;
-      content: '';
-      background-color: rgba(0, 0, 0, 0.5);
-      filter: blur(90px);
 
-      transform: scale(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate3d(-50px, -50px, -1px);
+      content: '';
+
+      border-radius: 20px;
+      box-shadow: -50px 50px 150px rgba(0, 0, 0, 0.3);
+      transform: scale(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
     }
   `,
   Card3: styled(Card)`
     position: absolute;
     top: 400px;
     left: 150px;
+
     width: 300px;
     height: 200px;
+
     transform: scale(1.3) rotateX(50deg) rotateY(50deg) rotateZ(15deg);
     transform-origin: center;
+
     &:after {
       position: absolute;
       bottom: 0;
@@ -462,7 +468,9 @@ const StyledProject = {
 
       width: 300px;
       height: 200px;
+
       content: '';
+
       background-color: rgba(0, 0, 0, 0.5);
       filter: blur(50px);
 
@@ -474,10 +482,13 @@ const StyledProject = {
     position: absolute;
     top: 500px;
     left: 350px;
+
     width: 300px;
     height: 200px;
+
     transform: scale(1.5) rotateX(50deg) rotateY(10deg) rotateZ(5deg) translate3d(90px, -50px, 0px);
     transform-origin: center;
+
     &:after {
       position: absolute;
       bottom: 0;
@@ -487,18 +498,23 @@ const StyledProject = {
       width: 300px;
       height: 200px;
       content: '';
-      background-color: rgba(0, 0, 0, 0.5);
-      filter: blur(20px);
-      transform: translate3d(-40px, 10px, -1px);
+      border-radius: 20px;
+      box-shadow: -50px 50px 150px rgba(0, 0, 0, 0.3);
     }
+  `,
+  ProjectTitle: styled.header`
+    position: absolute;
+    top: 3rem;
+    right: 3rem;
+    font-size: ${({ theme }) => theme.heads[1].size};
+    font-weight: ${({ theme }) => theme.heads[1].weight};
+    color: ${({ theme }) => theme.colors.subPrimary};
   `,
   BrowserContainer: styled.div`
     position: absolute;
     right: 3rem;
+    bottom: 3rem;
     z-index: 9999;
-    display: flex;
-    align-items: center;
-    height: 100%;
   `,
 };
 
@@ -522,7 +538,9 @@ function ExperiencesAndProjectsPage() {
 
       contents: [
         {
+          id: 1000,
           type: 'intro',
+          title: '💡 설명',
           skills: [
             'Next.js',
             'React',
@@ -535,47 +553,17 @@ function ExperiencesAndProjectsPage() {
             'yarn berry',
             'Canvas API',
           ],
-          contents: [
+          descriptions: [
             '저만의 웹 포트폴리오 사이트에요 🥰',
             '상단의 탭들을 클릭하면 자세히 볼 수 있어요.',
           ],
         },
 
         {
-          type: 'detail',
-          title: 'SSG 채택',
-          contents: [
-            '블로그는 잦은 변경이 발생하지 않아요.',
-            '따라서 데이터를 굳이 서버와 주고 받을 필요가 없었어요.',
-            '빠르게 정보를 전달하기 위해 SSG를 사용했어요.',
-          ],
-
-          images: [
-            {
-              src: '/profile.gif',
-              alt: '테스트',
-              contents: '',
-            },
-          ],
-        },
-
-        {
-          type: 'detail',
-          title: 'About',
-          contents: ['메타볼 애니메이션을 구현했어요.'],
-          images: [
-            {
-              src: '/profile.gif',
-              alt: '테스트',
-              contents: '',
-            },
-          ],
-        },
-
-        {
+          id: 1003,
           type: 'detail',
           title: 'Interaction',
-          contents: [
+          descriptions: [
             '숨겨진 인터렉티브 효과들이 많아요.',
             '제가 만든 앱이 유저에게 기대되는 앱이었으면 좋겠어요.',
           ],
@@ -583,40 +571,39 @@ function ExperiencesAndProjectsPage() {
             {
               src: '/profile.gif',
               alt: '테스트',
-              contents: '이런 기능들도 있구요!',
+              imageDescription: '이런 기능들도 있구요!',
             },
             {
               src: '/profile.gif',
               alt: '테스트',
-              contents: '이렇게 움직이기도 한답니다! 😉',
+              imageDescription: '이렇게 움직이기도 한답니다! 😉',
             },
           ],
         },
 
         {
+          id: 1004,
           type: 'detail',
-          title: 'Interaction',
-          contents: [
-            '숨겨진 인터렉티브 효과들이 많아요.',
-            '제가 만든 앱이 유저에게 기대되는 앱이었으면 좋겠어요.',
+          title: 'CICD',
+          descriptions: [
+            '일일이 반복된 일을 하는 건 너무 번거로워요.',
+            '따라서 배포 및 릴리즈 노트를 자동화했어요.',
+            '꾸준한 이슈 및 PR을 업데이트하는 습관은 덤! 😉',
           ],
           images: [
             {
               src: '/profile.gif',
               alt: 'CICD',
-              contents: [
-                '일일이 반복된 일을 하는 건 너무 번거로워요.',
-                '따라서 배포 및 릴리즈 노트를 자동화했어요.',
-                '꾸준한 이슈 및 PR을 업데이트하는 습관은 덤! 😉',
-              ],
+              imageDescription: '',
             },
           ],
         },
 
         {
+          id: 1005,
           type: 'outro',
-          title: '🔗',
-          contents: ['어떻게 제작하였는지 궁금한가요?', '아래의 링크를 클릭해 확인해보세요!'],
+          title: '🔗 링크',
+          descriptions: ['어떻게 제작하였는지 궁금하시나요?', '위의 링크를 클릭해 확인해보세요!'],
           links: [
             {
               url: 'https://velog.io/@young_pallete',
@@ -628,8 +615,8 @@ function ExperiencesAndProjectsPage() {
     },
 
     {
-      id: 1,
-      title: 'JS, React 유틸 라이브러리',
+      id: 0,
+      title: 'JS, React Utils',
       period: {
         start: '2022.08',
         end: '진행 중',
@@ -640,10 +627,11 @@ function ExperiencesAndProjectsPage() {
         {
           id: 1000,
           type: 'intro',
+          title: '💡 설명',
           skills: ['Vanilla JS', 'React', 'Three.js', 'yarn berry'],
-          contents: [
-            '세상에는 정말 재사용할 수 있을 코드들이 많아요.',
-            '그 기회들을 위해 재미로 삼아 구현한 코드들을 모아놓아요.',
+          descriptions: [
+            '세상에는 재사용할 수 있을 코드들이 많아요.',
+            '언젠가 재사용하기 위해 재미로 삼아 구현한 코드들을 모아놓아요.',
           ],
         },
 
@@ -651,12 +639,12 @@ function ExperiencesAndProjectsPage() {
           id: 1001,
           type: 'detail',
           title: 'Metaball',
-          contents: ['메타볼 애니메이션을 구현했어요.'],
+          descriptions: ['메타볼 애니메이션을 구현했어요.'],
           images: [
             {
               src: '/profile.gif',
               alt: '테스트',
-              contents: '',
+              imageDescription: '',
             },
           ],
         },
@@ -665,8 +653,8 @@ function ExperiencesAndProjectsPage() {
           id: 1002,
           type: 'detail',
           title: 'Calendar',
-          contents: [
-            '캘린더 컴포넌트를 구현했어요',
+          descriptions: [
+            '노션처럼 일정을 등록하는 캘린더 컴포넌트를 구현했어요.',
             '쌓일 일정이 빈 칸에 잘 들어가도록 했어요! 🧱',
           ],
         },
@@ -675,7 +663,7 @@ function ExperiencesAndProjectsPage() {
           id: 1003,
           type: 'detail',
           title: 'About',
-          contents: [
+          descriptions: [
             '웹도 앱처럼 페이지 전환 효과가 있다면 어떨까요?',
             '자연스러운 페이지 전환 효과를 만들었어요.',
           ],
@@ -683,7 +671,7 @@ function ExperiencesAndProjectsPage() {
             {
               src: '/profile.gif',
               alt: '테스트',
-              contents: '',
+              imageDescription: '',
             },
           ],
         },
@@ -691,8 +679,8 @@ function ExperiencesAndProjectsPage() {
         {
           id: 1004,
           type: 'outro',
-          title: '🔗',
-          contents: ['제 코드가 궁금한가요?', '반가워요. 놀러와요! 👋🏻'],
+          title: '🔗 링크',
+          descriptions: ['제 코드가 궁금하시나요?', '반가워요. 놀러와요! 👋🏻'],
           links: [
             {
               url: 'https://velog.io/@young_pallete',
@@ -715,10 +703,10 @@ function ExperiencesAndProjectsPage() {
       contents: [
         {
           type: 'intro',
-          title: '💡',
+          title: '💡 설명',
           id: 1000,
           skills: ['Vue3', 'Storybook'],
-          contents: ['Vue 3로 다양한 컴포넌트를 만들었어요.', '한 번 탭들을 눌러 살펴볼까요?'],
+          descriptions: ['Vue 3로 다양한 컴포넌트를 만들었어요.', '한 번 탭들을 눌러 살펴볼까요?'],
         },
 
         {
@@ -726,12 +714,12 @@ function ExperiencesAndProjectsPage() {
           title: 'Carousel',
           id: 1001,
           skills: ['Vue3', 'Storybook'],
-          contents: ['Carousel을 구현했어요.'],
+          descriptions: ['Carousel을 구현했어요.'],
           images: [
             {
               src: '/profile.gif',
               alt: '테스트',
-              contents: '',
+              imageDescription: '',
             },
           ],
         },
@@ -741,20 +729,20 @@ function ExperiencesAndProjectsPage() {
           title: 'Menu',
           id: 1002,
           skills: ['Vue3', 'Storybook'],
-          contents: ['뷰포트에 따라 유기적으로 동작하는 메뉴를 만들었어요.'],
+          descriptions: ['뷰포트에 따라 유기적으로 동작하는 메뉴를 만들었어요.'],
           images: [
             {
               src: '/profile.gif',
               alt: '테스트',
-              contents: '',
+              imageDescription: '',
             },
           ],
         },
         {
           type: 'outro',
-          title: '🔗',
+          title: '🔗 링크',
           id: 1003,
-          contents: ['제 코드가 궁금한가요?', '반가워요. 놀러와요! 👋🏻'],
+          descriptions: ['제 코드가 궁금하신가요?', '반가워요. 놀러와요! 👋🏻'],
           links: [
             {
               url: 'https://velog.io/@young_pallete',
@@ -776,9 +764,9 @@ function ExperiencesAndProjectsPage() {
 
       contents: [
         {
-          type: 'intro',
-          title: '💡',
           id: 1000,
+          type: 'intro',
+          title: '💡 설명',
           skills: [
             'Next.js',
             'React Native',
@@ -790,8 +778,8 @@ function ExperiencesAndProjectsPage() {
             'turborepo',
             'AWS',
           ],
-          contents: [
-            '페이지를 만드는 페이지를 기획하고 있어요.',
+          descriptions: [
+            '페이지 제작 서비스를 기획하고 있어요.',
             '현재 기획 단계에 있으며, 조만간 만날 계획이에요.',
             'See you later at See You Letter 👋🏻🖐🏻👋🏻',
           ],
@@ -799,7 +787,7 @@ function ExperiencesAndProjectsPage() {
             {
               src: '/profile.gif',
               alt: '테스트',
-              contents: '',
+              imageDescription: '',
             },
           ],
         },
@@ -949,6 +937,7 @@ function ExperiencesAndProjectsPage() {
 
   const targetRef = useRef<HTMLElement>(null);
   const [ballScale, setBallScale] = useState(1);
+
   useEffect(() => {
     if (targetRef.current === null) return undefined;
     const { innerHeight, scrollY } = window;
@@ -975,6 +964,8 @@ function ExperiencesAndProjectsPage() {
     };
   }, []);
 
+  const [projectIndex, setProjectIndex] = useState(-1);
+
   const [perspective, setPerspective] = useState({ x: 0, y: 0 });
   const onMouseOver = throttle((e: MouseEvent) => {
     const { screenX, screenY } = e;
@@ -984,6 +975,10 @@ function ExperiencesAndProjectsPage() {
 
     setPerspective(() => ({ x: nextX, y: nextY }));
   }, 30);
+
+  const onClickCard = (idx: number) => {
+    setProjectIndex(() => idx);
+  };
 
   return (
     <StyledPage.Container>
@@ -1043,29 +1038,37 @@ function ExperiencesAndProjectsPage() {
         </StyledPage.ProjectIntro>
 
         <StyledPage.Projects onMouseOverCapture={onMouseOver} perspective={perspective}>
-          <StyledProject.Card1>
+          <StyledProject.Card1 onClick={() => onClickCard(0)}>
             <div>
               <Image src="/profile.gif" layout="fill" objectFit="contain" />
             </div>
           </StyledProject.Card1>
-          <StyledProject.Card2>
+          <StyledProject.Card2 onClick={() => onClickCard(1)}>
             <div>
               <Image src="/profile.gif" layout="fill" objectFit="contain" />
             </div>
           </StyledProject.Card2>
-          <StyledProject.Card3>
+          <StyledProject.Card3 onClick={() => onClickCard(2)}>
             <div>
               <Image src="/profile.gif" layout="fill" objectFit="contain" />
             </div>
           </StyledProject.Card3>
-          <StyledProject.Card4>
+          <StyledProject.Card4 onClick={() => onClickCard(3)}>
             <div>
               <Image src="/profile.gif" layout="fill" objectFit="contain" />
             </div>
           </StyledProject.Card4>
 
+          {projectIndex >= 0 && (
+            <CollapsedText x={1900} y={0} direction="LEFT">
+              <StyledProject.ProjectTitle>
+                <Gummy texts={projects[projectIndex].title} delay={0} options={{ isGummy: true }} />
+              </StyledProject.ProjectTitle>
+            </CollapsedText>
+          )}
+
           <StyledProject.BrowserContainer>
-            <Browser projects={projects} nowIndex={-1} />
+            <Browser project={projects[projectIndex] ?? null} projectIndex={projectIndex} />
           </StyledProject.BrowserContainer>
         </StyledPage.Projects>
       </StyledExperience.Container>
