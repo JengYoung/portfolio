@@ -14,17 +14,37 @@ import useIntersectionObserver from '@hooks/useIntersectionObserver';
 import readonly from '@utils/readonly';
 import throttle from '@utils/throttle';
 
-// interface ProjectInterface {
-//   id: number;
-//   type: string;
-//   title: string;
-//   period: {
-//     start: string;
-//     end: string;
-//   };
-//   skills: string[];
-//   contents: string[];
-// }
+type IntroContents = {
+  type: string;
+  skills: string[];
+  contents: string[];
+};
+
+type DetailContents = {
+  type: string;
+  title: string;
+  contents: string[];
+  images?: { src: string; alt: string; contents?: string }[];
+};
+
+type OutroContents = {
+  type: string;
+  title: string;
+  contents: string[];
+  links: { url: string; iconSrc: string };
+};
+
+export interface ProjectInterface {
+  id: number;
+  type: string;
+  title: string;
+  period: {
+    start: string;
+    end: string;
+  };
+  thumbnailImage: string;
+  contents: (IntroContents | DetailContents | OutroContents)[];
+}
 
 interface ExperienceInterface {
   id: number;
@@ -65,11 +85,10 @@ const StyledPage = {
     width: 100%;
     max-width: 1440px;
     height: 100vh;
-    overflow: hidden;
     background-color: ${({ theme }) => theme.colors.primary.light};
     perspective: 100vw;
     perspective-origin: ${({ perspective }) => `${perspective.x}% ${perspective.y}%`};
-    transition: all 0.2s;
+    transition: all 0.3s;
   `,
 };
 
@@ -491,67 +510,302 @@ function ExperiencesAndProjectsPage() {
     setTextReversed(() => true);
   }, []);
 
-  // const projects: readonly ProjectInterface[] = readonly([
-  //   {
-  //     id: 0,
-  //     title: '웹 포트폴리오 사이트',
-  //     period: {
-  //       start: '2022.10',
-  //       end: '진행 중',
-  //     },
-  //     skills: [
-  //       'Next.js',
-  //       'React',
-  //       'husky',
-  //       'Github Action',
-  //       '@emotion',
-  //       'TypeScript',
-  //       'AWS(S3, Route 53, CloudFront)',
-  //       'yarn berry',
-  //       'Canvas API',
-  //     ],
-  //     contents: [
-  //       'SSG 기반 웹 포트폴리오 사이트 구축',
-  //       '`Canvas API`로 메타볼 애니메이션 구현',
-  //       '`translate3d`로 스크롤 시 3D 효과 구현',
-  //       'CICD를 통한 린트, 배포, 릴리즈 노트 자동화 적용',
-  //       '`Compound Composite` 디자인 패턴, `Custom Hook` 패턴 적용',
-  //       '`yarn berry`를 통한 `zero install`로 빌드 및 배포 시간 단축',
-  //     ],
-  //   },
+  const projects: readonly ProjectInterface[] = readonly([
+    {
+      id: 0,
+      title: '웹 포트폴리오 사이트',
+      period: {
+        start: '2022.10',
+        end: '진행 중',
+      },
+      thumbnailImage: '/profile.gif',
 
-  //   {
-  //     id: 1,
-  //     title: 'JS, React 유틸 라이브러리',
-  //     period: {
-  //       start: '2022.08',
-  //       end: '진행 중',
-  //     },
-  //     skills: ['Vanilla JS', 'React', 'Three.js', 'yarn berry'],
-  //     contents: [
-  //       '재사용 가능한 애니메이션 및 유틸 라이브러리 제작.',
-  //       '캘린더 컴포넌트 구현, `Todo` 쌓이는 로직 최적화',
-  //       'Mobile App처럼 라우트 이동 전환 효과가 나오도록 하는 `Router Component` 구현',
-  //       '`Three.js`로 3D 터널 애니메이션 구현',
-  //       '`yarn`으로 다양한 환경에서의 구현을 분리하고 관리하고자 모노레포 구축',
-  //     ],
-  //   },
+      contents: [
+        {
+          type: 'intro',
+          skills: [
+            'Next.js',
+            'React',
+            'husky',
+            'recoil',
+            '@emotion',
+            'TypeScript',
+            'AWS(S3, Route 53, CloudFront)',
+            'Github Action',
+            'yarn berry',
+            'Canvas API',
+          ],
+          contents: [
+            '저만의 웹 포트폴리오 사이트에요 🥰',
+            '상단의 탭들을 클릭하면 자세히 볼 수 있어요.',
+          ],
+        },
 
-  //   {
-  //     id: 2,
-  //     title: 'Vue 디자인 시스템 구축',
-  //     period: {
-  //       start: '2022.05',
-  //       end: '진행 중',
-  //     },
-  //     skills: ['Vue3', 'Storybook'],
-  //     contents: [
-  //       'Storybook으로 재사용, 테스트 가능한 컴포넌트 제작',
-  //       'Carousel, Menu 등의 컴포넌트 구현',
-  //       '복사, 입력, 삭제에 있어 커서 전환이 자연스러운 Formatter Input 컴포넌트 구현',
-  //     ],
-  //   },
-  // ]);
+        {
+          type: 'detail',
+          title: 'SSG 채택',
+          contents: [
+            '블로그는 잦은 변경이 발생하지 않아요.',
+            '따라서 데이터를 굳이 서버와 주고 받을 필요가 없었어요.',
+            '빠르게 정보를 전달하기 위해 SSG를 사용했어요.',
+          ],
+
+          images: [
+            {
+              src: '/profile.gif',
+              alt: '테스트',
+              contents: '',
+            },
+          ],
+        },
+
+        {
+          type: 'detail',
+          title: 'About',
+          contents: ['메타볼 애니메이션을 구현했어요.'],
+          images: [
+            {
+              src: '/profile.gif',
+              alt: '테스트',
+              contents: '',
+            },
+          ],
+        },
+
+        {
+          type: 'detail',
+          title: 'Interaction',
+          contents: [
+            '숨겨진 인터렉티브 효과들이 많아요.',
+            '제가 만든 앱이 유저에게 기대되는 앱이었으면 좋겠어요.',
+          ],
+          images: [
+            {
+              src: '/profile.gif',
+              alt: '테스트',
+              contents: '이런 기능들도 있구요!',
+            },
+            {
+              src: '/profile.gif',
+              alt: '테스트',
+              contents: '이렇게 움직이기도 한답니다! 😉',
+            },
+          ],
+        },
+
+        {
+          type: 'detail',
+          title: 'Interaction',
+          contents: [
+            '숨겨진 인터렉티브 효과들이 많아요.',
+            '제가 만든 앱이 유저에게 기대되는 앱이었으면 좋겠어요.',
+          ],
+          images: [
+            {
+              src: '/profile.gif',
+              alt: 'CICD',
+              contents: [
+                '일일이 반복된 일을 하는 건 너무 번거로워요.',
+                '따라서 배포 및 릴리즈 노트를 자동화했어요.',
+                '꾸준한 이슈 및 PR을 업데이트하는 습관은 덤! 😉',
+              ],
+            },
+          ],
+        },
+
+        {
+          type: 'outro',
+          title: '🔗',
+          contents: ['어떻게 제작하였는지 궁금한가요?', '아래의 링크를 클릭해 확인해보세요!'],
+          links: [
+            {
+              url: 'https://velog.io/@young_pallete',
+              iconSrc: '/profile.gif',
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      id: 1,
+      title: 'JS, React 유틸 라이브러리',
+      period: {
+        start: '2022.08',
+        end: '진행 중',
+      },
+      thumbnailImage: '/profile.gif',
+
+      contents: [
+        {
+          id: 1000,
+          type: 'intro',
+          skills: ['Vanilla JS', 'React', 'Three.js', 'yarn berry'],
+          contents: [
+            '세상에는 정말 재사용할 수 있을 코드들이 많아요.',
+            '그 기회들을 위해 재미로 삼아 구현한 코드들을 모아놓아요.',
+          ],
+        },
+
+        {
+          id: 1001,
+          type: 'detail',
+          title: 'Metaball',
+          contents: ['메타볼 애니메이션을 구현했어요.'],
+          images: [
+            {
+              src: '/profile.gif',
+              alt: '테스트',
+              contents: '',
+            },
+          ],
+        },
+
+        {
+          id: 1002,
+          type: 'detail',
+          title: 'Calendar',
+          contents: [
+            '캘린더 컴포넌트를 구현했어요',
+            '쌓일 일정이 빈 칸에 잘 들어가도록 했어요! 🧱',
+          ],
+        },
+
+        {
+          id: 1003,
+          type: 'detail',
+          title: 'About',
+          contents: [
+            '웹도 앱처럼 페이지 전환 효과가 있다면 어떨까요?',
+            '자연스러운 페이지 전환 효과를 만들었어요.',
+          ],
+          images: [
+            {
+              src: '/profile.gif',
+              alt: '테스트',
+              contents: '',
+            },
+          ],
+        },
+
+        {
+          id: 1004,
+          type: 'outro',
+          title: '🔗',
+          contents: ['제 코드가 궁금한가요?', '반가워요. 놀러와요! 👋🏻'],
+          links: [
+            {
+              url: 'https://velog.io/@young_pallete',
+              iconSrc: '/profile.gif',
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      id: 2,
+      title: 'Vue 디자인 시스템 구축',
+      period: {
+        start: '2022.05',
+        end: '진행 중',
+      },
+      thumbnailImage: '/profile.gif',
+
+      contents: [
+        {
+          type: 'intro',
+          title: '💡',
+          id: 1000,
+          skills: ['Vue3', 'Storybook'],
+          contents: ['Vue 3로 다양한 컴포넌트를 만들었어요.', '한 번 탭들을 눌러 살펴볼까요?'],
+        },
+
+        {
+          type: 'detail',
+          title: 'Carousel',
+          id: 1001,
+          skills: ['Vue3', 'Storybook'],
+          contents: ['Carousel을 구현했어요.'],
+          images: [
+            {
+              src: '/profile.gif',
+              alt: '테스트',
+              contents: '',
+            },
+          ],
+        },
+
+        {
+          type: 'detail',
+          title: 'Menu',
+          id: 1002,
+          skills: ['Vue3', 'Storybook'],
+          contents: ['뷰포트에 따라 유기적으로 동작하는 메뉴를 만들었어요.'],
+          images: [
+            {
+              src: '/profile.gif',
+              alt: '테스트',
+              contents: '',
+            },
+          ],
+        },
+        {
+          type: 'outro',
+          title: '🔗',
+          id: 1003,
+          contents: ['제 코드가 궁금한가요?', '반가워요. 놀러와요! 👋🏻'],
+          links: [
+            {
+              url: 'https://velog.io/@young_pallete',
+              iconSrc: '/profile.gif',
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      id: 3,
+      title: 'See You Letter',
+      period: {
+        start: '2022.11',
+        end: '진행 중',
+      },
+      thumbnailImage: '/profile.gif',
+
+      contents: [
+        {
+          type: 'intro',
+          title: '💡',
+          id: 1000,
+          skills: [
+            'Next.js',
+            'React Native',
+            'Storybook',
+            'Playwright',
+            'jotai',
+            'react-query',
+            'yarn-berry',
+            'turborepo',
+            'AWS',
+          ],
+          contents: [
+            '페이지를 만드는 페이지를 기획하고 있어요.',
+            '현재 기획 단계에 있으며, 조만간 만날 계획이에요.',
+            'See you later at See You Letter 👋🏻🖐🏻👋🏻',
+          ],
+          images: [
+            {
+              src: '/profile.gif',
+              alt: '테스트',
+              contents: '',
+            },
+          ],
+        },
+      ],
+    },
+  ]);
 
   const experiences: readonly ExperienceInterface[] = readonly([
     {
@@ -562,6 +816,9 @@ function ExperiencesAndProjectsPage() {
         start: '2022.08',
         end: '2022.11',
       },
+
+      images: ['/profile.gif'],
+
       skills: ['Vanilla JS', 'React', 'Three.js', 'yarn berry'],
       contents: [
         '모던 자바스크립트 Deep Dive를 기반으로 4개월 간 진행',
@@ -579,6 +836,9 @@ function ExperiencesAndProjectsPage() {
         start: '2022.01',
         end: '2022.08',
       },
+
+      images: ['/profile.gif'],
+
       skills: ['Quasar', 'Vue', 'Tailwind CSS', 'AWS', 'Github Actions'],
       contents: [
         '고객 앱 반응형으로 제작 수행',
@@ -598,6 +858,9 @@ function ExperiencesAndProjectsPage() {
         start: '2021.09',
         end: '진행 중',
       },
+
+      images: ['/profile.gif'],
+
       skills: ['Vanilla JS'],
       contents: [
         '꾸준히 문제해결 능력을 기르고자 알고리즘 스터디 진행',
@@ -614,6 +877,9 @@ function ExperiencesAndProjectsPage() {
         start: '2021.07',
         end: '2021.11',
       },
+
+      images: ['/profile.gif'],
+
       skills: [
         'HTML5',
         'CSS3',
@@ -625,6 +891,7 @@ function ExperiencesAndProjectsPage() {
         'Storybook',
         'D3.js',
       ],
+
       contents: [
         '이벤트 애플리케이션 개발(Everevent)',
         '11월 배움 기록왕 선정',
@@ -716,7 +983,7 @@ function ExperiencesAndProjectsPage() {
     const nextY = Math.min(Math.max(((1024 - screenY) / 1024) * 100));
 
     setPerspective(() => ({ x: nextX, y: nextY }));
-  }, 20);
+  }, 30);
 
   return (
     <StyledPage.Container>
@@ -798,7 +1065,7 @@ function ExperiencesAndProjectsPage() {
           </StyledProject.Card4>
 
           <StyledProject.BrowserContainer>
-            <Browser nowIndex={-1} />
+            <Browser projects={projects} nowIndex={-1} />
           </StyledProject.BrowserContainer>
         </StyledPage.Projects>
       </StyledExperience.Container>

@@ -2,15 +2,17 @@ import React, { useState } from 'react';
 
 import styled from '@emotion/styled';
 
+import { ProjectInterface } from '@pages/experiences-and-projects';
+
 import Gummy from '@components/Text/Gummy';
 
 interface BrowserProps {
+  projects: readonly ProjectInterface[];
   nowIndex: number;
 }
 
 const Styled = {
   Container: styled.section`
-    /* position: absolute; */
     width: 600px;
     height: 480px;
     overflow: hidden;
@@ -171,7 +173,7 @@ const Styled = {
   `,
 };
 
-function Browser({ nowIndex }: BrowserProps) {
+function Browser({ projects, nowIndex }: BrowserProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const onClick = (idx: number) => {
     setActiveIndex(() => idx);
@@ -186,16 +188,16 @@ function Browser({ nowIndex }: BrowserProps) {
         </Styled.Circles>
         <Styled.TabsContainer>
           <Styled.TabsInner>
-            {[1, 2, 3, 4].map((_, idx) => (
+            {projects[nowIndex]?.contents?.map((project, idx) => (
               <Styled.Tab
-                key={_}
+                key={projects[nowIndex].id}
                 onClick={() => onClick(idx)}
                 isLeftActive={idx === activeIndex + 1}
                 isRightActive={idx === activeIndex - 1}
                 isActive={idx === activeIndex}
               >
                 <Styled.TabTitle isActive={idx === activeIndex || idx === activeIndex - 1}>
-                  {_}3214122134243242343
+                  {projects[nowIndex].title}
                 </Styled.TabTitle>
               </Styled.Tab>
             ))}
