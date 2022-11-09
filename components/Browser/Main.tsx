@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+import Image from 'next/image';
+
 import { ProjectInterface } from '@pages/experiences-and-projects';
 
 import Gummy from '@components/Text/Gummy';
@@ -12,7 +14,7 @@ interface BrowserProps {
 }
 
 function Browser({ project, projectIndex }: BrowserProps) {
-  const [activeTabIndex, setActiveTabIndex] = useState(-1);
+  const [activeTabIndex, setActiveTabIndex] = useState(0);
 
   const onClick = (idx: number) => {
     setActiveTabIndex(() => idx);
@@ -51,10 +53,10 @@ function Browser({ project, projectIndex }: BrowserProps) {
       </Styled.Header>
 
       <Styled.Toolbar>
-        <Styled.BarDescription>{project?.title}</Styled.BarDescription>
+        <Styled.BarDescription />
       </Styled.Toolbar>
 
-      <Styled.Body intro={activeTabIndex === -1}>
+      <Styled.Body intro={activeTabIndex === 0}>
         {project?.contents[activeTabIndex]?.descriptions.length && activeTabIndex !== -1 && (
           <Styled.BodyDescriptions>
             {project.contents[activeTabIndex]?.descriptions.map((description) => (
@@ -64,6 +66,17 @@ function Browser({ project, projectIndex }: BrowserProps) {
             ))}
           </Styled.BodyDescriptions>
         )}
+        {project &&
+          project.contents[activeTabIndex] &&
+          (project.contents[activeTabIndex].background.type === 'video' ? (
+            <video src={project.contents[activeTabIndex].background.src} autoPlay muted loop />
+          ) : (
+            <Image
+              src={project.contents[activeTabIndex].background.src}
+              layout="fill"
+              objectFit="cover"
+            />
+          ))}
 
         {/* 
           NOTE: Initialized Screen View

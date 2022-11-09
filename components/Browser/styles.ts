@@ -1,5 +1,3 @@
-import { css } from '@emotion/react';
-
 import styled from '@emotion/styled';
 
 export const Styled = {
@@ -145,25 +143,36 @@ export const Styled = {
     border-radius: 10px;
   `,
   Body: styled.div<{ intro: boolean }>`
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 100%;
     height: calc(100% - 5rem);
     background-color: ${({ intro, theme }) => theme.colors[intro ? 'subPrimary' : 'subPrimary']};
     border-top: 1px solid #ddd;
 
-    ${({ intro }) =>
-      intro &&
-      css`
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-      `}
+    video {
+      position: absolute;
+      top: 0;
+
+      height: 100%;
+    }
   `,
   BodyDescriptions: styled.ul`
+    position: absolute;
+    top: 0;
+    right: 1rem;
+    left: 1rem;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 4.5rem;
     padding: 0.5rem 1rem;
-    margin: 1rem;
+    margin: 1rem 0;
     text-align: left;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.8);
     border-radius: 10px;
     box-shadow: -2px 2px 4px 2px rgba(0, 0, 0, 0.2);
   `,

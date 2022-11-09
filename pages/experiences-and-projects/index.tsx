@@ -14,11 +14,16 @@ import useIntersectionObserver from '@hooks/useIntersectionObserver';
 import readonly from '@utils/readonly';
 import throttle from '@utils/throttle';
 
+type AssetType = {
+  type: string;
+  src: string;
+};
 interface BaseContentsInterface {
-  id: string;
+  id: number;
   type: string;
   title: string;
   descriptions: string[];
+  background: AssetType;
 }
 
 interface IntroContents extends BaseContentsInterface {
@@ -29,20 +34,15 @@ interface DetailContents extends BaseContentsInterface {
   images?: { src: string; alt: string; contents?: string }[];
 }
 
-interface OutroContents extends BaseContentsInterface {
-  links: { url: string; iconSrc: string };
-}
-
 export interface ProjectInterface {
   id: number;
-  type: string;
   title: string;
   period: {
     start: string;
     end: string;
   };
-  thumbnailImage: string;
-  contents: (IntroContents | DetailContents | OutroContents)[];
+  thumbnail: AssetType;
+  contents: (IntroContents | DetailContents)[];
 }
 
 interface ExperienceInterface {
@@ -122,41 +122,18 @@ const StyledExperience = {
     ${({ reversed }) =>
       reversed &&
       css`
-        /* transform: rotate(180deg);
-        transform-origin: 50% 60%; */
-        animation: element-jump 1s forwards;
+        animation: element-jump 0.3s forwards;
         animation-delay: 0.25s;
 
         @keyframes element-jump {
-          0% {
-            /* transform: scaleX(1) scaleY(1); */
-          }
-          20% {
-            /* transform: scaleX(1.2) scaleY(0.8); */
-          }
-          40% {
-            /* transform: scaleX(0.9) scaleY(1.1) translateY(-0.5rem); */
-          }
-          60% {
-            /* transform: scaleX(1.05) scaleY(0.95) translateY(0); */
-            transform: rotate(180deg) scale(1.1);
-            transform-origin: 50% 60%;
-          }
-          80% {
-            /* transform: scaleX(0.97) scaleY(1.03); */
-            transform: rotate(180deg) scale(1.1);
-            transform-origin: 50% 60%;
-          }
-          100% {
-            /* transform: scaleX(1) scaleY(1); */
+          to {
             transform: rotate(180deg) scale(1.1);
             transform-origin: 50% 60%;
           }
         }
       `}
   `,
-  /* height: ${({ length }) => `${EXPERIENCE_CIRCLE_INTERVAL_SIZE * (length + 1)}px`}; */
-  LineContainer: styled.div<{ length: number }>`
+  LineContainer: styled.div`
     position: relative;
     display: flex;
     flex-direction: column;
@@ -164,14 +141,25 @@ const StyledExperience = {
     width: 100%;
     height: inherit;
     padding-bottom: 10rem;
-    /* overflow: hidden; */
+    overflow: hidden;
   `,
-  Line: styled.div<{ length: number }>`
+  Line: styled.div<{ draw: boolean }>`
     position: absolute;
     top: 0;
+
     width: 1px;
     height: inherit;
+
     background-color: ${({ theme }) => theme.colors.primary.light};
+
+    opacity: 0;
+    transition: all 1s;
+
+    ${({ draw }) =>
+      draw &&
+      css`
+        opacity: 1;
+      `}
   `,
   ExperienceContainer: styled.article`
     position: relative;
@@ -268,10 +256,34 @@ const StyledGitGraph = {
     margin-left: 50%;
   `,
   Branch: {
-    Container: styled.div`
+    Container: styled.div<{ draw: boolean; shouldShowHistories: boolean }>`
       flex-shrink: 0;
       width: 100%;
       height: 100%;
+      opacity: 0;
+      transition: opacity 0.3s;
+
+      ${({ draw, shouldShowHistories }) =>
+        draw &&
+        shouldShowHistories &&
+        css`
+          transform-origin: left;
+          animation: scale-up 1s ease-out forwards;
+          animation-delay: 0.25s;
+          @keyframes scale-up {
+            0% {
+              transform: scale(1);
+            }
+            50% {
+              opacity: 1;
+              transform: scale(1.05);
+            }
+            100% {
+              opacity: 1;
+              transform: scale(1);
+            }
+          }
+        `}
     `,
     MergedCommitContainer: styled.div`
       position: relative;
@@ -337,6 +349,7 @@ const StyledGitGraph = {
       background-color: ${({ main, theme }) =>
         main ? theme.colors.primary.light : theme.colors.success};
       border-radius: 50%;
+
       &:before {
         position: absolute;
         left: -6rem;
@@ -390,12 +403,19 @@ const StyledProjectIntro = {
 
 const Card = styled.div`
   position: absolute;
+  display: flex;
+  align-items: center;
   width: 300px;
   height: 200px;
+
+  cursor: pointer;
   background: white;
   border-radius: 20px;
   transition: all 0.3s;
   transform-style: preserve-3d;
+  &:hover {
+    background-color: #ddd;
+  }
 `;
 
 const StyledProject = {
@@ -415,11 +435,12 @@ const StyledProject = {
 
       width: 300px;
       height: 200px;
+      cursor: auto;
 
       content: '';
 
       border-radius: 20px;
-      box-shadow: -20px 50px 100px rgba(0, 0, 0, 0.3);
+      box-shadow: -20px 50px 100px rgba(0, 0, 0, 0.2);
 
       transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate3d(-0px, 0px, -1px);
     }
@@ -445,7 +466,7 @@ const StyledProject = {
       content: '';
 
       border-radius: 20px;
-      box-shadow: -50px 50px 150px rgba(0, 0, 0, 0.3);
+      box-shadow: -50px 0px 150px rgba(0, 0, 0, 0.3);
       transform: scale(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
     }
   `,
@@ -468,6 +489,7 @@ const StyledProject = {
 
       width: 300px;
       height: 200px;
+      cursor: auto;
 
       content: '';
 
@@ -477,7 +499,14 @@ const StyledProject = {
       transform: rotateX(10deg) rotateY(-30deg) rotateZ(0deg) translate3d(0px, 0px, -100px);
     }
   `,
-
+  CardContainer: styled.div`
+    position: relative;
+    /* display: flex;
+    align-items: center; */
+    width: 100%;
+    height: 70%;
+    overflow: hidden;
+  `,
   Card4: styled(Card)`
     position: absolute;
     top: 500px;
@@ -497,24 +526,34 @@ const StyledProject = {
 
       width: 300px;
       height: 200px;
+      cursor: auto;
+
       content: '';
       border-radius: 20px;
-      box-shadow: -50px 50px 150px rgba(0, 0, 0, 0.3);
+      box-shadow: -50px 50px 50px rgba(0, 0, 0, 0.3);
     }
   `,
   ProjectTitle: styled.header`
-    position: absolute;
-    top: 3rem;
-    right: 3rem;
+    height: 96px;
+    margin-bottom: 1rem;
     font-size: ${({ theme }) => theme.heads[1].size};
     font-weight: ${({ theme }) => theme.heads[1].weight};
-    color: ${({ theme }) => theme.colors.subPrimary};
+    color: ${({ theme }) => theme.colors.white};
+    text-shadow: 0px 4px 2px rgba(0, 0, 0, 0.2);
   `,
   BrowserContainer: styled.div`
     position: absolute;
-    right: 3rem;
-    bottom: 3rem;
+    right: 5rem;
     z-index: 9999;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    height: 100%;
+  `,
+  Video: styled.video`
+    width: 100%;
   `,
 };
 
@@ -522,19 +561,24 @@ function ExperiencesAndProjectsPage() {
   const [textReversed, setTextReversed] = useState(false);
   // const [nowPassedExperienceIndex, setNowPassedExperienceIndex] = useState(-1);
 
+  const [isDrawLine, setIsDrawLine] = useState({
+    start: false,
+    end: false,
+  });
+
   useEffect(() => {
     setTextReversed(() => true);
   }, []);
 
-  const projects: readonly ProjectInterface[] = readonly([
+  const projects: readonly ProjectInterface[] = [
     {
       id: 0,
-      title: '웹 포트폴리오 사이트',
+      title: '웹 포트폴리오',
       period: {
         start: '2022.10',
         end: '진행 중',
       },
-      thumbnailImage: '/profile.gif',
+      thumbnail: { type: 'video', src: '/profile.gif' },
 
       contents: [
         {
@@ -557,6 +601,7 @@ function ExperiencesAndProjectsPage() {
             '저만의 웹 포트폴리오 사이트에요 🥰',
             '상단의 탭들을 클릭하면 자세히 볼 수 있어요.',
           ],
+          background: { type: 'video', src: '/projects/portfolio.mp4' },
         },
 
         {
@@ -564,21 +609,13 @@ function ExperiencesAndProjectsPage() {
           type: 'detail',
           title: 'Interaction',
           descriptions: [
-            '숨겨진 인터렉티브 효과들이 많아요.',
-            '제가 만든 앱이 유저에게 기대되는 앱이었으면 좋겠어요.',
+            '아이콘 하나라도 만져보고 싶도록 다양한 인터렉티브 효과들을 시도했어요.',
+            '제가 만든 앱이 유저에게 설레고 기대되는 앱이었으면 좋겠어요.',
           ],
-          images: [
-            {
-              src: '/profile.gif',
-              alt: '테스트',
-              imageDescription: '이런 기능들도 있구요!',
-            },
-            {
-              src: '/profile.gif',
-              alt: '테스트',
-              imageDescription: '이렇게 움직이기도 한답니다! 😉',
-            },
-          ],
+          background: {
+            type: 'video',
+            src: '/projects/portfolio-interaction.mp4',
+          },
         },
 
         {
@@ -587,41 +624,28 @@ function ExperiencesAndProjectsPage() {
           title: 'CICD',
           descriptions: [
             '일일이 반복된 일을 하는 건 너무 번거로워요.',
-            '따라서 배포 및 릴리즈 노트를 자동화했어요.',
-            '꾸준한 이슈 및 PR을 업데이트하는 습관은 덤! 😉',
+            '따라서 배포 및 릴리즈 노트 템플릿 생성을 자동화했어요.',
+            '이슈 및 PR을 업데이트하며 할 일을 체크해요.',
           ],
-          images: [
-            {
-              src: '/profile.gif',
-              alt: 'CICD',
-              imageDescription: '',
-            },
-          ],
-        },
-
-        {
-          id: 1005,
-          type: 'outro',
-          title: '🔗 링크',
-          descriptions: ['어떻게 제작하였는지 궁금하시나요?', '위의 링크를 클릭해 확인해보세요!'],
-          links: [
-            {
-              url: 'https://velog.io/@young_pallete',
-              iconSrc: '/profile.gif',
-            },
-          ],
+          background: {
+            type: 'image',
+            src: '/profile.gif',
+          },
         },
       ],
     },
 
     {
       id: 0,
-      title: 'JS, React Utils',
+      title: 'JS, React Libs',
       period: {
         start: '2022.08',
         end: '진행 중',
       },
-      thumbnailImage: '/profile.gif',
+      thumbnail: {
+        type: 'video',
+        src: '/projects/metaball.mp4',
+      },
 
       contents: [
         {
@@ -633,20 +657,24 @@ function ExperiencesAndProjectsPage() {
             '세상에는 재사용할 수 있을 코드들이 많아요.',
             '언젠가 재사용하기 위해 재미로 삼아 구현한 코드들을 모아놓아요.',
           ],
+          background: {
+            type: 'video',
+            src: '/projects/metaball.mp4',
+          },
         },
 
         {
           id: 1001,
           type: 'detail',
           title: 'Metaball',
-          descriptions: ['메타볼 애니메이션을 구현했어요.'],
-          images: [
-            {
-              src: '/profile.gif',
-              alt: '테스트',
-              imageDescription: '',
-            },
+          descriptions: [
+            '메타볼 애니메이션을 구현했어요.',
+            '터지거나, 제한적으로 이동하는 다양한 옵션을 추가했어요.',
           ],
+          background: {
+            type: 'video',
+            src: '/projects/metaball.mp4',
+          },
         },
 
         {
@@ -655,8 +683,12 @@ function ExperiencesAndProjectsPage() {
           title: 'Calendar',
           descriptions: [
             '노션처럼 일정을 등록하는 캘린더 컴포넌트를 구현했어요.',
-            '쌓일 일정이 빈 칸에 잘 들어가도록 했어요! 🧱',
+            '쌓일 일정이 변경될 때마다 깔끔하게 쌓이도록 구현했어요! 🧱',
           ],
+          background: {
+            type: 'image',
+            src: '/profile.gif',
+          },
         },
 
         {
@@ -667,38 +699,25 @@ function ExperiencesAndProjectsPage() {
             '웹도 앱처럼 페이지 전환 효과가 있다면 어떨까요?',
             '자연스러운 페이지 전환 효과를 만들었어요.',
           ],
-          images: [
-            {
-              src: '/profile.gif',
-              alt: '테스트',
-              imageDescription: '',
-            },
-          ],
-        },
-
-        {
-          id: 1004,
-          type: 'outro',
-          title: '🔗 링크',
-          descriptions: ['제 코드가 궁금하시나요?', '반가워요. 놀러와요! 👋🏻'],
-          links: [
-            {
-              url: 'https://velog.io/@young_pallete',
-              iconSrc: '/profile.gif',
-            },
-          ],
+          background: {
+            type: 'image',
+            src: '/profile.gif',
+          },
         },
       ],
     },
 
     {
       id: 2,
-      title: 'Vue 디자인 시스템 구축',
+      title: 'Design System',
       period: {
         start: '2022.05',
         end: '진행 중',
       },
-      thumbnailImage: '/profile.gif',
+      thumbnail: {
+        type: 'image',
+        src: '/profile.gif',
+      },
 
       contents: [
         {
@@ -707,6 +726,10 @@ function ExperiencesAndProjectsPage() {
           id: 1000,
           skills: ['Vue3', 'Storybook'],
           descriptions: ['Vue 3로 다양한 컴포넌트를 만들었어요.', '한 번 탭들을 눌러 살펴볼까요?'],
+          background: {
+            type: 'image',
+            src: '/profile.gif',
+          },
         },
 
         {
@@ -715,13 +738,10 @@ function ExperiencesAndProjectsPage() {
           id: 1001,
           skills: ['Vue3', 'Storybook'],
           descriptions: ['Carousel을 구현했어요.'],
-          images: [
-            {
-              src: '/profile.gif',
-              alt: '테스트',
-              imageDescription: '',
-            },
-          ],
+          background: {
+            type: 'image',
+            src: '/profile.gif',
+          },
         },
 
         {
@@ -730,37 +750,25 @@ function ExperiencesAndProjectsPage() {
           id: 1002,
           skills: ['Vue3', 'Storybook'],
           descriptions: ['뷰포트에 따라 유기적으로 동작하는 메뉴를 만들었어요.'],
-          images: [
-            {
-              src: '/profile.gif',
-              alt: '테스트',
-              imageDescription: '',
-            },
-          ],
-        },
-        {
-          type: 'outro',
-          title: '🔗 링크',
-          id: 1003,
-          descriptions: ['제 코드가 궁금하신가요?', '반가워요. 놀러와요! 👋🏻'],
-          links: [
-            {
-              url: 'https://velog.io/@young_pallete',
-              iconSrc: '/profile.gif',
-            },
-          ],
+          background: {
+            type: 'image',
+            src: '/profile.gif',
+          },
         },
       ],
     },
 
     {
       id: 3,
-      title: 'See You Letter',
+      title: 'SeeYouLetter',
       period: {
         start: '2022.11',
         end: '진행 중',
       },
-      thumbnailImage: '/profile.gif',
+      thumbnail: {
+        type: 'image',
+        src: '/projects/seeyouletter.png',
+      },
 
       contents: [
         {
@@ -779,21 +787,18 @@ function ExperiencesAndProjectsPage() {
             'AWS',
           ],
           descriptions: [
-            '페이지 제작 서비스를 기획하고 있어요.',
+            '페이지 제작 플랫폼을 기획하고 있어요.',
             '현재 기획 단계에 있으며, 조만간 만날 계획이에요.',
-            'See you later at See You Letter 👋🏻🖐🏻👋🏻',
+            'See you later at See You Letter! 👋🏻🖐🏻👋🏻',
           ],
-          images: [
-            {
-              src: '/profile.gif',
-              alt: '테스트',
-              imageDescription: '',
-            },
-          ],
+          background: {
+            type: 'image',
+            src: '/projects/seeyouletter.png',
+          },
         },
       ],
     },
-  ]);
+  ];
 
   const experiences: readonly ExperienceInterface[] = readonly([
     {
@@ -810,7 +815,7 @@ function ExperiencesAndProjectsPage() {
       skills: ['Vanilla JS', 'React', 'Three.js', 'yarn berry'],
       contents: [
         '모던 자바스크립트 Deep Dive를 기반으로 4개월 간 진행',
-        'Git 관리 전략 설계 및 문서화, 이슈 및 PR Template을 제작하여 자유로운 논의 제안',
+        '스터디원 간 Git 관리 전략 설계 및 문서화',
         '중간 과제를 서로 출제하며 톺아나가는 방식 제안 및 실행',
         '주마다 Tech Blog에 탐구한 지식들 정리하여 게재',
       ],
@@ -831,8 +836,8 @@ function ExperiencesAndProjectsPage() {
       contents: [
         '고객 앱 반응형으로 제작 수행',
         'Git Flow로 Git History 전략 개선, CICD 자동화',
-        '불안정한 패키지 및 Vue2 -> Vue3 마이그레이션 수행',
-        '애플리케이션 랜딩 페이지 구현',
+        'Vue2 -> Vue3 마이그레이션 경험',
+        '랜딩 페이지 구현',
         '원단 관리 페이지 구현',
         '어드민 앱, 고객 앱 유지보수',
       ],
@@ -889,29 +894,25 @@ function ExperiencesAndProjectsPage() {
     },
   ]);
 
+  const [shouldShowHistories, setShouldShowHistories] = useState(
+    new Array(experiences.length).fill(false)
+  );
+
   const experienceRefs = useRef([]);
   experienceRefs.current = experiences.map((_, i) => experienceRefs.current[i] ?? createRef());
 
   const useExperienceRefsCallback = (idx: number) =>
     useRef<IntersectionObserverCallback>((entries) => {
-      /**
-       * @todo
-       * [x] 마주칠 때 점이 보이도록 한다.
-       * [ ] 점과 동시에 사진과 내용이 보이도록 한다.
-       * [x] 스크롤을 올릴 때는 오히려 더 부자연스러울 수 있으니 변경사항이 없도록 무시하자.
-       */
-
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          console.log(idx);
-          // setNowPassedExperienceIndex((nowIndex) => Math.max(nowIndex, idx));
+          setShouldShowHistories((state) => state.map((v, i) => (i === idx ? true : v)));
         }
       });
     });
 
   const experienceOptions = {
-    rootMargin: '-200px',
-    threshold: 1,
+    rootMargin: '-100px',
+    threshold: 0,
   };
 
   useIntersectionObserver(
@@ -985,16 +986,30 @@ function ExperiencesAndProjectsPage() {
       <StyledExperience.Container>
         <StyledExperience.TitleContainer>
           <Gummy texts="exper" delay={0} />
-          <StyledExperience.ReverseText reversed={textReversed}>i</StyledExperience.ReverseText>
+          <StyledExperience.ReverseText
+            onAnimationEnd={() => setIsDrawLine((state) => ({ ...state, start: true }))}
+            reversed={textReversed}
+          >
+            i
+          </StyledExperience.ReverseText>
           <Gummy texts="ences" delay={0} />
         </StyledExperience.TitleContainer>
 
-        <StyledExperience.LineContainer length={experienceRefs.current.length}>
-          <StyledExperience.Line length={experienceRefs.current.length} />
-          {experiences.map((nowExperience) => (
-            <StyledExperience.ExperienceContainer key={nowExperience.id}>
+        <StyledExperience.LineContainer>
+          <StyledExperience.Line
+            draw={isDrawLine.start}
+            onTransitionEnd={() => setIsDrawLine((state) => ({ ...state, end: true }))}
+          />
+          {experiences.map((nowExperience, idx) => (
+            <StyledExperience.ExperienceContainer
+              key={nowExperience.id}
+              ref={experienceRefs.current[idx]}
+            >
               <StyledGitGraph.Container>
-                <StyledGitGraph.Branch.Container>
+                <StyledGitGraph.Branch.Container
+                  draw={isDrawLine.start}
+                  shouldShowHistories={shouldShowHistories[idx]}
+                >
                   <StyledGitGraph.Branch.MergedCommitContainer>
                     <StyledGitGraph.Branch.MergedBranch />
                     <StyledGitGraph.Branch.MergedCommit>
@@ -1039,14 +1054,11 @@ function ExperiencesAndProjectsPage() {
 
         <StyledPage.Projects onMouseOverCapture={onMouseOver} perspective={perspective}>
           <StyledProject.Card1 onClick={() => onClickCard(0)}>
-            <div>
-              <Image src="/profile.gif" layout="fill" objectFit="contain" />
-            </div>
+            {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+            <StyledProject.Video autoPlay muted loop src="/projects/portfolio.mp4" />
           </StyledProject.Card1>
           <StyledProject.Card2 onClick={() => onClickCard(1)}>
-            <div>
-              <Image src="/profile.gif" layout="fill" objectFit="contain" />
-            </div>
+            <StyledProject.Video src="/projects/metaball.mp4" autoPlay muted loop />
           </StyledProject.Card2>
           <StyledProject.Card3 onClick={() => onClickCard(2)}>
             <div>
@@ -1054,20 +1066,24 @@ function ExperiencesAndProjectsPage() {
             </div>
           </StyledProject.Card3>
           <StyledProject.Card4 onClick={() => onClickCard(3)}>
-            <div>
-              <Image src="/profile.gif" layout="fill" objectFit="contain" />
-            </div>
+            <StyledProject.CardContainer>
+              <Image src="/projects/seeyouletter.png" layout="fill" objectPosition="center" />
+            </StyledProject.CardContainer>
           </StyledProject.Card4>
 
-          {projectIndex >= 0 && (
-            <CollapsedText x={1900} y={0} direction="LEFT">
-              <StyledProject.ProjectTitle>
-                <Gummy texts={projects[projectIndex].title} delay={0} options={{ isGummy: true }} />
-              </StyledProject.ProjectTitle>
-            </CollapsedText>
-          )}
-
           <StyledProject.BrowserContainer>
+            <StyledProject.ProjectTitle>
+              {projectIndex >= 0 && (
+                <CollapsedText x={1900} y={0} direction="LEFT">
+                  <Gummy
+                    texts={projects[projectIndex].title}
+                    delay={0}
+                    options={{ isGummy: true }}
+                  />
+                </CollapsedText>
+              )}
+            </StyledProject.ProjectTitle>
+
             <Browser project={projects[projectIndex] ?? null} projectIndex={projectIndex} />
           </StyledProject.BrowserContainer>
         </StyledPage.Projects>
