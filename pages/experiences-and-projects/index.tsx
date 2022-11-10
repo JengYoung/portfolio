@@ -254,11 +254,36 @@ const StyledExperience = {
       content: '- ';
     }
   `,
-  Images: styled.ul`
+  Images: styled.ul<{ draw: boolean; shouldShowHistories: boolean }>`
     position: absolute;
+    display: none;
     width: 100%;
     height: 100%;
+    opacity: 0;
+    transition: all 0.3s;
     perspective: 100vw;
+
+    ${({ draw, shouldShowHistories }) =>
+      draw &&
+      shouldShowHistories &&
+      css`
+        display: block;
+        animation: image-occur 1s ease-out forwards;
+        animation-delay: 0.75s;
+        @keyframes image-occur {
+          0% {
+            opacity: 0;
+            transform: translateY(0.5rem);
+          }
+          50% {
+            opacity: 1;
+            transform: translateY(-0.5rem);
+          }
+          100% {
+            opacity: 1;
+          }
+        }
+      `}
   `,
 };
 
@@ -962,7 +987,7 @@ function ExperiencesAndProjectsPage() {
             {
               iconSrc: '/figma.png',
               href: 'https://www.figma.com/file/q5xaTRyIEc0dKaici9EETe/dev-course-final-6th?node-id=0%3A1',
-              name: 'Figma(Wireframe)',
+              name: 'Figma (Wireframe)',
             },
           ],
         },
@@ -1147,7 +1172,10 @@ function ExperiencesAndProjectsPage() {
               key={nowExperience.id}
               ref={experienceRefs.current[idx]}
             >
-              <StyledExperience.Images>
+              <StyledExperience.Images
+                draw={isDrawLine.start}
+                shouldShowHistories={shouldShowHistories[idx]}
+              >
                 {nowExperience.images.map((obj) => (
                   <StyledExperience.ImageContainer>
                     <LinksImage

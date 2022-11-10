@@ -69,6 +69,9 @@ const StyledLinks = {
       background-color: #ccc;
     }
   `,
+  LinkContainer: styled.div`
+    text-align: center;
+  `,
   LinkIcon: styled.div`
     position: relative;
     width: 4rem;
@@ -124,14 +127,16 @@ function LinksImage({ image, links, imageOptions }: LinksImageInterface<string>)
       </Styled.ImageContainer>
       <StyledLinks.Links>
         {links.map((link) => (
-          <StyledLinks.Link key={link.name}>
-            <a id={link.name} href={link.href} target="_blank" rel="noopener noreferrer">
-              <StyledLinks.LinkIcon>
-                <Image src={link.iconSrc} alt={image.alt} layout="fill" objectFit="cover" />
-              </StyledLinks.LinkIcon>
-              {link.name}
-            </a>
-          </StyledLinks.Link>
+          <StyledLinks.LinkContainer key={link.name}>
+            <StyledLinks.Link>
+              <a id={link.name} href={link.href} target="_blank" rel="noopener noreferrer">
+                <StyledLinks.LinkIcon>
+                  <Image src={link.iconSrc} alt={image.alt} layout="fill" objectFit="cover" />
+                </StyledLinks.LinkIcon>
+              </a>
+            </StyledLinks.Link>
+            {link.name}
+          </StyledLinks.LinkContainer>
         ))}
       </StyledLinks.Links>
     </Styled.Container>
