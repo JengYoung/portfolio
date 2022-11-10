@@ -72,9 +72,6 @@ function Browser({ project, projectIndex }: BrowserProps) {
             />
           ))}
 
-        {/* 
-          NOTE: Initialized Screen View
-          */}
         {projectIndex < 0 && (
           <>
             <Styled.InitText>왼쪽의 프로젝트를</Styled.InitText>

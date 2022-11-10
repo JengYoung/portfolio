@@ -39,14 +39,20 @@ interface LinksImageInterface<T> {
 const StyledLinks = {
   Links: styled.ul`
     position: absolute;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     width: 100%;
     height: 100%;
+
     background-color: rgba(0, 0, 0, 0.7);
+
     border-radius: 50px;
+
     opacity: 0;
+
     transition: all 0.3s;
 
     &:hover {
@@ -56,12 +62,17 @@ const StyledLinks = {
   `,
   Link: styled.li`
     width: 6rem;
+
     padding: 1rem;
     margin: 0rem 1rem;
+
     font-size: ${({ theme }) => theme.fontSizes.xs};
     color: black;
+
     text-align: center;
+
     background-color: white;
+
     border-radius: 20px;
     transition: all 0.3s;
 
@@ -86,9 +97,12 @@ const Styled = {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
     width: ${({ size }) => size.width};
     height: ${({ size }) => size.height};
+
     overflow: hidden;
+
     border-radius: 50px;
 
     ${({ bg }) =>
@@ -107,10 +121,12 @@ const Styled = {
   `,
   ImageContainer: styled.div`
     position: relative;
+
     width: 100%;
     height: 100%;
-    /* overflow: hidden; */
+
     border-radius: 50px;
+
     box-shadow: -1rem 1rem 1rem rgba(0, 0, 0, 0.5);
   `,
 };

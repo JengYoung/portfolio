@@ -2,8 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import styled from '@emotion/styled';
 
-import readonly from '@utils/readonly';
-
 interface GummyOptions {
   isGummy?: boolean;
   infinite?: boolean;
@@ -20,10 +18,10 @@ interface TextStateInterface {
   value: string;
 }
 
-const Classes = readonly({
+const Classes = {
   gummy: 'text--gummy',
   default: 'text--default',
-});
+};
 
 const Styled = {
   Container: styled.div`
@@ -175,6 +173,11 @@ function Gummy({ texts, delay, options }: GummyPropsInterface) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [addClassName, removeClassName, options?.infinite]);
 
+  /**
+   * @inner
+   * ' '일 경우, 리액트가 안의 내용물을 불필요하다고 감지한다.
+   * 따라서 이를 별도로 처리할 수 있도록 분기처리했다.
+   */
   return (
     <Styled.Container>
       {textsState.map((text) =>
