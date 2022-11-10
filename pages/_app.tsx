@@ -30,8 +30,8 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     <ThemeProvider theme={globalTheme}>
       <Global styles={globalStyle} />
       <RecoilRoot>
-        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-        {getLayout(<Component {...pageProps} />)}
+        {/* eslint-disable react/jsx-props-no-spreading */}
+        {getLayout(<Component key={Component.prototype.constructor.name} {...pageProps} />)}
       </RecoilRoot>
     </ThemeProvider>
   );

@@ -9,6 +9,7 @@ import { Browser, ProjectInterface } from '@components/Browser';
 import LinksImage, { ImageSizeOption } from '@components/Links/LinksImage';
 import { CollapsedText } from '@components/Text';
 import Gummy from '@components/Text/Gummy';
+import { getBaseLayout } from '@components/layouts';
 
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
 
@@ -1146,7 +1147,7 @@ function ExperiencesAndProjectsPage() {
                 shouldShowHistories={shouldShowHistories[idx]}
               >
                 {nowExperience.images.map((obj) => (
-                  <StyledExperience.ImageContainer>
+                  <StyledExperience.ImageContainer key={obj.src}>
                     <LinksImage
                       image={{ src: obj.src, alt: obj.alt }}
                       imageOptions={{
@@ -1247,4 +1248,5 @@ function ExperiencesAndProjectsPage() {
   );
 }
 
+ExperiencesAndProjectsPage.getLayout = getBaseLayout;
 export default ExperiencesAndProjectsPage;

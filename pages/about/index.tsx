@@ -10,6 +10,7 @@ import { GradientType } from '@components/Metaball/types';
 import { ScrollMouse } from '@components/Mouse';
 import { CollapsedText } from '@components/Text';
 import Gummy from '@components/Text/Gummy';
+import { getBaseLayout } from '@components/layouts';
 
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
 import useMetaball from '@hooks/useMetaball';
@@ -974,5 +975,5 @@ function AboutPage() {
     </Styled.Page>
   );
 }
-
+AboutPage.getLayout = getBaseLayout;
 export default AboutPage;

@@ -18,12 +18,8 @@ function Base() {
       url: '/about',
     },
     {
-      name: 'SKILLS',
-      url: '/skills',
-    },
-    {
       name: 'EXPERIENCES',
-      url: '/experiences',
+      url: '/experiences-and-projects',
     },
   ];
 
