@@ -6,6 +6,7 @@ import Image from 'next/image';
 import styled from '@emotion/styled';
 
 import { Browser } from '@components/Browser';
+import LinksImage, { ImageSizeOption } from '@components/Links/LinksImage';
 import { CollapsedText } from '@components/Text';
 import Gummy from '@components/Text/Gummy';
 
@@ -55,6 +56,12 @@ interface ExperienceInterface {
   };
   skills: string[];
   contents: string[];
+  images: {
+    src: string;
+    alt: string;
+    options: Omit<ImageSizeOption<string>, 'size'>;
+    links: { href: string; name: string; iconSrc: string }[];
+  }[];
 }
 
 const StyledPage = {
@@ -169,7 +176,6 @@ const StyledExperience = {
     height: 100%;
     margin: 5rem 0;
   `,
-  /* height: ${EXPERIENCE_CIRCLE_INTERVAL_SIZE}px; */
   Circle: styled.div<{ index: number; visible: boolean }>`
     z-index: 1;
     width: 3rem;
@@ -202,13 +208,31 @@ const StyledExperience = {
         }
       `};
   `,
-  ImageContainer: styled.div<{ index: number }>`
-    position: relative;
-    top: calc(-173px + 1.5rem);
-    width: 573px;
-    height: 346px;
-    margin-left: auto;
-    background: black;
+  ImageContainer: styled.div`
+    position: absolute;
+    border-radius: 50px;
+    box-shadow: -4px 10px 10px 10px rgba(0, 0, 0, 0.3);
+    &:first-of-type,
+    &:nth-of-type(2n) {
+      left: 5rem;
+      transform: rotateY(30deg) rotateZ(-10deg);
+    }
+    &:last-of-type&:not(:first-of-type),
+    &:nth-of-type(2n + 3) {
+      top: 10rem;
+      left: 17.5rem;
+      transform: rotateY(-30deg) rotateZ(20deg);
+      transform-origin: right;
+    }
+    :nth-of-type(2) {
+      top: 20rem;
+      transform: rotateY(-20deg) rotateZ(-30deg) scale(0.95);
+    }
+    :nth-of-type(2n + 3) {
+      top: 27rem;
+      left: 20rem;
+      transform: rotateY(-20deg) rotateZ(10deg) scale(1.1);
+    }
   `,
   Details: styled.section`
     position: relative;
@@ -229,6 +253,12 @@ const StyledExperience = {
     &:before {
       content: '- ';
     }
+  `,
+  Images: styled.ul`
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    perspective: 100vw;
   `,
 };
 
@@ -413,8 +443,9 @@ const Card = styled.div`
   border-radius: 20px;
   transition: all 0.3s;
   transform-style: preserve-3d;
+
   &:hover {
-    background-color: #ddd;
+    background-color: #eeeeee;
   }
 `;
 
@@ -810,7 +841,30 @@ function ExperiencesAndProjectsPage() {
         end: '2022.11',
       },
 
-      images: ['/profile.gif'],
+      images: [
+        {
+          src: '/experiences/js-study-1.png',
+          alt: '자바스크립트 스터디 블로그',
+          links: [
+            {
+              iconSrc: '/velog.png',
+              href: 'https://velog.io/@young_pallete/series/REAL-JavaScript-Deep-Dive',
+              name: 'Velog',
+            },
+          ],
+        },
+        {
+          src: '/experiences/js-study-2.png',
+          alt: '자바스크립트 스터디 중간 미션',
+          links: [
+            {
+              iconSrc: '/github.png',
+              href: 'https://github.com/FE-DeepDive/JavaScript-DeepDive',
+              name: 'GitHub',
+            },
+          ],
+        },
+      ],
 
       skills: ['Vanilla JS', 'React', 'Three.js', 'yarn berry'],
       contents: [
@@ -830,7 +884,19 @@ function ExperiencesAndProjectsPage() {
         end: '2022.08',
       },
 
-      images: ['/profile.gif'],
+      images: [
+        {
+          src: '/experiences/faai.png',
+          alt: 'FAAI 랜딩 페이지 사진',
+          links: [
+            {
+              iconSrc: '/faai-logo.png',
+              href: 'https://apps.faai.io',
+              name: 'deprecated😭',
+            },
+          ],
+        },
+      ],
 
       skills: ['Quasar', 'Vue', 'Tailwind CSS', 'AWS', 'Github Actions'],
       contents: [
@@ -852,7 +918,19 @@ function ExperiencesAndProjectsPage() {
         end: '진행 중',
       },
 
-      images: ['/profile.gif'],
+      images: [
+        {
+          src: '/experiences/algo-study-1.png',
+          alt: '프로필 사진',
+          links: [
+            {
+              iconSrc: '/notion.png',
+              href: 'https://www.notion.so/hysoung/76b0f59af9dd4765b7899b58bfabb5d9',
+              name: 'Notion',
+            },
+          ],
+        },
+      ],
 
       skills: ['Vanilla JS'],
       contents: [
@@ -871,7 +949,69 @@ function ExperiencesAndProjectsPage() {
         end: '2021.11',
       },
 
-      images: ['/profile.gif'],
+      images: [
+        {
+          src: '/experiences/dev-course-everevent-1.png',
+          alt: 'Everevent Thumbnail',
+          links: [
+            {
+              iconSrc: '/github.png',
+              href: 'https://github.com/prgrms-web-devcourse/Team_Everevent_Kazedon_FE',
+              name: 'GitHub',
+            },
+            {
+              iconSrc: '/figma.png',
+              href: 'https://www.figma.com/file/q5xaTRyIEc0dKaici9EETe/dev-course-final-6th?node-id=0%3A1',
+              name: 'Figma(Wireframe)',
+            },
+          ],
+        },
+
+        {
+          src: '/experiences/dev-course-everevent-2.png',
+          alt: 'Everevent TWL',
+          links: [
+            {
+              iconSrc: '/notion.png',
+              href: 'https://github.com/FE-DeepDive/JavaScript-DeepDive',
+              name: 'Notion',
+            },
+          ],
+        },
+
+        {
+          src: '/experiences/dev-course-mogakco-1.gif',
+          alt: '달리는 모각코 시연',
+          links: [
+            {
+              iconSrc: '/github.png',
+              href: 'https://github.com/prgrms-fe-devcourse/FEDC1_Mogakco_Dali2',
+              name: 'GitHub (Privated)',
+            },
+            {
+              iconSrc: '/figma.png',
+              href: 'https://www.figma.com/file/LG4OgrH8Gh9weQnuGfsGeh/Dali-mogakco?node-id=0%3A1',
+              name: 'Figma (Wireframe)',
+            },
+          ],
+          options: {
+            objectFit: 'contain',
+            bg: '#333',
+          },
+        },
+
+        {
+          src: '/experiences/dev-course-mogakco-2.png',
+          alt: '달리는 모각코 TWL',
+          links: [
+            {
+              iconSrc: '/notion.png',
+              href: 'https://github.com/FE-DeepDive/JavaScript-DeepDive',
+              name: 'Notion',
+            },
+          ],
+        },
+      ],
 
       skills: [
         'HTML5',
@@ -890,6 +1030,7 @@ function ExperiencesAndProjectsPage() {
         '11월 배움 기록왕 선정',
         '모각코 애플리케이션 개발(달리는 모각코)',
         '8월 이달의 스피커 선정',
+        '주마다 TIL 기록 및 과제 수행',
       ],
     },
   ]);
@@ -1000,11 +1141,30 @@ function ExperiencesAndProjectsPage() {
             draw={isDrawLine.start}
             onTransitionEnd={() => setIsDrawLine((state) => ({ ...state, end: true }))}
           />
+
           {experiences.map((nowExperience, idx) => (
             <StyledExperience.ExperienceContainer
               key={nowExperience.id}
               ref={experienceRefs.current[idx]}
             >
+              <StyledExperience.Images>
+                {nowExperience.images.map((obj) => (
+                  <StyledExperience.ImageContainer>
+                    <LinksImage
+                      image={{ src: obj.src, alt: obj.alt }}
+                      imageOptions={{
+                        size: {
+                          width: nowExperience.images.length === 1 ? '22.5rem' : '15rem',
+                          height: nowExperience.images.length === 1 ? '22.5rem' : '15rem',
+                        },
+                        objectFit: obj.options?.objectFit ?? 'cover',
+                        bg: obj.options?.bg,
+                      }}
+                      links={obj.links}
+                    />
+                  </StyledExperience.ImageContainer>
+                ))}
+              </StyledExperience.Images>
               <StyledGitGraph.Container>
                 <StyledGitGraph.Branch.Container
                   draw={isDrawLine.start}
@@ -1061,9 +1221,7 @@ function ExperiencesAndProjectsPage() {
             <StyledProject.Video src="/projects/metaball.mp4" autoPlay muted loop />
           </StyledProject.Card2>
           <StyledProject.Card3 onClick={() => onClickCard(2)}>
-            <div>
-              <Image src="/profile.gif" layout="fill" objectFit="contain" />
-            </div>
+            <Image src="/profile.gif" layout="fill" objectFit="contain" />
           </StyledProject.Card3>
           <StyledProject.Card4 onClick={() => onClickCard(3)}>
             <StyledProject.CardContainer>
