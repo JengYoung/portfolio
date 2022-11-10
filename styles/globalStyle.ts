@@ -23,6 +23,8 @@ const globalStyle = css`
   * {
     box-sizing: border-box;
   }
+
+  p,
   h1,
   h2,
   h3,
