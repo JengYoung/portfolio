@@ -212,23 +212,23 @@ const StyledExperience = {
     position: absolute;
     border-radius: 50px;
     box-shadow: -4px 10px 10px 10px rgba(0, 0, 0, 0.3);
-    &:first-of-type,
-    &:nth-of-type(2n) {
+    &:first-of-type {
       left: 5rem;
       transform: rotateY(30deg) rotateZ(-10deg);
     }
     &:last-of-type&:not(:first-of-type),
-    &:nth-of-type(2n + 3) {
+    &:nth-of-type(2n + 2) {
       top: 10rem;
       left: 17.5rem;
       transform: rotateY(-30deg) rotateZ(20deg);
       transform-origin: right;
     }
-    :nth-of-type(2) {
+    &:nth-of-type(2n + 3) {
       top: 20rem;
-      transform: rotateY(-20deg) rotateZ(-30deg) scale(0.95);
+      left: 5rem;
+      transform: rotateY(30deg) rotateZ(-10deg);
     }
-    :nth-of-type(2n + 3) {
+    &:last-of-type&:not(:first-of-type)&:nth-of-type(n + 4) {
       top: 27rem;
       left: 20rem;
       transform: rotateY(-20deg) rotateZ(10deg) scale(1.1);
@@ -987,7 +987,7 @@ function ExperiencesAndProjectsPage() {
             {
               iconSrc: '/figma.png',
               href: 'https://www.figma.com/file/q5xaTRyIEc0dKaici9EETe/dev-course-final-6th?node-id=0%3A1',
-              name: 'Figma (Wireframe)',
+              name: 'Figma ',
             },
           ],
         },
@@ -998,7 +998,7 @@ function ExperiencesAndProjectsPage() {
           links: [
             {
               iconSrc: '/notion.png',
-              href: 'https://github.com/FE-DeepDive/JavaScript-DeepDive',
+              href: 'https://oranjik.notion.site/Programmers-6-bc57a5a7efed4fd1872261fcb5e0fdac',
               name: 'Notion',
             },
           ],
@@ -1016,7 +1016,7 @@ function ExperiencesAndProjectsPage() {
             {
               iconSrc: '/figma.png',
               href: 'https://www.figma.com/file/LG4OgrH8Gh9weQnuGfsGeh/Dali-mogakco?node-id=0%3A1',
-              name: 'Figma (Wireframe)',
+              name: 'Figma',
             },
           ],
           options: {
@@ -1031,7 +1031,7 @@ function ExperiencesAndProjectsPage() {
           links: [
             {
               iconSrc: '/notion.png',
-              href: 'https://github.com/FE-DeepDive/JavaScript-DeepDive',
+              href: 'https://jayday.notion.site/jayday/2-05e5cbd74c2441adad8439810cce1be8',
               name: 'Notion',
             },
           ],
