@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 import styled from '@emotion/styled';
 
-import { Browser } from '@components/Browser';
+import { Browser, ProjectInterface } from '@components/Browser';
 import LinksImage, { ImageSizeOption } from '@components/Links/LinksImage';
 import { CollapsedText } from '@components/Text';
 import Gummy from '@components/Text/Gummy';
@@ -14,37 +14,6 @@ import useIntersectionObserver from '@hooks/useIntersectionObserver';
 
 import readonly from '@utils/readonly';
 import throttle from '@utils/throttle';
-
-type AssetType = {
-  type: string;
-  src: string;
-};
-interface BaseContentsInterface {
-  id: number;
-  type: string;
-  title: string;
-  descriptions: string[];
-  background: AssetType;
-}
-
-interface IntroContents extends BaseContentsInterface {
-  skills: string[];
-}
-
-interface DetailContents extends BaseContentsInterface {
-  images?: { src: string; alt: string; contents?: string }[];
-}
-
-export interface ProjectInterface {
-  id: number;
-  title: string;
-  period: {
-    start: string;
-    end: string;
-  };
-  thumbnail: AssetType;
-  contents: (IntroContents | DetailContents)[];
-}
 
 interface ExperienceInterface {
   id: number;

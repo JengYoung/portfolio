@@ -2,16 +2,10 @@ import React, { useEffect, useState } from 'react';
 
 import Image from 'next/image';
 
-import { ProjectInterface } from '@pages/experiences-and-projects';
-
 import Gummy from '@components/Text/Gummy';
 
 import { Styled } from './styles';
-
-interface BrowserProps {
-  project: ProjectInterface | null;
-  projectIndex: number;
-}
+import { BrowserProps } from './types';
 
 function Browser({ project, projectIndex }: BrowserProps) {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
