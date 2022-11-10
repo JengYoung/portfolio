@@ -14,7 +14,7 @@ export interface TerminalAtomStateInterface {
 }
 
 const IntroTarminalAtom = atom<TerminalAtomStateInterface>({
-  key: 'Intro/Terminal',
+  key: 'intro/terminal',
   default: {
     mode: null,
     loading: false,

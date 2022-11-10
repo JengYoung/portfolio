@@ -6,6 +6,7 @@ import type { AppProps } from 'next/app';
 
 import { RecoilRoot } from 'recoil';
 
+// import Navigator from '@components/Navigator/Navigator';
 import { globalStyle, globalTheme } from '@styles/index';
 
 /**
@@ -25,7 +26,6 @@ export type AppPropsWithLayout = AppProps & {
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   // NOTE: 이는 Next.js에서 기본적으로 주어진 코드이므로 그냥 사용하려 한다.
   const getLayout = Component.getLayout ?? ((page) => page);
-
   return (
     <ThemeProvider theme={globalTheme}>
       <Global styles={globalStyle} />

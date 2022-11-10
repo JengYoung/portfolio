@@ -7,7 +7,7 @@ import styled from '@emotion/styled';
 
 import { ScrollMouse } from '@components/Mouse';
 import { Terminal } from '@components/Terminal';
-import { getBaseLayout } from '@components/layouts';
+import { getIntroLayout } from '@components/layouts';
 
 import { useLocalStorage } from '@hooks/useLocalStorage';
 
@@ -129,5 +129,5 @@ function HomePage() {
   );
 }
 
-HomePage.getLayout = getBaseLayout;
+HomePage.getLayout = getIntroLayout;
 export default HomePage;
