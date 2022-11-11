@@ -6,14 +6,9 @@ import CopyStyle from '@components/Text';
 
 const CommonStyle = {
   Header: css`
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 9999;
-
     display: flex;
     align-items: center;
+    max-width: 1440px;
   `,
   Circles: css`
     position: absolute;
@@ -71,8 +66,17 @@ export const StyledIntro = {
 };
 
 export const StyledBase = {
+  Container: styled.div`
+    position: fixed;
+    top: 0;
+    z-index: 9999;
+    width: 100vw;
+    margin: 0 auto;
+  `,
+
   Header: styled.header<{ isScrollDown: boolean }>`
     height: 4rem;
+    margin: 0 auto;
 
     background: transparent;
 

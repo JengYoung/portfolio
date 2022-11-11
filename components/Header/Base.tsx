@@ -7,7 +7,10 @@ import useWindow from '@hooks/useWindow';
 
 import { StyledBase } from './styles';
 
-function Base() {
+interface BasePropsInterface {
+  hidden?: boolean;
+}
+function Base({ hidden }: BasePropsInterface) {
   const Links = [
     {
       name: 'HOME',
@@ -27,19 +30,25 @@ function Base() {
   const { windowState } = useWindow(['location']);
 
   return (
-    <StyledBase.Header isScrollDown={isScrollDown}>
-      <StyledBase.Links>
-        {Links.map((link) => (
-          <StyledBase.LinkContainer
-            isActive={new RegExp(windowState.location?.pathname).test(link.url)}
-            key={link.name}
-          >
-            <Link href={link.url}>{link.name}</Link>
-          </StyledBase.LinkContainer>
-        ))}
-      </StyledBase.Links>
-    </StyledBase.Header>
+    <StyledBase.Container hidden={hidden}>
+      <StyledBase.Header isScrollDown={isScrollDown}>
+        <StyledBase.Links>
+          {Links.map((link) => (
+            <StyledBase.LinkContainer
+              isActive={new RegExp(windowState.location?.pathname).test(link.url)}
+              key={link.name}
+            >
+              <Link href={link.url}>{link.name}</Link>
+            </StyledBase.LinkContainer>
+          ))}
+        </StyledBase.Links>
+      </StyledBase.Header>
+    </StyledBase.Container>
   );
 }
+
+Base.defaultProps = {
+  hidden: false,
+};
 
 export default Base;

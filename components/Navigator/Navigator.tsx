@@ -19,24 +19,25 @@ const Styled = {
     display: flex;
     height: 100vh;
     perspective: 100vw;
+    overflow: hidden;
   `,
   Prev: styled(Page)`
     position: relative;
     z-index: -1000;
     transform-origin: center;
 
-    /* animation: ${({ direction, navigating }) =>
+    animation: ${({ direction, navigating }) =>
       navigating
         ? ` navigate-page-prev-${direction} 1s forwards;
       `
-        : ``}; */
+        : ``};
 
     @keyframes navigate-page-prev-left {
       from {
         transform: translateX(0%);
       }
       to {
-        transform: translateX(-10%);
+        transform: translateX(-100%);
       }
     }
     @keyframes navigate-page-prev-right {
@@ -44,7 +45,7 @@ const Styled = {
         transform: translateX(0%);
       }
       to {
-        transform: translateX(10%);
+        transform: translateX(100%);
       }
     }
     @keyframes navigate-page-up {
@@ -52,7 +53,7 @@ const Styled = {
         transform: translateY(0%);
       }
       to {
-        transform: translateY(-10%);
+        transform: translateY(-100%);
       }
     }
 
@@ -61,7 +62,7 @@ const Styled = {
         transform: translateY(0%);
       }
       to {
-        transform: translateY(10%);
+        transform: translateY(100%);
       }
     }
   `,
@@ -189,11 +190,13 @@ function Navigator({ direction, children }: NavigatorInterface) {
 
   return (
     <Styled.Navigator id="navigator">
-      {navigatorState.prevPage && (
-        <Styled.Prev direction={finalDirection} navigating={navigatorState.navigating}>
-          {navigatorState.prevPage}
-        </Styled.Prev>
-      )}
+      {navigatorState.prevKey !== router.pathname &&
+        navigatorState.navigating &&
+        navigatorState.prevPage && (
+          <Styled.Prev direction={finalDirection} navigating={navigatorState.navigating}>
+            {navigatorState.prevPage}
+          </Styled.Prev>
+        )}
 
       <Styled.Now
         key={router.pathname}
