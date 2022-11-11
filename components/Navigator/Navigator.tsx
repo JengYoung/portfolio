@@ -1,4 +1,11 @@
-import React, { AnimationEvent, useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import React, {
+  AnimationEvent,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
 import { useRouter } from 'next/router';
 
@@ -120,6 +127,8 @@ interface NavigatorInterface {
 function Navigator({ direction, children }: NavigatorInterface) {
   const router = useRouter();
 
+  const pageRef = useRef<HTMLDivElement>(null);
+
   const [navigatorState, setNavigatorState] = useRecoilState(NavigatorAtom);
   const [isFinished, setIsFinished] = useState(false);
 
@@ -162,6 +171,15 @@ function Navigator({ direction, children }: NavigatorInterface) {
   }, [setNavigatorState]);
 
   useEffect(() => {
+    if (pageRef.current === null) return;
+
+    pageRef.current.addEventListener('scroll', () => {
+      const customEvent = new CustomEvent('page-scroll', { detail: { name: 'hi' } });
+      window.dispatchEvent(customEvent);
+    });
+  }, [pageRef]);
+
+  useEffect(() => {
     setNavigatorState((state) => ({
       ...state,
       navigating: true,
@@ -202,6 +220,7 @@ function Navigator({ direction, children }: NavigatorInterface) {
         )}
 
       <Styled.Now
+        ref={pageRef}
         key={router.pathname}
         id="now"
         isFirstRender={!navigatorState.prevKey || navigatorState.prevKey === router.pathname}

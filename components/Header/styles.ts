@@ -75,14 +75,14 @@ export const StyledBase = {
   `,
 
   Header: styled.header<{ isScrollDown: boolean }>`
-    height: 4rem;
+    height: 3rem;
     margin: 0 auto;
 
     background: transparent;
 
     /* border-bottom: 1px solid #aaa; */
 
-    background: rgba(256, 256, 256, 0.1);
+    background: black;
     transition: all 0.3s;
     ${CommonStyle.Header}
 

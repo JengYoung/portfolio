@@ -36,6 +36,7 @@ const Styled = {
     justify-content: center;
 
     width: 100%;
+    height: calc(100vh + 4px);
 
     &::before,
     &::after {
