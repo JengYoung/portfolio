@@ -10,6 +10,7 @@ import { GradientType } from '@components/Metaball/types';
 import { ScrollMouse } from '@components/Mouse';
 import { CollapsedText } from '@components/Text';
 import Gummy from '@components/Text/Gummy';
+import { getBaseLayout } from '@components/layouts';
 
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
 import useMetaball from '@hooks/useMetaball';
@@ -483,6 +484,7 @@ function AboutPage() {
   ];
 
   const canvasRef = useRef(null);
+
   useMetaball({
     canvasRef,
     gradient: initialGradientColors,
@@ -654,18 +656,29 @@ function AboutPage() {
     rootMargin: '-200px',
   });
 
+  const pageRef = useRef<HTMLElement>(null);
+
   useEffect(() => {
-    const { clientHeight } = document.body;
+    if (pageRef.current === null) return;
+
+    const { height: clientHeight, y } = pageRef.current.getBoundingClientRect();
+
     if (headerState.y === 0) {
       setHeaderState((state) => ({
         ...state,
-        y: window.scrollY,
+        y: y * -1,
       }));
-      return undefined;
+
+      return;
     }
 
     const onScroll = throttle(() => {
-      const { scrollY, innerHeight } = window;
+      if (pageRef.current === null) return;
+
+      const { innerHeight } = window;
+
+      const scrollY = pageRef.current.getBoundingClientRect().y * -1;
+
       if (clientHeight + innerHeight <= scrollY) return;
 
       const diffScroll = scrollY - headerState.y;
@@ -679,6 +692,7 @@ function AboutPage() {
           origin: 'top left',
           opacity: Math.max(diffRate, 0.3),
         }));
+
         return;
       }
 
@@ -690,6 +704,8 @@ function AboutPage() {
         origin: 'top left',
         opacity: 0.3,
       }));
+
+      return undefined;
     }, 20);
 
     if (headerState.isActive) {
@@ -859,7 +875,7 @@ function AboutPage() {
   ];
 
   return (
-    <Styled.Page>
+    <Styled.Page ref={pageRef}>
       <Styled.Introduction>
         <ForwardedCanvas width={minWidth} height={minHeight} ref={canvasRef} />
         <Styled.IntroductionMainCopy>
@@ -974,5 +990,5 @@ function AboutPage() {
     </Styled.Page>
   );
 }
-
+AboutPage.getLayout = getBaseLayout;
 export default AboutPage;

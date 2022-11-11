@@ -25,13 +25,12 @@ export type AppPropsWithLayout = AppProps & {
 function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   // NOTE: 이는 Next.js에서 기본적으로 주어진 코드이므로 그냥 사용하려 한다.
   const getLayout = Component.getLayout ?? ((page) => page);
-
   return (
     <ThemeProvider theme={globalTheme}>
       <Global styles={globalStyle} />
       <RecoilRoot>
-        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
-        {getLayout(<Component {...pageProps} />)}
+        {/* eslint-disable react/jsx-props-no-spreading */}
+        {getLayout(<Component key={Component.prototype.constructor.name} {...pageProps} />)}
       </RecoilRoot>
     </ThemeProvider>
   );
