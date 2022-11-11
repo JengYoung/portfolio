@@ -709,13 +709,13 @@ function AboutPage() {
     }, 20);
 
     if (headerState.isActive) {
-      window.addEventListener('page-scroll', onScroll);
+      window.addEventListener('scroll', onScroll);
     } else {
-      window.removeEventListener('page-scroll', onScroll);
+      window.removeEventListener('scroll', onScroll);
     }
 
     return () => {
-      window.removeEventListener('page-scroll', onScroll);
+      window.removeEventListener('scroll', onScroll);
     };
   }, [headerState.isActive, headerState.y]);
 

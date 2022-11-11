@@ -170,14 +170,24 @@ function Navigator({ direction, children }: NavigatorInterface) {
     };
   }, [setNavigatorState]);
 
+  /**
+   * NOTE: <스크롤 이벤트 관련>
+   * WARNING:
+   * 현재 이 부분에 대해서는 주석으로 남겨놓는 것이 맞을 것 같다.
+   * 현재 scroll은 window에 걸린 것이 아닌, Now Page 컴포넌트에 걸려있는 상태이다.
+   * 이유는, 오히려 window에 걸어주었다가는 제대로 동작하지 않아 더 헷갈릴 확률이 높아서다.
+   * 따라서 이를 앞으로 손쉽게 관리하기 위해 오버라이딩을 해주었다.
+   */
   useEffect(() => {
     if (pageRef.current === null) return;
 
-    pageRef.current.addEventListener('scroll', () => {
-      const customEvent = new CustomEvent('page-scroll', { detail: { name: 'hi' } });
+    const onScroll = () => {
+      const customEvent = new CustomEvent('scroll', { detail: { name: 'hi' } });
       window.dispatchEvent(customEvent);
-    });
-  }, [pageRef]);
+    };
+
+    pageRef.current.addEventListener('scroll', onScroll, { passive: true });
+  }, [pageRef, router.pathname]);
 
   useEffect(() => {
     setNavigatorState((state) => ({
