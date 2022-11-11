@@ -159,7 +159,8 @@ function Navigator({ direction, children }: NavigatorInterface) {
       setNavigatorState((state) => ({
         ...state,
         navigating: true,
-        reversed: true,
+        reversed: router.pathname !== navigatorState.prevKey,
+        prevKey: router.pathname,
       }));
     };
 
@@ -168,7 +169,9 @@ function Navigator({ direction, children }: NavigatorInterface) {
     return () => {
       window.removeEventListener('popstate', onPopState);
     };
-  }, [setNavigatorState]);
+
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, [setNavigatorState, navigatorState.prevKey]);
 
   /**
    * NOTE: <스크롤 이벤트 관련>
