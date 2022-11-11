@@ -1,3 +1,5 @@
+import { PIH, getAngle, getDist, getRandom, getVector } from '@utils/math';
+
 import {
   MetaballBaseInterface,
   MetaballInterface,
@@ -6,12 +8,14 @@ import {
   UpdateReturnTypeInterface,
 } from './types';
 
-import { getAngle, getDist, getRandom, PIH } from '@utils/math';
-
 export class Metaball implements MetaballInterface {
   state: MetaballStateInterface;
 
-  #absorbWeight = 170;
+  #absorbWeight = 120;
+
+  #stickyWeight = 1.25;
+
+  #defaultGradients = ['#00ffff', '#752bed'];
 
   constructor({ ctx, x, y, r }: MetaballPropInterface) {
     this.state = {
@@ -20,18 +24,18 @@ export class Metaball implements MetaballInterface {
       y,
       r,
       v: [
-        getRandom(0.3, 1, { allowNagative: true }),
-        getRandom(0.3, 1, { allowNagative: true }),
+        getRandom(0.1, 0.2, { allowNagative: true }),
+        getRandom(0.1, 0.2, { allowNagative: true }),
       ],
     };
   }
 
   get stickyWeight() {
-    return 1.25;
+    return this.#stickyWeight;
   }
 
   get gradients() {
-    return ['#00ffff', '#752bed'];
+    return this.#defaultGradients;
   }
 
   get ctx() {
@@ -113,19 +117,16 @@ export class Metaball implements MetaballInterface {
     const cmpAngle1 = angleBetweenCenters + cmpSpreadV;
     const cmpAngle2 = angleBetweenCenters - cmpSpreadV;
 
-    const p1 = this.getVector(this.x, this.y, angle1, this.r);
-    const p2 = this.getVector(this.x, this.y, angle2, this.r);
-    const cmpP1 = this.getVector(cmpX, cmpY, cmpAngle1, cmpR);
-    const cmpP2 = this.getVector(cmpX, cmpY, cmpAngle2, cmpR);
+    const p1 = getVector(this.x, this.y, angle1, this.r);
+    const p2 = getVector(this.x, this.y, angle2, this.r);
+    const cmpP1 = getVector(cmpX, cmpY, cmpAngle1, cmpR);
+    const cmpP2 = getVector(cmpX, cmpY, cmpAngle2, cmpR);
 
     const handleSize = 2.4;
 
     const totalRadius = this.r + cmpR;
 
-    const d2Base = Math.min(
-      v * handleSize,
-      getDist(...p1, ...cmpP1) / totalRadius
-    );
+    const d2Base = Math.min(v * handleSize, getDist(...p1, ...cmpP1) / totalRadius);
 
     // Take into account when circles are overlapping
     const handleDist = d2Base * Math.min(1, (dist * 2) / totalRadius);
@@ -133,10 +134,10 @@ export class Metaball implements MetaballInterface {
     const handleR1 = this.r * handleDist;
     const handleR2 = cmpR * handleDist;
 
-    const h1 = this.getVector(...p1, angle1 - PIH, handleR1);
-    const h2 = this.getVector(...p2, angle2 + PIH, handleR1);
-    const cmpH1 = this.getVector(...cmpP1, cmpAngle1 + PIH, handleR2);
-    const cmpH2 = this.getVector(...cmpP2, cmpAngle2 - PIH, handleR2);
+    const h1 = getVector(...p1, angle1 - PIH, handleR1);
+    const h2 = getVector(...p2, angle2 + PIH, handleR1);
+    const cmpH1 = getVector(...cmpP1, cmpAngle1 + PIH, handleR2);
+    const cmpH2 = getVector(...cmpP2, cmpAngle2 - PIH, handleR2);
 
     return {
       p1,
@@ -177,8 +178,8 @@ export class Metaball implements MetaballInterface {
       const nextYDirection = this.v[1] >= 0 ? -1 : 1;
 
       const nextV: [number, number] = [
-        nextXDirection * getRandom(0, 0.5, { allowNagative: false }),
-        nextYDirection * getRandom(0, 0.5, { allowNagative: false }),
+        nextXDirection * getRandom(0.2, 0.5, { allowNagative: false }),
+        nextYDirection * getRandom(0.2, 0.5, { allowNagative: false }),
       ];
 
       this.setState({
@@ -196,16 +197,7 @@ export class Metaball implements MetaballInterface {
     });
   }
 
-  renderCurve({
-    p1,
-    h1,
-    cmpH1,
-    cmpP1,
-    cmpP2,
-    cmpH2,
-    h2,
-    p2,
-  }: UpdateReturnTypeInterface) {
+  renderCurve({ p1, h1, cmpH1, cmpP1, cmpP2, cmpH2, h2, p2 }: UpdateReturnTypeInterface) {
     this.ctx.beginPath();
     this.ctx.moveTo(...p1);
 
@@ -219,20 +211,7 @@ export class Metaball implements MetaballInterface {
     this.ctx.fill();
   }
 
-  getVector(
-    x: number,
-    y: number,
-    angle: number,
-    radius: number
-  ): [number, number] {
-    return [x + radius * Math.cos(angle), y + radius * Math.sin(angle)];
-  }
-
-  render(
-    ctx: CanvasRenderingContext2D,
-    startAngle: number = 0,
-    endAngle: number = Math.PI * 2
-  ) {
+  render(ctx: CanvasRenderingContext2D, startAngle: number = 0, endAngle: number = Math.PI * 2) {
     ctx.beginPath();
     ctx.arc(this.state.x, this.state.y, this.state.r, startAngle, endAngle);
 

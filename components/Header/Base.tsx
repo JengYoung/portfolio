@@ -1,11 +1,16 @@
-import useHeader from '@hooks/useHeader';
-import useWindow from '@hooks/useWindow';
+import React from 'react';
+
 import Link from 'next/link';
 
-import React from 'react';
-import { StyledBase } from '.';
+import useHeader from '@hooks/useHeader';
+import useWindow from '@hooks/useWindow';
 
-const Base = () => {
+import { StyledBase } from './styles';
+
+interface BasePropsInterface {
+  hidden?: boolean;
+}
+function Base({ hidden }: BasePropsInterface) {
   const Links = [
     {
       name: 'HOME',
@@ -16,12 +21,8 @@ const Base = () => {
       url: '/about',
     },
     {
-      name: 'SKILLS',
-      url: '/skills',
-    },
-    {
       name: 'EXPERIENCES',
-      url: '/experiences',
+      url: '/experiences-and-projects',
     },
   ];
 
@@ -29,19 +30,25 @@ const Base = () => {
   const { windowState } = useWindow(['location']);
 
   return (
-    <StyledBase.Header isScrollDown={isScrollDown}>
-      <StyledBase.Links>
-        {Links.map((link) => (
-          <StyledBase.LinkContainer
-            isActive={new RegExp(windowState.location?.pathname).test(link.url)}
-            key={link.name}
-          >
-            <Link href={link.url}>{link.name}</Link>
-          </StyledBase.LinkContainer>
-        ))}
-      </StyledBase.Links>
-    </StyledBase.Header>
+    <StyledBase.Container hidden={hidden}>
+      <StyledBase.Header isScrollDown={isScrollDown}>
+        <StyledBase.Links>
+          {Links.map((link) => (
+            <StyledBase.LinkContainer
+              isActive={new RegExp(windowState.location?.pathname).test(link.url)}
+              key={link.name}
+            >
+              <Link href={link.url}>{link.name}</Link>
+            </StyledBase.LinkContainer>
+          ))}
+        </StyledBase.Links>
+      </StyledBase.Header>
+    </StyledBase.Container>
   );
+}
+
+Base.defaultProps = {
+  hidden: false,
 };
 
 export default Base;

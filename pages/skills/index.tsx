@@ -1,12 +1,12 @@
-import styled from '@emotion/styled';
 import React, { useState } from 'react';
 
 import Image from 'next/image';
 
-import { getBaseLayout } from '@components/layouts';
+import styled from '@emotion/styled';
 
 import Bubble from '@components/Bubble';
 import CopyStyle from '@components/Text';
+import { getBaseLayout } from '@components/layouts';
 
 interface SkillInterface {
   name: string;
@@ -32,7 +32,65 @@ const Skills = {
   CICD: 'CICD',
 } as const;
 
-const SkillsPage = () => {
+const Styled = {
+  Container: styled.section`
+    width: 100vw;
+    height: 100vh;
+  `,
+  Inner: styled.div`
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    background: linear-gradient(#111, #752bed);
+  `,
+  DetailBox: styled.article`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 500px;
+    padding: 0 10rem;
+  `,
+  Thumbnail: styled.div`
+    flex-shrink: 0;
+    margin-right: 5rem;
+  `,
+  Description: styled.div`
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  `,
+  Bubbles: styled.ul`
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 2rem);
+    padding: 1.25rem;
+    margin: 0;
+    overflow: hidden;
+    overflow-y: scroll;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+  `,
+  BubbleItem: styled.li`
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    align-self: flex-end;
+    justify-content: center;
+    width: 5rem;
+    height: 5rem;
+    margin-bottom: 1rem;
+  `,
+};
+function SkillsPage() {
   const [activeSkill, setActiveSkill] = useState<SkillInterface | null>(null);
 
   const onClick = (skill: SkillInterface) => {
@@ -207,7 +265,7 @@ const SkillsPage = () => {
                 alt="vercel"
                 width={300}
                 height={300}
-              ></Image>
+              />
             </Styled.Thumbnail>
 
             <Styled.Description>
@@ -220,87 +278,26 @@ const SkillsPage = () => {
         )}
 
         <Styled.Bubbles>
-          {skills.map((skill) => {
-            return (
-              <Styled.BubbleItem key={skill.name}>
-                <Bubble
-                  className={
-                    skill.name === activeSkill?.name ||
-                    activeSkill?.relativeSkills.includes(skill.name)
-                      ? 'bubble--active'
-                      : ''
-                  }
-                  onClick={() => onClick(skill)}
-                >
-                  {skill.name}
-                </Bubble>
-              </Styled.BubbleItem>
-            );
-          })}
+          {skills.map((skill) => (
+            <Styled.BubbleItem key={skill.name}>
+              <Bubble
+                className={
+                  skill.name === activeSkill?.name ||
+                  activeSkill?.relativeSkills.includes(skill.name)
+                    ? 'bubble--active'
+                    : ''
+                }
+                onClick={() => onClick(skill)}
+              >
+                {skill.name}
+              </Bubble>
+            </Styled.BubbleItem>
+          ))}
         </Styled.Bubbles>
       </Styled.Inner>
     </Styled.Container>
   );
-};
-
-const Styled = {
-  Container: styled.section`
-    width: 100vw;
-    height: 100vh;
-  `,
-  Inner: styled.div`
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    margin: 0 auto;
-    background: linear-gradient(#111, #752bed);
-  `,
-  DetailBox: styled.article`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 500px;
-    padding: 0 10rem;
-  `,
-  Thumbnail: styled.div`
-    flex-shrink: 0;
-    margin-right: 5rem;
-  `,
-  Description: styled.div`
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  `,
-  Bubbles: styled.ul`
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    bottom: 1rem;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    height: calc(100vh - 2rem);
-    padding: 1.25rem;
-    margin: 0;
-    overflow: hidden;
-    overflow-y: scroll;
-    background: rgba(0, 0, 0, 0.5);
-    border-radius: 20px;
-  `,
-  BubbleItem: styled.li`
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    align-self: flex-end;
-    justify-content: center;
-    width: 5rem;
-    height: 5rem;
-    margin-bottom: 1rem;
-  `,
-};
+}
 
 SkillsPage.getLayout = getBaseLayout;
 

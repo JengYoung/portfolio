@@ -1,14 +1,30 @@
-import { Bubble, Metaball } from '.';
+import { getRandom } from '@utils/math';
+
+import { Bubble } from './Bubble';
+import { Metaball } from './Metaball';
+import { StaticBubble } from './StaticBubble';
 import {
   GradientType,
-  MetaballsInterface,
-  MetaballsPropsInterface,
+  MetaballBaseInterface,
   MetaballStateInterface,
   StaticBubbleInterface,
 } from './types';
 
-import { getRandom } from '@utils/math';
-import { StaticBubble } from './StaticBubble';
+export interface MetaballsPropsInterface {
+  ctx: CanvasRenderingContext2D;
+  mainMetaballState: MetaballBaseInterface;
+  bubbleNum: number;
+  absorbBallNum: number;
+  canvasWidth: number;
+  canvasHeight: number;
+  gradients: GradientType;
+}
+
+export interface MetaballsInterface extends MetaballsPropsInterface {
+  // balls: Metaball[];
+  mainMetaball: Metaball;
+  mainMetaballState: MetaballStateInterface;
+}
 
 export class Metaballs implements MetaballsInterface {
   ctx: CanvasRenderingContext2D;
@@ -98,12 +114,12 @@ export class Metaballs implements MetaballsInterface {
     for (let i = 0; i < this.absorbBallNum; i += 1) {
       const metaball = new Metaball({
         ctx: this.ctx,
-        x: this.canvasWidth / 2,
-        y: this.canvasHeight / 2,
-        r: 200,
+        x: this.mainMetaball.x,
+        y: this.mainMetaball.y,
+        r: 130,
         v: [
-          getRandom(0, 1, { allowNagative: true }),
-          getRandom(0, 1, { allowNagative: true }),
+          getRandom(0.1, 0.2, { allowNagative: true }),
+          getRandom(0.1, 0.2, { allowNagative: true }),
         ],
       });
 
@@ -111,15 +127,14 @@ export class Metaballs implements MetaballsInterface {
     }
 
     for (let i = 0; i < this.bubbleNum; i += 1) {
+      const nextY = -getRandom(0.3, 1, { allowNagative: true });
+      const nextX = (nextY < -0.3 ? -1 : 1) * getRandom(0.3, 1, { allowNagative: true });
       const metaball = new Bubble({
         ctx: this.ctx,
-        x: this.canvasWidth / 2,
-        y: this.canvasHeight / 2,
+        x: this.mainMetaball.state.x,
+        y: this.mainMetaball.state.y,
         r: getRandom(50, 100, { allowNagative: false }),
-        v: [
-          getRandom(0.3, 1, { allowNagative: true }),
-          getRandom(0.3, 1, { allowNagative: true }),
-        ],
+        v: [nextX, nextY],
       });
 
       this.#bubbles.push(metaball);
@@ -143,11 +158,7 @@ export class Metaballs implements MetaballsInterface {
    * mainMetaball을 제외한 나머지 메타볼들을 모두 합합니다.
    */
   get restMetaballs() {
-    return [
-      ...this.#absorbedMetaBalls,
-      ...this.#bubbles,
-      ...this.#staticBubbles,
-    ];
+    return [...this.#absorbedMetaBalls, ...this.#bubbles, ...this.#staticBubbles];
   }
 
   get bubbles() {
@@ -155,12 +166,7 @@ export class Metaballs implements MetaballsInterface {
   }
 
   gradient(gradients: GradientType) {
-    const result = this.ctx.createLinearGradient(
-      0,
-      0,
-      0,
-      this.ctx.canvas.height
-    );
+    const result = this.ctx.createLinearGradient(0, 0, 0, this.ctx.canvas.height);
 
     gradients.forEach((gradient, idx) => {
       result.addColorStop(idx, gradient);
@@ -191,7 +197,10 @@ export class Metaballs implements MetaballsInterface {
 
     this.bubbles.forEach((ball, idx) => {
       if (ball.isBurst) {
-        ball.burst();
+        ball.burst({
+          x: this.mainMetaball.state.x,
+          y: this.mainMetaball.state.y,
+        });
       } else {
         const mainMetaballPath = ball.update(this.mainMetaball);
         if (mainMetaballPath !== null) ball.renderCurve(mainMetaballPath);
@@ -231,7 +240,7 @@ export class Metaballs implements MetaballsInterface {
       ball.render(ctx);
     });
 
-    this.staticBubbles.forEach((ball, idx) => {
+    this.staticBubbles.forEach((ball) => {
       const mainMetaballPath = ball.update(this.mainMetaball);
       if (mainMetaballPath !== null) ball.renderCurve(mainMetaballPath);
 

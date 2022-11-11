@@ -8,7 +8,7 @@ const useIntersectionObserver = (
   { root, rootMargin, threshold }: IntersectionObserverInit
 ) => {
   useEffect(() => {
-    if (callbackRef.current === null || targetRef.current === null) return;
+    if (callbackRef.current === null || targetRef.current === null) return undefined;
     const target = targetRef.current;
 
     const observer = new IntersectionObserver(callbackRef.current, {

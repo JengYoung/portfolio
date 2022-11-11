@@ -8,8 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
-    "stylelint:fix": "stylelint --fix \"**/*.tsx\"",
+    "stylelint:fix": "stylelint --fix \"**/*.{tsx,ts}\"",
     "lint:all": "next lint && yarn stylelint \"**/*.tsx\"",
+    "prettier:all": "prettier --write **/*.{tsx,ts,js,json,md,html} --ignore-unknown",
     "postinstall": "husky install",
     "export": "next build && next export"
   },
@@ -19,18 +20,27 @@
     "next": "12.2.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "recoil": "^0.7.6",
     "three": "^0.145.0"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "latest",
     "@stylelint/postcss-css-in-js": "^0.38.0",
+    "@trivago/prettier-plugin-sort-imports": "^3.4.0",
     "@types/node": "18.7.13",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
     "@types/three": "^0.144.0",
-    "eslint": "8.22.0",
+    "@typescript-eslint/eslint-plugin": "latest",
+    "@typescript-eslint/parser": "^5.42.0",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb": "latest",
     "eslint-config-next": "12.2.5",
     "eslint-config-prettier": "^8.5.0",
+    "eslint-import-resolver-typescript": "^3.5.2",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-react": "^7.28.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
@@ -46,7 +56,10 @@
   },
   "packageManager": "yarn@3.2.4",
   "lint-staged": {
-    "*.tsx": "eslint --fix",
-    "*.ts": "eslint --fix"
+    "*.{tsx,ts}": [
+      "prettier --write **/*.{tsx,ts,js,json,md,html} --ignore-unknown",
+      "eslint --fix",
+      "stylelint --fix"
+    ]
   }
 }

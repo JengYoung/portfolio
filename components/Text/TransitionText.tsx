@@ -1,5 +1,6 @@
-import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { css } from '@emotion/react';
+import React, { ReactNode, useRef, useState } from 'react';
+
 import styled from '@emotion/styled';
 
 import useIntersectionObserver, {
@@ -67,13 +68,13 @@ const Text = styled.div<TextInterface>`
   }
 `;
 
-const TransitionText = ({
-  $pending = 0,
+function TransitionText({
+  $pending,
   $delay,
   $size,
   $fontWeight,
   children,
-}: TransitionTextInterface) => {
+}: TransitionTextInterface) {
   const textRef = useRef<HTMLDivElement | null>(null);
   const [classNames, setClassNames] = useState(['text--hidden']);
 
@@ -85,16 +86,11 @@ const TransitionText = ({
   const callbackRef = useRef<UseIntersectionCallbackType>((entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        if (
-          textRef.current &&
-          !textRef.current.classList.contains(TEXT_CLASS_NAMES.active)
-        ) {
+        if (textRef.current && !textRef.current.classList.contains(TEXT_CLASS_NAMES.active)) {
           setClassNames((state) => [...state, TEXT_CLASS_NAMES.active]);
 
           setTimeout(() => {
-            setClassNames((state) =>
-              state.filter((cn) => cn !== TEXT_CLASS_NAMES.hidden)
-            );
+            setClassNames((state) => state.filter((cn) => cn !== TEXT_CLASS_NAMES.hidden));
           }, $pending);
         }
       }
@@ -115,6 +111,11 @@ const TransitionText = ({
       {children}
     </Text>
   );
+}
+
+TransitionText.defaultProps = {
+  $pending: 0,
+  $fontWeight: 'medium',
 };
 
 export default TransitionText;

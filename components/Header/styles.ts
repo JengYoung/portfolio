@@ -1,17 +1,14 @@
-import CopyStyle from '@components/Text';
 import { css } from '@emotion/react';
+
 import styled from '@emotion/styled';
+
+import CopyStyle from '@components/Text';
 
 const CommonStyle = {
   Header: css`
-    position: fixed;
-    z-index: 9999;
-    top: 0;
-    right: 0;
-    left: 0;
-
     display: flex;
     align-items: center;
+    max-width: 1440px;
   `,
   Circles: css`
     position: absolute;
@@ -69,16 +66,24 @@ export const StyledIntro = {
 };
 
 export const StyledBase = {
-  Header: styled.header<{ isScrollDown: boolean }>`
-    transition: all 0.3s;
+  Container: styled.div`
+    position: fixed;
+    top: 0;
+    z-index: 9999;
+    width: 100vw;
+    margin: 0 auto;
+  `,
 
-    height: 4rem;
+  Header: styled.header<{ isScrollDown: boolean }>`
+    height: 3rem;
+    margin: 0 auto;
 
     background: transparent;
 
     /* border-bottom: 1px solid #aaa; */
 
-    background: rgba(256, 256, 256, 0.1);
+    background: black;
+    transition: all 0.3s;
     ${CommonStyle.Header}
 
     ${({ isScrollDown }) =>
@@ -89,15 +94,15 @@ export const StyledBase = {
   `,
   Links: styled.ul`
     display: flex;
-    margin: 0;
-    margin-left: auto;
-    margin-right: 5rem;
     padding: 0;
+    margin: 0;
+    margin-right: 5rem;
+    margin-left: auto;
   `,
   LinkContainer: styled.li<{ isActive: boolean }>`
-    cursor: pointer;
-    list-style: none;
     color: white;
+    list-style: none;
+    cursor: pointer;
 
     &:hover {
       background: black;

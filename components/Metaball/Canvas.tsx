@@ -1,12 +1,15 @@
 import React, { ForwardedRef } from 'react';
-import styled from '@emotion/styled';
 
 import dynamic from 'next/dynamic';
 
-const MetaballCanvas = styled.canvas`
+import styled from '@emotion/styled';
+
+const MetaballCanvas = styled.canvas<{ width: number; height: number }>`
   position: absolute;
   top: 0;
-  z-index: -9999;
+  z-index: 1;
+  width: ${({ width }) => width}px;
+  height: ${({ height }) => height}px;
 `;
 
 interface ForwardedCanvasPropsInterface {
@@ -30,15 +33,9 @@ type CanvasRefType = ForwardedRef<HTMLCanvasElement | null>;
  * 그것이 canvasRef를 받는 이유이다.
  */
 
-const Canvas = ({ width, height, canvasRef }: CanvasPropsInterface) => {
-  return (
-    <MetaballCanvas
-      ref={canvasRef}
-      width={width}
-      height={height}
-    ></MetaballCanvas>
-  );
-};
+function Canvas({ width, height, canvasRef }: CanvasPropsInterface) {
+  return <MetaballCanvas ref={canvasRef} width={width} height={height} />;
+}
 
 Canvas.displayName = 'Canvas';
 
@@ -49,19 +46,13 @@ Canvas.displayName = 'Canvas';
  *
  * @see: https://github.com/vercel/next.js/issues/4957
  */
-
+/* eslint-disable-next-line import/no-self-import */
 export const DynamicCanvas = dynamic(import('@components/Metaball/Canvas'));
 
 export const ForwardedCanvas = React.forwardRef(
-  ({ width, height }: ForwardedCanvasPropsInterface, ref: CanvasRefType) => {
-    return (
-      <DynamicCanvas
-        width={width}
-        height={height}
-        canvasRef={ref}
-      ></DynamicCanvas>
-    );
-  }
+  ({ width, height }: ForwardedCanvasPropsInterface, ref: CanvasRefType) => (
+    <DynamicCanvas width={width} height={height} canvasRef={ref} />
+  )
 );
 
 ForwardedCanvas.displayName = 'ForwardedCanvas';

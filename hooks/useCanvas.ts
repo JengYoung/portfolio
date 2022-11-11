@@ -1,10 +1,4 @@
-import {
-  Dispatch,
-  MutableRefObject,
-  SetStateAction,
-  useEffect,
-  useState,
-} from 'react';
+import { Dispatch, MutableRefObject, SetStateAction, useEffect, useState } from 'react';
 
 export interface UseCanvasParams {
   canvasRef: MutableRefObject<HTMLCanvasElement | null>;
@@ -29,7 +23,6 @@ const useCanvas = ({
     setCtx(() => (canvasRef.current as HTMLCanvasElement).getContext('2d'));
 
     // NOTE: 초기화할 때만 동작하도록 설정하였다.
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, []);
 
   useEffect(() => {
@@ -39,7 +32,6 @@ const useCanvas = ({
     }
 
     // NOTE: canvasRef는 ctx가 타입을 보장하므로 불필요한 반복 호출을 막기 위해 생략하였다.
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [ctx, baseFillColor, fillStyle]);
 
   return { ctx, setFillStyle };

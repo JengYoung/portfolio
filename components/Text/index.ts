@@ -1,9 +1,10 @@
 import { css } from '@emotion/react';
+
 import styled from '@emotion/styled';
 
 const commonStyle = css`
-  margin: 0;
   padding: 0;
+  margin: 0;
   color: #fff;
 `;
 
@@ -77,5 +78,7 @@ const CopyStyle = {
   MainCopy,
   SubCopy,
 };
+
+export { default as CollapsedText } from './Collapsed';
 
 export default CopyStyle;

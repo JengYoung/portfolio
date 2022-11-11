@@ -8,7 +8,6 @@ module.exports = {
   "plugins": ["stylelint-prettier"],
   "rules": {
     "prettier/prettier": true,
-    "indentation": 2,
     "no-empty-first-line": null
   }
 };

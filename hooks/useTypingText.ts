@@ -1,11 +1,14 @@
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
 import { getTypingAnimationTextArr } from '@utils/animations/typing';
 import readonly from '@utils/readonly';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+
 import useInterval from './useInterval';
 
 interface UseTypingTextParam {
   texts: readonly string[];
   delay: number;
+  immediate: boolean;
 }
 
 /**
@@ -16,7 +19,9 @@ interface UseTypingTextParam {
  * textsArr: 전체 초,중,성을 분리한 결과물을 각 배열에다 담아서 전달합니다.
  * textsArrIndex: 그래서 현재 어느 인덱스까지 순열했는지를 각 배열마다 알려줍니다. { isEnded: boolean; idx: number }
  */
-const useTypingText = ({ texts, delay }: UseTypingTextParam) => {
+const useTypingText = ({ texts, delay, immediate }: UseTypingTextParam) => {
+  const [isTyping, setIsTyping] = useState(immediate);
+
   const textsArr: string[][] = readonly(
     texts.map((text) => [''].concat(getTypingAnimationTextArr(text)))
   );
@@ -28,23 +33,26 @@ const useTypingText = ({ texts, delay }: UseTypingTextParam) => {
     }))
   );
 
-  const nowFlagIndex = useMemo(() => {
-    return textsArrIndex.filter(({ isEnded }) => isEnded).length;
-  }, [textsArrIndex]);
+  const nowFlagIndex = useMemo(
+    () => textsArrIndex.filter(({ isEnded }) => isEnded).length,
+    [textsArrIndex]
+  );
 
   const timerCallback = useCallback(() => {
-    setTextsArrIndex((state) =>
-      state.map(({ isEnded, idx }, index) => ({
-        isEnded,
-        idx: idx + +(index === nowFlagIndex),
-      }))
-    );
-  }, [nowFlagIndex]);
+    if (isTyping) {
+      setTextsArrIndex((state) =>
+        state.map(({ isEnded, idx }, index) => ({
+          isEnded,
+          idx: idx + +(index === nowFlagIndex),
+        }))
+      );
+    }
+  }, [nowFlagIndex, isTyping]);
 
   const { timerId, savedCallback } = useInterval(timerCallback, delay);
 
   useEffect(() => {
-    if (textsArrIndex.every(({ isEnded }) => isEnded)) {
+    if (!isTyping || textsArrIndex.every(({ isEnded }) => isEnded)) {
       return;
     }
 
@@ -61,14 +69,14 @@ const useTypingText = ({ texts, delay }: UseTypingTextParam) => {
         }))
       );
     }
-  }, [nowFlagIndex, timerId, textsArr, textsArrIndex]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [nowFlagIndex, timerId, textsArr, textsArrIndex, isTyping]);
 
   useEffect(() => {
-    if (timerId.current) return;
+    if (!isTyping || timerId.current) return undefined;
     if (textsArrIndex.every(({ isEnded }) => isEnded)) {
-      return;
+      return undefined;
     }
-
     savedCallback.current = timerCallback;
     setTimeout(() => {
       timerId.current = setInterval(savedCallback.current, 50);
@@ -77,13 +85,13 @@ const useTypingText = ({ texts, delay }: UseTypingTextParam) => {
     return () => {
       clearInterval(timerId.current as NodeJS.Timeout);
     };
-
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  }, [savedCallback, timerCallback]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [savedCallback, timerCallback, isTyping]);
 
   return {
     textsArr,
     textsArrIndex,
+    setIsTyping,
   };
 };
 

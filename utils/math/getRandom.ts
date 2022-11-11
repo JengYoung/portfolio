@@ -5,7 +5,7 @@ interface GetRandomOption {
 const getRandom = (
   min: number,
   max: number,
-  {allowNagative = false}: GetRandomOption,
+  { allowNagative = false }: GetRandomOption
 ): number => {
   if (allowNagative) {
     const weight = Math.random() >= 0.5 ? 1 : -1;
