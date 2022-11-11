@@ -11,6 +11,8 @@ import NavigatorAtom, { DirectionsEnum } from '@atoms/common/navigator';
 const Page = styled.div<{ direction: DirectionsEnum; navigating: boolean }>`
   position: absolute;
   width: 100%;
+  height: 100vh;
+  overflow-y: scroll;
 `;
 
 const Styled = {
@@ -117,6 +119,7 @@ interface NavigatorInterface {
 
 function Navigator({ direction, children }: NavigatorInterface) {
   const router = useRouter();
+
   const [navigatorState, setNavigatorState] = useRecoilState(NavigatorAtom);
   const [isFinished, setIsFinished] = useState(false);
 
