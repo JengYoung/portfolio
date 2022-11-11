@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
+import { useRouter } from 'next/router';
+
 import { useRecoilState } from 'recoil';
 
 import { IntroTarminalAtom } from '@atoms';
@@ -63,6 +65,7 @@ function TerminalBodyLogs({ isActive, initDelay }: TerminalBodyLogsInterface) {
   ]);
 
   const [logClassNames, setLogClassNames] = useState(new Array(logs.length).fill(''));
+  const router = useRouter();
 
   /**
    * @description
@@ -87,6 +90,12 @@ function TerminalBodyLogs({ isActive, initDelay }: TerminalBodyLogsInterface) {
               i === idx ? [className, 'log--visible'].join(' ') : className
             )
           );
+
+          setTimeout(() => {
+            if (idx === logDelays.length - 1) {
+              router.push('/about');
+            }
+          }, 300);
         }, delay * 1000);
       });
     }
