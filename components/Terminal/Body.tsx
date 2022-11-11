@@ -99,8 +99,7 @@ function TerminalBodyLogs({ isActive, initDelay }: TerminalBodyLogsInterface) {
         }, delay * 1000);
       });
     }
-    //
-  }, [isActive, logDelays]);
+  }, [isActive, logDelays, router]);
 
   return (
     <StyledBody.Logs isActive={isActive}>

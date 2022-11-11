@@ -6,7 +6,6 @@ import type { AppProps } from 'next/app';
 
 import { RecoilRoot } from 'recoil';
 
-// import Navigator from '@components/Navigator/Navigator';
 import { globalStyle, globalTheme } from '@styles/index';
 
 /**
