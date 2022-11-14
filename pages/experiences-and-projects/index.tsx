@@ -100,10 +100,10 @@ const StyledExperience = {
     ${({ reversed }) =>
       reversed &&
       css`
-        animation: element-jump 0.3s forwards;
+        animation: reverse-text 0.3s forwards;
         animation-delay: 0.25s;
 
-        @keyframes element-jump {
+        @keyframes reverse-text {
           to {
             transform: rotate(180deg) scale(1.1);
             transform-origin: 50% 60%;
