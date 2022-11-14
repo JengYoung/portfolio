@@ -1,6 +1,8 @@
 import { css } from '@emotion/react';
 import React, { useEffect, useRef, useState } from 'react';
 
+import Head from 'next/head';
+
 import { useRecoilState } from 'recoil';
 
 import styled from '@emotion/styled';
@@ -122,10 +124,25 @@ function HomePage() {
   }, []);
 
   return (
-    <Styled.Page mode={mode}>
-      <Terminal isActive={isActive} date={lastLoginDate.current} />
-      <Styled.Mouse visible={!isActive} bottom="1rem" left="50%" right="50%" delay={0.3} />
-    </Styled.Page>
+    <>
+      <Head>
+        <meta property="og:type" content="portfolio" />
+        <meta property="og:url" content="https://jengyoung.me" />
+        <meta property="og:title" content="JengYoung's Portfolio 👋🏻" />
+        <meta property="og:image" content="/ogs/og-image.png" />
+        <meta
+          property="og:description"
+          content="반가워요! 저에 대해 알아볼 수 있는 포트폴리에오에요 👋🏻"
+        />
+        <meta property="og:site_name" content="JengYoung's Portfolio" />
+        <meta property="og:locale" content="ko_KR" />
+      </Head>
+
+      <Styled.Page mode={mode}>
+        <Terminal isActive={isActive} date={lastLoginDate.current} />
+        <Styled.Mouse visible={!isActive} bottom="1rem" left="50%" right="50%" delay={0.3} />
+      </Styled.Page>
+    </>
   );
 }
 
