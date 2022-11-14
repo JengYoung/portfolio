@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
+import Head from 'next/head';
 import Image from 'next/image';
 
 import styled from '@emotion/styled';
@@ -827,7 +828,7 @@ function AboutPage() {
     {
       id: 7,
       name: Skills.Quasar,
-      src: '/quasar.svg',
+      src: '/quasar.png',
       checks: [
         'Quasar가 주는 컴포넌트, CSS 기능들을 이해하고 있어요',
         'Quasar 기반 반응형 웹을 구축한 경험을 갖고 있어요.',
@@ -875,119 +876,131 @@ function AboutPage() {
   ];
 
   return (
-    <Styled.Page ref={pageRef}>
-      <Styled.Introduction>
-        <ForwardedCanvas width={minWidth} height={minHeight} ref={canvasRef} />
-        <Styled.IntroductionMainCopy>
-          <CollapsedText x={(windowState.innerWidth ?? 0) + 500} y={0} direction="LEFT">
-            <Gummy texts="프론트엔드&nbsp;개발자" delay={1.5} />
-          </CollapsedText>
-        </Styled.IntroductionMainCopy>
+    <>
+      <Head>
+        <meta property="og:type" content="portfolio" />
+        <meta property="og:url" content="https://jengyoung.me/about" />
+        <meta property="og:title" content="JengYoung's Portfolio | 소개" />
+        <meta property="og:image" content="/ogs/og-image.png" />
+        <meta property="og:description" content="제가 누군지 궁금하시나요?! 어서 와요 👋🏻" />
+        <meta property="og:site_name" content="JengYoung's Portfolio" />
+        <meta property="og:locale" content="ko_KR" />
+      </Head>
 
-        <Styled.IntroductionMainCopy>
-          <CollapsedText x={-500} y={0} direction="RIGHT">
-            <Styled.Name>
-              <Gummy texts="황재영" delay={1.5} options={{ isGummy: true, infinite: true }} />
-            </Styled.Name>
-            <Gummy texts="입니다" delay={1.5} />
-          </CollapsedText>
-        </Styled.IntroductionMainCopy>
-        <Styled.IntroductionSubCopy>
-          <div>부족함을 알기에, 더 나은 자신을 위해 꾸준히 공부해요.</div>
-          <div>최적화와 새로운 것들에 호기심을 가지며</div>
-          <div>더 나은 UX를 제공하며 성장할 팀을 찾고 있어요.</div>
-        </Styled.IntroductionSubCopy>
-        <Styled.ProfileImage src="profile.gif" alt="프로필" />
-      </Styled.Introduction>
+      <Styled.Page ref={pageRef}>
+        <Styled.Introduction>
+          <ForwardedCanvas width={minWidth} height={minHeight} ref={canvasRef} />
+          <Styled.IntroductionMainCopy>
+            <CollapsedText x={(windowState.innerWidth ?? 0) + 500} y={0} direction="LEFT">
+              <Gummy texts="프론트엔드&nbsp;개발자" delay={1.5} />
+            </CollapsedText>
+          </Styled.IntroductionMainCopy>
 
-      <Styled.Features>
-        <Styled.FeatureHeader>
-          <svg width={600} height={100} viewBox="0 0 600 100">
-            {featuresHeaderTexts.map((text) => (
-              <text key={text.x + text.y + text.value} x={text.x} y={text.y}>
-                {text.value}
-              </text>
-            ))}
-          </svg>
-        </Styled.FeatureHeader>
+          <Styled.IntroductionMainCopy>
+            <CollapsedText x={-500} y={0} direction="RIGHT">
+              <Styled.Name>
+                <Gummy texts="황재영" delay={1.5} options={{ isGummy: true, infinite: true }} />
+              </Styled.Name>
+              <Gummy texts="입니다" delay={1.5} />
+            </CollapsedText>
+          </Styled.IntroductionMainCopy>
+          <Styled.IntroductionSubCopy>
+            <div>부족함을 알기에, 더 나은 자신을 위해 꾸준히 공부해요.</div>
+            <div>최적화와 새로운 것들에 호기심을 가지며</div>
+            <div>더 나은 UX를 제공하며 성장할 팀을 찾고 있어요.</div>
+          </Styled.IntroductionSubCopy>
+          <Styled.ProfileImage src="profile.gif" alt="프로필" />
+        </Styled.Introduction>
 
-        <Styled.FeaturesContainer>
-          <Styled.FeatureBackground />
-
-          {features.map((feature) => (
-            <Styled.FeatureContainer key={feature.id}>
-              <Styled.FeatureDetail>
-                <Styled.FeatureHead>{feature.emoji}</Styled.FeatureHead>
-                <Styled.FeatureHead>{feature.title}</Styled.FeatureHead>
-                <Styled.Description>{feature.description}</Styled.Description>
-              </Styled.FeatureDetail>
-
-              <Styled.FeatureLines>
-                <Styled.FeatureLine />
-                <Styled.FeatureLine />
-                <Styled.FeatureLine />
-              </Styled.FeatureLines>
-            </Styled.FeatureContainer>
-          ))}
-
-          <Styled.FeatureBackground />
-        </Styled.FeaturesContainer>
-      </Styled.Features>
-
-      <Styled.SkillSection>
-        <Styled.SkllContainer />
-        <Styled.SkillHeader ref={skillHeaderRef} headerState={headerState}>
-          SKILLS
-        </Styled.SkillHeader>
-
-        {nowActiveSkill.src && (
-          <Styled.NowSkillDetailContainer>
-            <Styled.NowSkillImageName>
-              <CollapsedText x={-500} y={0} direction="LEFT">
-                <Gummy key={nowActiveSkill.name} texts={nowActiveSkill.name} delay={1.5} />
-              </CollapsedText>
-            </Styled.NowSkillImageName>
-
-            <Styled.NowSkillDescriptions>
-              {nowActiveSkill.checks.map((check) => (
-                <Styled.NowSkillDescription>- {check}</Styled.NowSkillDescription>
+        <Styled.Features>
+          <Styled.FeatureHeader>
+            <svg width={600} height={100} viewBox="0 0 600 100">
+              {featuresHeaderTexts.map((text) => (
+                <text key={text.x + text.y + text.value} x={text.x} y={text.y}>
+                  {text.value}
+                </text>
               ))}
-            </Styled.NowSkillDescriptions>
+            </svg>
+          </Styled.FeatureHeader>
 
-            <Styled.NowSkillImageContainer>
-              <Image src={nowActiveSkill.src} layout="fill" objectFit="contain" />
-            </Styled.NowSkillImageContainer>
-          </Styled.NowSkillDetailContainer>
-        )}
-        <Styled.Skills>
-          {skills.map((skill) => {
-            const isSeparate = [Skills.TypeScript, Skills.Vue3, Skills.Quasar].some(
-              (name) => name === skill.name
-            );
-            return (
-              <Styled.SkillContainer key={skill.id}>
-                <Styled.Skill>
-                  <Styled.ImageContainer onClick={() => onClickSkill(skill)}>
-                    <Image
-                      objectFit="contain"
-                      src={skill.src}
-                      alt="vercel"
-                      width="58"
-                      height="58"
-                    />
-                  </Styled.ImageContainer>
-                  {nowActiveSkill.name === skill.name && <Styled.ActiveDot />}
-                </Styled.Skill>
-                {isSeparate && <Styled.Separator key={skill.src} />}
-              </Styled.SkillContainer>
-            );
-          })}
-        </Styled.Skills>
-      </Styled.SkillSection>
-      <Styled.MouseContainer>
-        <ScrollMouse bottom="1rem" delay={1.5} visible={isMouseVisible} />
-      </Styled.MouseContainer>
-    </Styled.Page>
+          <Styled.FeaturesContainer>
+            <Styled.FeatureBackground />
+
+            {features.map((feature) => (
+              <Styled.FeatureContainer key={feature.id}>
+                <Styled.FeatureDetail>
+                  <Styled.FeatureHead>{feature.emoji}</Styled.FeatureHead>
+                  <Styled.FeatureHead>{feature.title}</Styled.FeatureHead>
+                  <Styled.Description>{feature.description}</Styled.Description>
+                </Styled.FeatureDetail>
+
+                <Styled.FeatureLines>
+                  <Styled.FeatureLine />
+                  <Styled.FeatureLine />
+                  <Styled.FeatureLine />
+                </Styled.FeatureLines>
+              </Styled.FeatureContainer>
+            ))}
+
+            <Styled.FeatureBackground />
+          </Styled.FeaturesContainer>
+        </Styled.Features>
+
+        <Styled.SkillSection>
+          <Styled.SkllContainer />
+          <Styled.SkillHeader ref={skillHeaderRef} headerState={headerState}>
+            SKILLS
+          </Styled.SkillHeader>
+
+          {nowActiveSkill.src && (
+            <Styled.NowSkillDetailContainer>
+              <Styled.NowSkillImageName>
+                <CollapsedText x={-500} y={0} direction="LEFT">
+                  <Gummy key={nowActiveSkill.name} texts={nowActiveSkill.name} delay={1.5} />
+                </CollapsedText>
+              </Styled.NowSkillImageName>
+
+              <Styled.NowSkillDescriptions>
+                {nowActiveSkill.checks.map((check) => (
+                  <Styled.NowSkillDescription>- {check}</Styled.NowSkillDescription>
+                ))}
+              </Styled.NowSkillDescriptions>
+
+              <Styled.NowSkillImageContainer>
+                <Image src={nowActiveSkill.src} layout="fill" objectFit="contain" />
+              </Styled.NowSkillImageContainer>
+            </Styled.NowSkillDetailContainer>
+          )}
+          <Styled.Skills>
+            {skills.map((skill) => {
+              const isSeparate = [Skills.TypeScript, Skills.Vue3, Skills.Quasar].some(
+                (name) => name === skill.name
+              );
+              return (
+                <Styled.SkillContainer key={skill.id}>
+                  <Styled.Skill>
+                    <Styled.ImageContainer onClick={() => onClickSkill(skill)}>
+                      <Image
+                        objectFit="contain"
+                        src={skill.src}
+                        alt="vercel"
+                        width="58"
+                        height="58"
+                      />
+                    </Styled.ImageContainer>
+                    {nowActiveSkill.name === skill.name && <Styled.ActiveDot />}
+                  </Styled.Skill>
+                  {isSeparate && <Styled.Separator key={skill.src} />}
+                </Styled.SkillContainer>
+              );
+            })}
+          </Styled.Skills>
+        </Styled.SkillSection>
+        <Styled.MouseContainer>
+          <ScrollMouse bottom="1rem" delay={1.5} visible={isMouseVisible} />
+        </Styled.MouseContainer>
+      </Styled.Page>
+    </>
   );
 }
 AboutPage.getLayout = getBaseLayout;

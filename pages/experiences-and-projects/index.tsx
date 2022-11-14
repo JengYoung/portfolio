@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import React, { MouseEvent, createRef, useEffect, useRef, useState } from 'react';
 
+import Head from 'next/head';
 import Image from 'next/image';
 
 import styled from '@emotion/styled';
@@ -99,10 +100,10 @@ const StyledExperience = {
     ${({ reversed }) =>
       reversed &&
       css`
-        animation: element-jump 0.3s forwards;
+        animation: reverse-text 0.3s forwards;
         animation-delay: 0.25s;
 
-        @keyframes element-jump {
+        @keyframes reverse-text {
           to {
             transform: rotate(180deg) scale(1.1);
             transform-origin: 50% 60%;
@@ -1118,133 +1119,145 @@ function ExperiencesAndProjectsPage() {
   };
 
   return (
-    <StyledPage.Container>
-      <StyledExperience.Container>
-        <StyledExperience.TitleContainer>
-          <Gummy texts="exper" delay={0} />
-          <StyledExperience.ReverseText
-            onAnimationEnd={() => setIsDrawLine((state) => ({ ...state, start: true }))}
-            reversed={textReversed}
-          >
-            i
-          </StyledExperience.ReverseText>
-          <Gummy texts="ences" delay={0} />
-        </StyledExperience.TitleContainer>
+    <>
+      <Head>
+        <meta property="og:type" content="portfolio" />
+        <meta property="og:url" content="https://jengyoung.me/experiences-and-projects" />
+        <meta property="og:title" content="JengYoung's Portfolio | 경험" />
+        <meta property="og:image" content="/ogs/og-image.png" />
+        <meta property="og:description" content="개발자로서 제 경험들을 보여드립니다! 👋🏻" />
+        <meta property="og:site_name" content="JengYoung's Portfolio" />
+        <meta property="og:locale" content="ko_KR" />
+      </Head>
 
-        <StyledExperience.LineContainer>
-          <StyledExperience.Line
-            draw={isDrawLine.start}
-            onTransitionEnd={() => setIsDrawLine((state) => ({ ...state, end: true }))}
-          />
-
-          {experiences.map((nowExperience, idx) => (
-            <StyledExperience.ExperienceContainer
-              key={nowExperience.id}
-              ref={experienceRefs.current[idx]}
+      <StyledPage.Container>
+        <StyledExperience.Container>
+          <StyledExperience.TitleContainer>
+            <Gummy texts="exper" delay={0} />
+            <StyledExperience.ReverseText
+              onAnimationEnd={() => setIsDrawLine((state) => ({ ...state, start: true }))}
+              reversed={textReversed}
             >
-              <StyledExperience.Images
-                draw={isDrawLine.start}
-                shouldShowHistories={shouldShowHistories[idx]}
+              i
+            </StyledExperience.ReverseText>
+            <Gummy texts="ences" delay={0} />
+          </StyledExperience.TitleContainer>
+
+          <StyledExperience.LineContainer>
+            <StyledExperience.Line
+              draw={isDrawLine.start}
+              onTransitionEnd={() => setIsDrawLine((state) => ({ ...state, end: true }))}
+            />
+
+            {experiences.map((nowExperience, idx) => (
+              <StyledExperience.ExperienceContainer
+                key={nowExperience.id}
+                ref={experienceRefs.current[idx]}
               >
-                {nowExperience.images.map((obj) => (
-                  <StyledExperience.ImageContainer key={obj.src}>
-                    <LinksImage
-                      image={{ src: obj.src, alt: obj.alt }}
-                      imageOptions={{
-                        size: {
-                          width: nowExperience.images.length === 1 ? '22.5rem' : '15rem',
-                          height: nowExperience.images.length === 1 ? '22.5rem' : '15rem',
-                        },
-                        objectFit: obj.options?.objectFit ?? 'cover',
-                        bg: obj.options?.bg,
-                      }}
-                      links={obj.links}
-                    />
-                  </StyledExperience.ImageContainer>
-                ))}
-              </StyledExperience.Images>
-              <StyledGitGraph.Container>
-                <StyledGitGraph.Branch.Container
+                <StyledExperience.Images
                   draw={isDrawLine.start}
                   shouldShowHistories={shouldShowHistories[idx]}
                 >
-                  <StyledGitGraph.Branch.MergedCommitContainer>
-                    <StyledGitGraph.Branch.MergedBranch />
-                    <StyledGitGraph.Branch.MergedCommit>
-                      <StyledGitGraph.History.Dot main period={nowExperience.period.end} />
-                      <StyledGitGraph.History.CommitMessage main>
-                        {nowExperience.title}
-                      </StyledGitGraph.History.CommitMessage>
-                    </StyledGitGraph.Branch.MergedCommit>
-                  </StyledGitGraph.Branch.MergedCommitContainer>
-
-                  {nowExperience.contents.map((content) => (
-                    <StyledGitGraph.History.Container key={content}>
-                      <StyledGitGraph.History.Dot />
-                      <StyledGitGraph.History.CommitMessage>
-                        {content}
-                      </StyledGitGraph.History.CommitMessage>
-                      <StyledGitGraph.History.Line />
-                    </StyledGitGraph.History.Container>
+                  {nowExperience.images.map((obj) => (
+                    <StyledExperience.ImageContainer key={obj.src}>
+                      <LinksImage
+                        image={{ src: obj.src, alt: obj.alt }}
+                        imageOptions={{
+                          size: {
+                            width: nowExperience.images.length === 1 ? '22.5rem' : '15rem',
+                            height: nowExperience.images.length === 1 ? '22.5rem' : '15rem',
+                          },
+                          objectFit: obj.options?.objectFit ?? 'cover',
+                          bg: obj.options?.bg,
+                        }}
+                        links={obj.links}
+                      />
+                    </StyledExperience.ImageContainer>
                   ))}
+                </StyledExperience.Images>
+                <StyledGitGraph.Container>
+                  <StyledGitGraph.Branch.Container
+                    draw={isDrawLine.start}
+                    shouldShowHistories={shouldShowHistories[idx]}
+                  >
+                    <StyledGitGraph.Branch.MergedCommitContainer>
+                      <StyledGitGraph.Branch.MergedBranch />
+                      <StyledGitGraph.Branch.MergedCommit>
+                        <StyledGitGraph.History.Dot main period={nowExperience.period.end} />
+                        <StyledGitGraph.History.CommitMessage main>
+                          {nowExperience.title}
+                        </StyledGitGraph.History.CommitMessage>
+                      </StyledGitGraph.Branch.MergedCommit>
+                    </StyledGitGraph.Branch.MergedCommitContainer>
 
-                  <StyledGitGraph.Branch.MergedCommitContainer>
-                    <StyledGitGraph.Branch.BasedBranch />
-                    <StyledGitGraph.Branch.BasedCommit>
-                      <StyledGitGraph.History.Dot main period={nowExperience.period.start} />
-                      <StyledGitGraph.History.CommitMessage main />
-                    </StyledGitGraph.Branch.BasedCommit>
-                  </StyledGitGraph.Branch.MergedCommitContainer>
-                </StyledGitGraph.Branch.Container>
-              </StyledGitGraph.Container>
-            </StyledExperience.ExperienceContainer>
-          ))}
-        </StyledExperience.LineContainer>
+                    {nowExperience.contents.map((content) => (
+                      <StyledGitGraph.History.Container key={content}>
+                        <StyledGitGraph.History.Dot />
+                        <StyledGitGraph.History.CommitMessage>
+                          {content}
+                        </StyledGitGraph.History.CommitMessage>
+                        <StyledGitGraph.History.Line />
+                      </StyledGitGraph.History.Container>
+                    ))}
 
-        <StyledPage.ProjectIntro ref={targetRef}>
-          <StyledProjectIntro.Ball ballScale={ballScale} />
-          <StyledProjectIntro.Title>
-            <CollapsedText x={500} y={0} direction="RIGHT">
-              Projects
-            </CollapsedText>
-          </StyledProjectIntro.Title>
-        </StyledPage.ProjectIntro>
+                    <StyledGitGraph.Branch.MergedCommitContainer>
+                      <StyledGitGraph.Branch.BasedBranch />
+                      <StyledGitGraph.Branch.BasedCommit>
+                        <StyledGitGraph.History.Dot main period={nowExperience.period.start} />
+                        <StyledGitGraph.History.CommitMessage main />
+                      </StyledGitGraph.Branch.BasedCommit>
+                    </StyledGitGraph.Branch.MergedCommitContainer>
+                  </StyledGitGraph.Branch.Container>
+                </StyledGitGraph.Container>
+              </StyledExperience.ExperienceContainer>
+            ))}
+          </StyledExperience.LineContainer>
 
-        <StyledPage.Projects onMouseOverCapture={onMouseOver} perspective={perspective}>
-          <StyledProject.Card1 onClick={() => onClickCard(0)}>
-            {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-            <StyledProject.Video autoPlay muted loop src="/projects/portfolio.mp4" />
-          </StyledProject.Card1>
-          <StyledProject.Card2 onClick={() => onClickCard(1)}>
-            <StyledProject.Video src="/projects/metaball.mp4" autoPlay muted loop />
-          </StyledProject.Card2>
-          <StyledProject.Card3 onClick={() => onClickCard(2)}>
-            <Image src="/profile.gif" layout="fill" objectFit="contain" />
-          </StyledProject.Card3>
-          <StyledProject.Card4 onClick={() => onClickCard(3)}>
-            <StyledProject.CardContainer>
-              <Image src="/projects/seeyouletter.png" layout="fill" objectPosition="center" />
-            </StyledProject.CardContainer>
-          </StyledProject.Card4>
+          <StyledPage.ProjectIntro ref={targetRef}>
+            <StyledProjectIntro.Ball ballScale={ballScale} />
+            <StyledProjectIntro.Title>
+              <CollapsedText x={500} y={0} direction="RIGHT">
+                Projects
+              </CollapsedText>
+            </StyledProjectIntro.Title>
+          </StyledPage.ProjectIntro>
 
-          <StyledProject.BrowserContainer>
-            <StyledProject.ProjectTitle>
-              {projectIndex >= 0 && (
-                <CollapsedText x={1900} y={0} direction="LEFT">
-                  <Gummy
-                    texts={projects[projectIndex].title}
-                    delay={0}
-                    options={{ isGummy: true }}
-                  />
-                </CollapsedText>
-              )}
-            </StyledProject.ProjectTitle>
+          <StyledPage.Projects onMouseOverCapture={onMouseOver} perspective={perspective}>
+            <StyledProject.Card1 onClick={() => onClickCard(0)}>
+              {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+              <StyledProject.Video autoPlay muted loop src="/projects/portfolio.mp4" />
+            </StyledProject.Card1>
+            <StyledProject.Card2 onClick={() => onClickCard(1)}>
+              <StyledProject.Video src="/projects/metaball.mp4" autoPlay muted loop />
+            </StyledProject.Card2>
+            <StyledProject.Card3 onClick={() => onClickCard(2)}>
+              <Image src="/profile.gif" layout="fill" objectFit="contain" />
+            </StyledProject.Card3>
+            <StyledProject.Card4 onClick={() => onClickCard(3)}>
+              <StyledProject.CardContainer>
+                <Image src="/projects/seeyouletter.png" layout="fill" objectPosition="center" />
+              </StyledProject.CardContainer>
+            </StyledProject.Card4>
 
-            <Browser project={projects[projectIndex] ?? null} projectIndex={projectIndex} />
-          </StyledProject.BrowserContainer>
-        </StyledPage.Projects>
-      </StyledExperience.Container>
-    </StyledPage.Container>
+            <StyledProject.BrowserContainer>
+              <StyledProject.ProjectTitle>
+                {projectIndex >= 0 && (
+                  <CollapsedText x={1900} y={0} direction="LEFT">
+                    <Gummy
+                      texts={projects[projectIndex].title}
+                      delay={0}
+                      options={{ isGummy: true }}
+                    />
+                  </CollapsedText>
+                )}
+              </StyledProject.ProjectTitle>
+
+              <Browser project={projects[projectIndex] ?? null} projectIndex={projectIndex} />
+            </StyledProject.BrowserContainer>
+          </StyledPage.Projects>
+        </StyledExperience.Container>
+      </StyledPage.Container>
+    </>
   );
 }
 
