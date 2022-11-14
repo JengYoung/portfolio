@@ -828,7 +828,7 @@ function AboutPage() {
     {
       id: 7,
       name: Skills.Quasar,
-      src: '/quasar.svg',
+      src: '/quasar.png',
       checks: [
         'Quasar가 주는 컴포넌트, CSS 기능들을 이해하고 있어요',
         'Quasar 기반 반응형 웹을 구축한 경험을 갖고 있어요.',
