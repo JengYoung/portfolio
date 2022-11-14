@@ -4,6 +4,7 @@ export default function Document() {
   return (
     <Html>
       <Head>
+        <meta name="title" content="JengYoung's Portfolio" />
         <link
           href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap"
           rel="stylesheet"
