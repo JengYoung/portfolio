@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -35,6 +35,19 @@ function Base({ hidden }: BasePropsInterface) {
   ];
 
   const [isOpened, setIsOpened] = useState(false);
+
+  useEffect(() => {
+    const onBack = (e: KeyboardEventInit) => {
+      if (e.key === 'Escape') {
+        setIsOpened(() => false);
+      }
+    };
+
+    window.addEventListener('keydown', onBack);
+    return () => {
+      window.removeEventListener('keydown', onBack);
+    };
+  });
 
   const { windowState } = useWindow(['location']);
 
