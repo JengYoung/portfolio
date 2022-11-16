@@ -1,10 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Link from 'next/link';
 
 import { Hamburger } from '@components/Hamburger';
 
-import useHeader from '@hooks/useHeader';
 import useWindow from '@hooks/useWindow';
 
 import { StyledBase } from './styles';
@@ -28,15 +27,16 @@ function Base({ hidden }: BasePropsInterface) {
     },
   ];
 
-  const { isScrollDown } = useHeader();
+  const [isOpen, setIsOpen] = useState(false);
+
   const { windowState } = useWindow(['location']);
 
   return (
     <StyledBase.Container hidden={hidden}>
-      <StyledBase.Header isScrollDown={isScrollDown}>
-        <Hamburger />
+      <StyledBase.Header isOpen={isOpen}>
+        <Hamburger onClick={() => setIsOpen((state) => !state)} />
 
-        <StyledBase.Title>Portfolio</StyledBase.Title>
+        <StyledBase.Title>{`${isOpen}`}</StyledBase.Title>
 
         <StyledBase.Links>
           {Links.map((link) => (

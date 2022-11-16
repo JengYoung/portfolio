@@ -64,7 +64,7 @@ export const StyledBase = {
     font-weight: ${({ theme }) => theme.fontWeights.bold};
   `,
 
-  Header: styled.header<{ isScrollDown: boolean }>`
+  Header: styled.header<{ isOpen: boolean }>`
     height: 2rem;
 
     margin-left: 1rem;

@@ -11,6 +11,7 @@ function BaseLayout({ children }: LayoutInterface) {
   return (
     <>
       <BaseHeader />
+
       <Navigator direction={DirectionsEnum.LEFT}>
         <main>{children}</main>
       </Navigator>
