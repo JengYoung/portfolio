@@ -2,16 +2,16 @@ import { css } from '@emotion/react';
 
 import styled from '@emotion/styled';
 
-import CopyStyle from '@components/Text';
-
 const CommonStyle = {
   Header: css`
     display: flex;
     align-items: center;
+
     max-width: 1440px;
   `,
   Circles: css`
     position: absolute;
+
     display: flex;
 
     padding: 0;
@@ -47,55 +47,49 @@ export const StyledBase = {
     position: fixed;
     top: 0;
     z-index: 9999;
+
     width: 100vw;
+
     margin: 0 auto;
+
+    background: rgba(0, 0, 0, 0.5);
+  `,
+
+  Title: styled.div`
+    flex-shrink: 0;
+
+    margin-left: 1.5rem;
+
+    font-size: ${({ theme }) => theme.fontSizes.s};
+    font-weight: ${({ theme }) => theme.fontWeights.bold};
   `,
 
   Header: styled.header<{ isScrollDown: boolean }>`
     height: 2rem;
-    margin: 0 auto;
 
-    background: transparent;
+    margin-left: 1rem;
 
-    /* border-bottom: 1px solid #aaa; */
-
-    background: black;
     transition: all 0.3s;
-    ${CommonStyle.Header}
 
-    ${({ isScrollDown }) =>
-      isScrollDown &&
-      css`
-        transform: translateY(-4rem);
-      `}
+    ${CommonStyle.Header}
   `,
   Links: styled.ul`
     display: flex;
+
     padding: 0;
-    margin: 0;
-    margin-right: 5rem;
-    margin-left: auto;
   `,
   LinkContainer: styled.li<{ isActive: boolean }>`
+    margin-left: 1.5rem;
+
+    font-size: ${({ theme }) => theme.fontSizes.xs};
     color: white;
-    list-style: none;
+
     cursor: pointer;
-
-    &:hover {
-      background: black;
-    }
-
-    &:not(:last-of-type) {
-      margin-right: 3em;
-    }
 
     ${({ isActive }) =>
       isActive &&
       css`
         color: #ffe600;
       `}
-  `,
-  Title: styled(CopyStyle.XSmall)`
-    color: #aaa;
   `,
 };

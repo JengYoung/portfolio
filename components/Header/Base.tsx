@@ -23,7 +23,7 @@ function Base({ hidden }: BasePropsInterface) {
       url: '/about',
     },
     {
-      name: 'EXPERIENCES',
+      name: 'EXPERIENCES & PROJECTS',
       url: '/experiences-and-projects',
     },
   ];
@@ -35,10 +35,13 @@ function Base({ hidden }: BasePropsInterface) {
     <StyledBase.Container hidden={hidden}>
       <StyledBase.Header isScrollDown={isScrollDown}>
         <Hamburger />
+
+        <StyledBase.Title>Portfolio</StyledBase.Title>
+
         <StyledBase.Links>
           {Links.map((link) => (
             <StyledBase.LinkContainer
-              isActive={new RegExp(windowState.location?.pathname).test(link.url)}
+              isActive={new RegExp(`^${windowState.location?.pathname}$`).test(link.url)}
               key={link.name}
             >
               <Link href={link.url}>{link.name}</Link>
