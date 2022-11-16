@@ -52,7 +52,7 @@ export const StyledBase = {
   `,
 
   Header: styled.header<{ isScrollDown: boolean }>`
-    height: 3rem;
+    height: 2rem;
     margin: 0 auto;
 
     background: transparent;

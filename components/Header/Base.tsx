@@ -2,6 +2,8 @@ import React from 'react';
 
 import Link from 'next/link';
 
+import { Hamburger } from '@components/Hamburger';
+
 import useHeader from '@hooks/useHeader';
 import useWindow from '@hooks/useWindow';
 
@@ -32,6 +34,7 @@ function Base({ hidden }: BasePropsInterface) {
   return (
     <StyledBase.Container hidden={hidden}>
       <StyledBase.Header isScrollDown={isScrollDown}>
+        <Hamburger />
         <StyledBase.Links>
           {Links.map((link) => (
             <StyledBase.LinkContainer
