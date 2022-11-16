@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
+import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import { Hamburger } from '@components/Hamburger';
 
@@ -12,38 +14,52 @@ interface BasePropsInterface {
   hidden?: boolean;
 }
 function Base({ hidden }: BasePropsInterface) {
+  const router = useRouter();
+
   const Links = [
     {
       name: 'HOME',
       url: '/',
+      thumbnail: '/pages/index.png',
     },
     {
       name: 'ABOUT',
       url: '/about',
+      thumbnail: '/pages/about.png',
     },
     {
       name: 'EXPERIENCES & PROJECTS',
       url: '/experiences-and-projects',
+      thumbnail: '/pages/experiences-and-skills.png',
     },
   ];
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpened, setIsOpened] = useState(false);
 
   const { windowState } = useWindow(['location']);
 
+  const onLinkContainerClick = (url: string) => {
+    router.push(url);
+  };
+
   return (
-    <StyledBase.Container hidden={hidden}>
-      <StyledBase.Header isOpen={isOpen}>
-        <Hamburger onClick={() => setIsOpen((state) => !state)} />
+    <StyledBase.Container isOpened={isOpened} hidden={hidden}>
+      <StyledBase.Header isOpened={isOpened}>
+        <Hamburger onClick={() => setIsOpened((state) => !state)} />
 
-        <StyledBase.Title>{`${isOpen}`}</StyledBase.Title>
+        <StyledBase.Title isOpened={isOpened}>Portfolio</StyledBase.Title>
 
-        <StyledBase.Links>
+        <StyledBase.Links isOpened={isOpened}>
           {Links.map((link) => (
             <StyledBase.LinkContainer
+              isOpened={isOpened}
               isActive={new RegExp(`^${windowState.location?.pathname}$`).test(link.url)}
               key={link.name}
+              onClick={() => onLinkContainerClick(link.url)}
             >
+              <StyledBase.Thumbnail isOpened={isOpened}>
+                <Image src={link.thumbnail} layout="fill" objectFit="contain" />
+              </StyledBase.Thumbnail>
               <Link href={link.url}>{link.name}</Link>
             </StyledBase.LinkContainer>
           ))}
