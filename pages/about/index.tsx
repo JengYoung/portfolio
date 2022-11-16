@@ -878,9 +878,10 @@ function AboutPage() {
   return (
     <>
       <Head>
+        <title>JengYoung&apos;s Portfolio | 소개 🙆🏻</title>
         <meta property="og:type" content="portfolio" />
-        <meta property="og:url" content="https://jengyoung.me/about" />
         <meta property="og:title" content="JengYoung's Portfolio | 소개" />
+        <meta property="og:url" content="https://jengyoung.me/about" />
         <meta property="og:image" content="/ogs/og-image.png" />
         <meta property="og:description" content="제가 누군지 궁금하시나요?! 어서 와요 👋🏻" />
         <meta property="og:site_name" content="JengYoung's Portfolio" />

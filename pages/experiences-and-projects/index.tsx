@@ -1121,6 +1121,7 @@ function ExperiencesAndProjectsPage() {
   return (
     <>
       <Head>
+        <title>JengYoung&apos;s Portfolio | 경험 🖥</title>
         <meta property="og:type" content="portfolio" />
         <meta property="og:url" content="https://jengyoung.me/experiences-and-projects" />
         <meta property="og:title" content="JengYoung's Portfolio | 경험" />

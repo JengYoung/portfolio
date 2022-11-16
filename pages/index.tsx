@@ -126,6 +126,7 @@ function HomePage() {
   return (
     <>
       <Head>
+        <title>JengYoung&apos;s Portfolio 👋🏻</title>
         <meta property="og:type" content="portfolio" />
         <meta property="og:url" content="https://jengyoung.me" />
         <meta property="og:title" content="JengYoung's Portfolio 👋🏻" />
