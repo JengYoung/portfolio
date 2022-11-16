@@ -7,21 +7,20 @@ interface HamburgerInterface {
 }
 function Hamburger({ onClick }: HamburgerInterface) {
   const [isActive, setIsActive] = useState(false);
+
   const onButtonClick = () => {
     onClick();
     setIsActive((state) => !state);
   };
+
+  const arr = Array.from({ length: 3 }, (_, idx) => idx);
   return (
     <StyledHamburger.Container onClick={onButtonClick}>
-      <StyledHamburger.LineContainer isActive={isActive}>
-        <StyledHamburger.Line />
-      </StyledHamburger.LineContainer>
-      <StyledHamburger.LineContainer isActive={isActive}>
-        <StyledHamburger.Line />
-      </StyledHamburger.LineContainer>
-      <StyledHamburger.LineContainer isActive={isActive}>
-        <StyledHamburger.Line />
-      </StyledHamburger.LineContainer>
+      {arr.map((value) => (
+        <StyledHamburger.LineContainer key={value} isActive={isActive}>
+          <StyledHamburger.Line />
+        </StyledHamburger.LineContainer>
+      ))}
     </StyledHamburger.Container>
   );
 }
