@@ -32,6 +32,13 @@ const globalStyle = css`
     margin: 0;
   }
 
+  button {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    outline: none;
+  }
+
   @media (prefers-color-scheme: dark) {
     html {
       color-scheme: ${globalTheme.colors.dark};
