@@ -42,29 +42,6 @@ const CommonStyle = {
   `,
 };
 
-export const StyledIntro = {
-  Header: styled.header`
-    height: 2rem;
-
-    background: #333;
-
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-
-    ${CommonStyle.Header}
-  `,
-  Circles: styled.ul`
-    ${CommonStyle.Circles}
-  `,
-  Circle: styled.li`
-    ${CommonStyle.Circle}
-  `,
-  Title: styled(CopyStyle.XSmall)`
-    margin: 0 auto;
-    color: #aaa;
-  `,
-};
-
 export const StyledBase = {
   Container: styled.div`
     position: fixed;
