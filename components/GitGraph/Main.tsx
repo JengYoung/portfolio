@@ -1,33 +1,16 @@
 import React from 'react';
 
 import { Styled } from './styles';
-import {
-  CommitInterface,
-  CommonBranchInterface,
-  GitBranchInterface,
-  GitGraphInterface,
-} from './types';
-
-function Branch({ type }: CommonBranchInterface) {
-  return type === 'merged' ? <Styled.Branch.MergedBranch /> : <Styled.Branch.BasedBranch />;
-}
-
-function Commit({ type, children }: CommitInterface) {
-  return type === 'merged' ? (
-    <Styled.Branch.MergedCommit>{children}</Styled.Branch.MergedCommit>
-  ) : (
-    <Styled.Branch.BasedCommit>{children}</Styled.Branch.BasedCommit>
-  );
-}
+import { GitBranchInterface, GitGraphInterface } from './types';
 
 function GitBranch({ type, period, children }: GitBranchInterface) {
   return (
     <Styled.Branch.MergedCommitContainer>
-      <Branch type={type} />
-      <Commit type={type}>
+      <Styled.Branch.Inner type={type} />
+      <Styled.Branch.Commit type={type}>
         <Styled.History.Dot main period={period} />
         <Styled.History.CommitMessage main>{children}</Styled.History.CommitMessage>
-      </Commit>
+      </Styled.Branch.Commit>
     </Styled.Branch.MergedCommitContainer>
   );
 }
@@ -35,7 +18,7 @@ function GitBranch({ type, period, children }: GitBranchInterface) {
 function GitGraph({ shouldDraw, shouldShowHistory, nowExperience }: GitGraphInterface) {
   return (
     <Styled.Container>
-      <Styled.Branch.Container draw={shouldDraw} shouldShowHistory={shouldShowHistory}>
+      <Styled.Branch.Container shouldDraw={shouldDraw} shouldShowHistory={shouldShowHistory}>
         <GitBranch type="merged" period={nowExperience.period.end}>
           {nowExperience.title}
         </GitBranch>
@@ -53,10 +36,6 @@ function GitGraph({ shouldDraw, shouldShowHistory, nowExperience }: GitGraphInte
     </Styled.Container>
   );
 }
-
-Commit.defaultProps = {
-  children: undefined,
-};
 
 GitBranch.defaultProps = {
   children: undefined,
