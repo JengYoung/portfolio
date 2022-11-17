@@ -472,10 +472,7 @@ function AboutPage() {
 
   const { windowState } = useResize();
 
-  const minWidth = useMemo(
-    () => Math.min(1440, windowState.innerWidth ?? 0),
-    [windowState.innerWidth]
-  );
+  const minWidth = useMemo(() => Math.min(windowState.innerWidth ?? 0), [windowState.innerWidth]);
 
   const minHeight = useMemo(
     () => Math.min(1024, windowState.innerHeight ?? 0),
@@ -570,7 +567,7 @@ function AboutPage() {
     options: {
       bubbleNum: 4,
       absorbBallNum: 3,
-      canvasWidth: windowState.innerWidth,
+      canvasWidth: minWidth,
       canvasHeight: minHeight,
     },
   });
