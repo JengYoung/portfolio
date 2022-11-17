@@ -6,9 +6,9 @@ module.exports = {
   singleQuote: true,
   printWidth: 100,
   importOrder: [
-    'react(.*)$',
-    'next(.*)$',
-    'recoil(.*)$',
+    '^react(.*)$',
+    '^next(.*)$',
+    '^recoil(.*)$',
     '^@emotion/(.*)$',
     '^@pages/(.*)$',
     '^@components/(.*)$',

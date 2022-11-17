@@ -1,6 +1,6 @@
-import { css } from '@emotion/react';
 import React, { MouseEventHandler } from 'react';
 
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 interface BubbleProps {

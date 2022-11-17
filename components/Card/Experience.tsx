@@ -1,6 +1,6 @@
-import { css } from '@emotion/react';
 import React from 'react';
 
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import CopyStyle from '@components/Text';

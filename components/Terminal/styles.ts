@@ -1,5 +1,4 @@
 import { css } from '@emotion/react';
-
 import styled from '@emotion/styled';
 
 import { ButtonActionTypeEnum, TerminalModeType } from '~/atoms/intro/terminal';
