@@ -12,57 +12,19 @@ import useTypingText from '@hooks/useTypingText';
 import readonly from '@utils/readonly';
 
 import { StyledBody } from './styles';
+import { TerminalBodyInterface, TerminalBodyLogsInterface, logColorsEnum } from './types';
 
 const paths: readonly string[] = readonly(['~', 'portfolio']);
 const colors = ['black', '#0500ff', '#44B400'];
-enum logColorsEnum {
-  event = '#ff00f5',
-  wait = '#0DC0CB',
-  ready = '#61C454',
-  info = '#0DC0CB',
-}
 
-interface TerminalBodyCommonProp {
-  isActive: boolean;
-}
-interface TerminalBodyInterface extends TerminalBodyCommonProp {
-  date: string;
-}
-
-interface TerminalBodyLogsInterface extends TerminalBodyCommonProp {
-  initDelay: number;
-}
-
-const delays = [0, 500, 0, 300, 0, 20, 0, 10, 0, 43];
-function TerminalBodyLogs({ isActive, initDelay }: TerminalBodyLogsInterface) {
-  const logs: { id: number; type: keyof typeof logColorsEnum; text: string }[] = readonly([
-    { id: 1, type: 'ready', text: ' - started url: https://jengyoung.me' },
-    {
-      id: 2,
-      type: 'info',
-      text: ' - SWC minify release candidate enabled. https://nextjs.link/swcmin',
-    },
-    {
-      id: 3,
-      type: 'event',
-      text: ' - compiled client and server successfully in 319 ms (178 modules)',
-    },
-    {
-      id: 4,
-      type: 'event',
-      text: ' - compiled client and server successfully in 319 ms (178 modules)',
-    },
-    { id: 5, type: 'wait', text: ' - compilling...' },
-    { id: 6, type: 'event', text: ' - compiled successfully in 16 ms (145 modules)' },
-    { id: 7, type: 'wait', text: ' - compilling...' },
-    { id: 8, type: 'event', text: ' - compiled successfully in 8 ms (33 modules)' },
-    { id: 9, type: 'wait', text: ' - compilling...' },
-    {
-      id: 10,
-      type: 'event',
-      text: ' - compiled client and server successfully in 43 ms (178 modules)',
-    },
-  ]);
+function TerminalBodyLogs({
+  delays,
+  logs,
+  isActive,
+  initDelay,
+}: TerminalBodyLogsInterface<typeof logColorsEnum>) {
+  // const logs: { id: number; type: keyof typeof logColorsEnum; text: string }[] =
+  //   readonly(terminalData);
 
   const [logClassNames, setLogClassNames] = useState(new Array(logs.length).fill(''));
   const router = useRouter();
@@ -78,7 +40,7 @@ function TerminalBodyLogs({ isActive, initDelay }: TerminalBodyLogsInterface) {
         (acc: number[], cur: number) => [...acc, acc[acc.length - 1] + cur * 0.001],
         [initDelay + 0.1]
       ),
-    [initDelay]
+    [initDelay, delays]
   );
 
   useEffect(() => {
@@ -113,7 +75,12 @@ function TerminalBodyLogs({ isActive, initDelay }: TerminalBodyLogsInterface) {
   );
 }
 
-function TerminalBody({ isActive, date }: TerminalBodyInterface) {
+function TerminalBody({
+  data,
+  delays,
+  isActive,
+  date,
+}: TerminalBodyInterface<typeof logColorsEnum>) {
   const [{ mode }] = useRecoilState(IntroTarminalAtom);
   const TYPING_TEXT = 'yarn dev';
   const TYPING_DELAY = 50;
@@ -159,7 +126,12 @@ function TerminalBody({ isActive, date }: TerminalBodyInterface) {
         <StyledBody.Cursor isActive={isActive} delay={FIRST_TYPING_TOTAL_DELAY + 0.05} />
       </StyledBody.InputLineContainer>
 
-      <TerminalBodyLogs initDelay={FIRST_TYPING_TOTAL_DELAY} isActive={isActive} />
+      <TerminalBodyLogs
+        delays={delays}
+        logs={data}
+        initDelay={FIRST_TYPING_TOTAL_DELAY}
+        isActive={isActive}
+      />
 
       <StyledBody.Cursor isActive={!isActive} delay={FIRST_TYPING_TOTAL_DELAY + 0.05} />
     </StyledBody.Container>

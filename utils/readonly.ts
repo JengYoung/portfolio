@@ -1,16 +1,18 @@
 /* eslint-disable no-param-reassign */
 
-const readonly = (object: any) => {
-  if (object?.constructor?.name !== 'Object' && object?.constructor?.name !== 'Array')
-    return object;
+const readonly = (obj: any) => {
+  if (typeof obj === 'number') return obj;
+  if (obj?.constructor?.name !== 'Object' && obj?.constructor?.name !== 'Array') return obj;
 
-  Object.keys(object).forEach((key) => {
-    object[key] = readonly(object[key]);
+  Object.keys(obj).forEach((key) => {
+    if (Object.getOwnPropertyDescriptors(obj)[key].writable) {
+      obj[key] = readonly(obj[key]);
+    }
   });
 
-  object = Object.freeze(object);
+  obj = Object.freeze(obj);
 
-  return object;
+  return obj;
 };
 
 export default readonly;

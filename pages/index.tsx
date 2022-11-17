@@ -9,9 +9,12 @@ import styled from '@emotion/styled';
 
 import { ScrollMouse } from '@components/Mouse';
 import { Terminal } from '@components/Terminal';
+import { LogType, logColorsEnum } from '@components/Terminal/types';
 import { getBaseLayout } from '@components/layouts';
 
 import { useLocalStorage } from '@hooks/useLocalStorage';
+
+import terminalData from '@assets/dataset/terminal.json';
 
 import { IntroTarminalAtom } from '~/atoms';
 import { ButtonActionTypeEnum, TerminalModeType } from '~/atoms/intro/terminal';
@@ -140,7 +143,12 @@ function HomePage() {
       </Head>
 
       <Styled.Page mode={mode}>
-        <Terminal isActive={isActive} date={lastLoginDate.current} />
+        <Terminal
+          delays={[0, 500, 0, 300, 0, 20, 0, 10, 0, 43]}
+          data={terminalData as LogType<typeof logColorsEnum>[]}
+          isActive={isActive}
+          date={lastLoginDate.current}
+        />
         <Styled.Mouse visible={!isActive} bottom="1rem" left="50%" right="50%" delay={0.3} />
       </Styled.Page>
     </>
