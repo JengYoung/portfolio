@@ -17,6 +17,8 @@ import useIntersectionObserver from '@hooks/useIntersectionObserver';
 import useMetaball from '@hooks/useMetaball';
 import useWindow from '@hooks/useWindow';
 
+import featuresData from '@assets/about/features.json';
+
 import globalTheme from '@styles/globalTheme';
 
 import readonly from '@utils/readonly';
@@ -613,26 +615,7 @@ function AboutPage() {
     },
   ];
 
-  const features: FeatureInterface[] = readonly([
-    {
-      id: 0,
-      emoji: '💡',
-      title: '호기심',
-      description: '항상 새로운 것들에 호기심을 갖고, 기존과 비교하며 개선해나가요 😉',
-    },
-    {
-      id: 1,
-      emoji: '📝',
-      title: '문서화',
-      description: '모르는 것들을 찾으면, 기록하며 배워나가는 습관을 갖고 있어요 🥸',
-    },
-    {
-      id: 2,
-      emoji: '🏄‍♂️',
-      title: '꾸준함',
-      description: '현재에 안주하지 않아요. 항상 더 나은 방향으로 성장하는 것을 즐겨요 🥰',
-    },
-  ]);
+  const features: FeatureInterface[] = readonly(featuresData);
 
   const skillHeaderRef = useRef<HTMLHeadElement>(null);
   const [headerState, setHeaderState] = useState({
