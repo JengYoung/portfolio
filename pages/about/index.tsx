@@ -1,9 +1,9 @@
-import { css } from '@emotion/react';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import Head from 'next/head';
 import Image from 'next/image';
 
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { ForwardedCanvas } from '@components/Metaball';
