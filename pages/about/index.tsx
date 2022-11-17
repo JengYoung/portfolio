@@ -15,7 +15,7 @@ import { getBaseLayout } from '@components/layouts';
 
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
 import useMetaball from '@hooks/useMetaball';
-import useWindow from '@hooks/useWindow';
+import useResize from '@hooks/useResize';
 
 import featuresData from '@assets/dataset/features.json';
 import skillsData from '@assets/dataset/skills.json';
@@ -470,10 +470,7 @@ const Styled = {
 function AboutPage() {
   const [isMouseVisible, setIsMouseVisible] = useState(true);
 
-  const { windowState } = useWindow<{ innerWidth: number; innerHeight: number }>([
-    'innerWidth',
-    'innerHeight',
-  ]);
+  const { windowState } = useResize();
 
   const minWidth = useMemo(
     () => Math.min(1440, windowState.innerWidth ?? 0),
