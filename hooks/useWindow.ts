@@ -1,26 +1,25 @@
 import { useEffect, useState } from 'react';
 
-interface StateInterface {
-  [idx: string]: any;
-}
-
-const useWindow = (props: string[]) => {
-  const [windowState, setWindowState] = useState<StateInterface>({});
+function useWindow<T>(props: (keyof T)[]) {
+  const [windowState, setWindowState] = useState<T>({} as T);
 
   useEffect(() => {
-    const nowState = props.reduce(
-      (acc: StateInterface, key) => ({
-        ...acc,
-        [key as string]: window[key as keyof typeof window],
-      }),
-      {}
-    );
+    const setState = () => {
+      const nowState = props.reduce(
+        (acc: T, key) => ({
+          ...acc,
+          [key as string]: window[key as keyof typeof window],
+        }),
+        {} as T
+      );
 
-    setWindowState((state) => ({
-      ...state,
-      ...nowState,
-    }));
+      setWindowState((state) => ({
+        ...state,
+        ...nowState,
+      }));
+    };
 
+    setState();
     /**
      * @throw
      * 만약 이를 `props`를 설정해준다면, windowState에서 상태가 변경되었으니 리렌더링이 다시 발생하는데요.
@@ -30,6 +29,6 @@ const useWindow = (props: string[]) => {
   }, []);
 
   return { windowState, setWindowState };
-};
+}
 
 export default useWindow;

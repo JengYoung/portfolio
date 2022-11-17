@@ -15,7 +15,7 @@ import { getBaseLayout } from '@components/layouts';
 
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
 import useMetaball from '@hooks/useMetaball';
-import useWindow from '@hooks/useWindow';
+import useResize from '@hooks/useResize';
 
 import featuresData from '@assets/dataset/features.json';
 import skillsData from '@assets/dataset/skills.json';
@@ -106,10 +106,9 @@ const Styled = {
       font-weight: ${theme.fontWeights.default};
     `}
   `,
-  ProfileImage: styled.img`
+  ProfileImage: styled.img<{ top: number }>`
     position: absolute;
-    top: calc((100% + 20px) / 2);
-    left: calc((100% - 280px) / 2);
+    top: ${({ top }) => top}px;
 
     z-index: 10;
     width: 280px;
@@ -470,7 +469,8 @@ const Styled = {
 function AboutPage() {
   const [isMouseVisible, setIsMouseVisible] = useState(true);
 
-  const { windowState } = useWindow(['innerWidth', 'innerHeight']);
+  const { windowState } = useResize();
+
   const minWidth = useMemo(
     () => Math.min(1440, windowState.innerWidth ?? 0),
     [windowState.innerWidth]
@@ -491,6 +491,7 @@ function AboutPage() {
 
   useMetaball({
     canvasRef,
+    baseFillColor: globalTheme.colors.canvasBackground,
     gradient: initialGradientColors,
     metaballGradient: metaballGradientColors,
     mainMetaball: {
@@ -568,7 +569,7 @@ function AboutPage() {
     options: {
       bubbleNum: 4,
       absorbBallNum: 3,
-      canvasWidth: windowState.innerWidth,
+      canvasWidth: minWidth,
       canvasHeight: minHeight,
     },
   });
@@ -767,7 +768,7 @@ function AboutPage() {
             <div>최적화와 새로운 것들에 호기심을 가지며</div>
             <div>더 나은 UX를 제공하며 성장할 팀을 찾고 있어요.</div>
           </Styled.IntroductionSubCopy>
-          <Styled.ProfileImage src="profile.gif" alt="프로필" />
+          <Styled.ProfileImage top={minHeight / 2 + 10} src="profile.gif" alt="프로필" />
         </Styled.Introduction>
 
         <Styled.Features>

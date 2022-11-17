@@ -11,10 +11,8 @@ export interface UseCanvasReturnParams {
   setFillStyle: Dispatch<SetStateAction<CanvasGradient | null>>;
 }
 
-const useCanvas = ({
-  canvasRef,
-  baseFillColor = '#000',
-}: UseCanvasParams): UseCanvasReturnParams => {
+function useCanvas({ canvasRef, baseFillColor = '#000' }: UseCanvasParams): UseCanvasReturnParams {
+  // const { windowState } = useWindow<UseCanvasCommonInterface & T>(['innerWidth', 'innerHeight']);
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
   const [fillStyle, setFillStyle] = useState<CanvasGradient | null>(null);
 
@@ -23,6 +21,7 @@ const useCanvas = ({
     setCtx(() => (canvasRef.current as HTMLCanvasElement).getContext('2d'));
 
     // NOTE: 초기화할 때만 동작하도록 설정하였다.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -32,9 +31,10 @@ const useCanvas = ({
     }
 
     // NOTE: canvasRef는 ctx가 타입을 보장하므로 불필요한 반복 호출을 막기 위해 생략하였다.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ctx, baseFillColor, fillStyle]);
 
   return { ctx, setFillStyle };
-};
+}
 
 export default useCanvas;
