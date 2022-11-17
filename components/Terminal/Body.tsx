@@ -9,6 +9,8 @@ import { ButtonActionTypeEnum } from '@atoms/intro/terminal';
 
 import useTypingText from '@hooks/useTypingText';
 
+import terminalData from '@assets/dataset/terminal.json';
+
 import readonly from '@utils/readonly';
 
 import { StyledBody } from './styles';
@@ -35,34 +37,8 @@ interface TerminalBodyLogsInterface extends TerminalBodyCommonProp {
 
 const delays = [0, 500, 0, 300, 0, 20, 0, 10, 0, 43];
 function TerminalBodyLogs({ isActive, initDelay }: TerminalBodyLogsInterface) {
-  const logs: { id: number; type: keyof typeof logColorsEnum; text: string }[] = readonly([
-    { id: 1, type: 'ready', text: ' - started url: https://jengyoung.me' },
-    {
-      id: 2,
-      type: 'info',
-      text: ' - SWC minify release candidate enabled. https://nextjs.link/swcmin',
-    },
-    {
-      id: 3,
-      type: 'event',
-      text: ' - compiled client and server successfully in 319 ms (178 modules)',
-    },
-    {
-      id: 4,
-      type: 'event',
-      text: ' - compiled client and server successfully in 319 ms (178 modules)',
-    },
-    { id: 5, type: 'wait', text: ' - compilling...' },
-    { id: 6, type: 'event', text: ' - compiled successfully in 16 ms (145 modules)' },
-    { id: 7, type: 'wait', text: ' - compilling...' },
-    { id: 8, type: 'event', text: ' - compiled successfully in 8 ms (33 modules)' },
-    { id: 9, type: 'wait', text: ' - compilling...' },
-    {
-      id: 10,
-      type: 'event',
-      text: ' - compiled client and server successfully in 43 ms (178 modules)',
-    },
-  ]);
+  const logs: { id: number; type: keyof typeof logColorsEnum; text: string }[] =
+    readonly(terminalData);
 
   const [logClassNames, setLogClassNames] = useState(new Array(logs.length).fill(''));
   const router = useRouter();
