@@ -1,21 +1,30 @@
 import { useEffect, useState } from 'react';
 
-function useWindow<T>(props: string[]) {
+function useWindow<T>(props: (keyof T)[]) {
   const [windowState, setWindowState] = useState<T>({} as T);
 
   useEffect(() => {
-    const nowState = props.reduce(
-      (acc: T, key) => ({
-        ...acc,
-        [key as string]: window[key as keyof typeof window],
-      }),
-      {} as T
-    );
+    const setState = () => {
+      const nowState = props.reduce(
+        (acc: T, key) => ({
+          ...acc,
+          [key as string]: window[key as keyof typeof window],
+        }),
+        {} as T
+      );
 
-    setWindowState((state) => ({
-      ...state,
-      ...nowState,
-    }));
+      setWindowState((state) => ({
+        ...state,
+        ...nowState,
+      }));
+    };
+
+    setState();
+
+    window.addEventListener('resize', setState);
+    return () => {
+      window.removeEventListener('resize', setState);
+    };
 
     /**
      * @throw

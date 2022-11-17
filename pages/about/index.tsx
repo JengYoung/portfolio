@@ -495,6 +495,7 @@ function AboutPage() {
 
   useMetaball({
     canvasRef,
+    baseFillColor: globalTheme.colors.canvasBackground,
     gradient: initialGradientColors,
     metaballGradient: metaballGradientColors,
     mainMetaball: {

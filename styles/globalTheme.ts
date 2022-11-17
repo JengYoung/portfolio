@@ -21,6 +21,7 @@ const colors = {
   warning: '#FF7B01',
   success: '#61C454',
   headerColor: '#c0edf5',
+  canvasBackground: '#fff',
 };
 
 const fontWeights = {

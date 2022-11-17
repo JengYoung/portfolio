@@ -1,24 +1,18 @@
 import { Dispatch, MutableRefObject, SetStateAction, useEffect, useState } from 'react';
 
-import useWindow from './useWindow';
-
 export interface UseCanvasParams {
   canvasRef: MutableRefObject<HTMLCanvasElement | null>;
   gradient?: readonly string[];
   baseFillColor?: string | CanvasGradient;
 }
 
-export interface UseCanvasReturnParams<T> {
+export interface UseCanvasReturnParams {
   ctx: CanvasRenderingContext2D | null;
   setFillStyle: Dispatch<SetStateAction<CanvasGradient | null>>;
-  windowState: T;
 }
 
-function useCanvas<T>({
-  canvasRef,
-  baseFillColor = '#000',
-}: UseCanvasParams): UseCanvasReturnParams<T> {
-  const { windowState, setWindowState } = useWindow<T>(['innerWidth', 'innerHeight']);
+function useCanvas({ canvasRef, baseFillColor = '#000' }: UseCanvasParams): UseCanvasReturnParams {
+  // const { windowState } = useWindow<UseCanvasCommonInterface & T>(['innerWidth', 'innerHeight']);
   const [ctx, setCtx] = useState<CanvasRenderingContext2D | null>(null);
   const [fillStyle, setFillStyle] = useState<CanvasGradient | null>(null);
 
@@ -26,13 +20,6 @@ function useCanvas<T>({
     if (canvasRef.current === null) return;
     setCtx(() => (canvasRef.current as HTMLCanvasElement).getContext('2d'));
 
-    window.addEventListener('resize', () => {
-      setWindowState((state) => ({
-        ...state,
-        innerWidth: window.innerWidth,
-        innerHeight: window.innerHeight,
-      }));
-    });
     // NOTE: 초기화할 때만 동작하도록 설정하였다.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -47,7 +34,7 @@ function useCanvas<T>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ctx, baseFillColor, fillStyle]);
 
-  return { ctx, setFillStyle, windowState };
+  return { ctx, setFillStyle };
 }
 
 export default useCanvas;

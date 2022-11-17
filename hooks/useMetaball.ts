@@ -40,6 +40,7 @@ const useMetaball = ({
     (metaballs: Metaballs, linearGradient: CanvasGradient) => {
       if (ctx === null || canvasRef.current === null) return;
 
+      ctx.fillStyle = baseFillColor;
       ctx.save();
 
       ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
@@ -51,7 +52,7 @@ const useMetaball = ({
 
       requestAnimationFrame(() => animate(metaballs, linearGradient));
     },
-    [canvasRef, ctx]
+    [canvasRef, ctx, baseFillColor]
   );
 
   useEffect(() => {
@@ -101,7 +102,7 @@ const useMetaball = ({
 
     animate(metaballs, linearGradient);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ctx, canvasRef.current]);
+  }, [ctx, canvasRef.current?.width, canvasRef.current?.height]);
 };
 
 export default useMetaball;
