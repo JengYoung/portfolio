@@ -5,36 +5,12 @@ import Image from 'next/image';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
+import { ImageSizeOption, LinksImageInterface } from './types';
+
 /**
  * @description
  * hover하면 링크들이 보이는 이미지입니다.
  */
-
-interface ImagePropsInterface<T> {
-  src: T;
-  alt: T;
-}
-
-interface LinkPropsInterface<T> {
-  iconSrc: T;
-  href: T;
-  name: T;
-}
-
-export interface ImageSizeOption<T> {
-  size: {
-    width: T;
-    height: T;
-  };
-  objectFit?: 'cover' | 'contain';
-  bg?: T;
-}
-
-interface LinksImageInterface<T> {
-  image: ImagePropsInterface<T>;
-  links: LinkPropsInterface<T>[];
-  imageOptions: ImageSizeOption<T>;
-}
 
 const StyledLinks = {
   Links: styled.ul`
