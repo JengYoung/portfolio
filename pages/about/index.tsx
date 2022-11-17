@@ -470,7 +470,11 @@ const Styled = {
 function AboutPage() {
   const [isMouseVisible, setIsMouseVisible] = useState(true);
 
-  const { windowState } = useWindow(['innerWidth', 'innerHeight']);
+  const { windowState } = useWindow<{ innerWidth: number; innerHeight: number }>([
+    'innerWidth',
+    'innerHeight',
+  ]);
+
   const minWidth = useMemo(
     () => Math.min(1440, windowState.innerWidth ?? 0),
     [windowState.innerWidth]

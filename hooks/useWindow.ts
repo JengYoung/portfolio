@@ -1,19 +1,15 @@
 import { useEffect, useState } from 'react';
 
-interface StateInterface {
-  [idx: string]: any;
-}
-
-const useWindow = (props: string[]) => {
-  const [windowState, setWindowState] = useState<StateInterface>({});
+function useWindow<T>(props: string[]) {
+  const [windowState, setWindowState] = useState<T>({} as T);
 
   useEffect(() => {
     const nowState = props.reduce(
-      (acc: StateInterface, key) => ({
+      (acc: T, key) => ({
         ...acc,
         [key as string]: window[key as keyof typeof window],
       }),
-      {}
+      {} as T
     );
 
     setWindowState((state) => ({
@@ -30,6 +26,6 @@ const useWindow = (props: string[]) => {
   }, []);
 
   return { windowState, setWindowState };
-};
+}
 
 export default useWindow;
