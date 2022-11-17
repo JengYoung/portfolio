@@ -1,19 +1,44 @@
 import React from 'react';
 
 import { Styled } from './styles';
-import { GitGraphInterface } from './types';
+import {
+  CommitInterface,
+  CommonBranchInterface,
+  GitBranchInterface,
+  GitGraphInterface,
+} from './types';
+
+function Branch({ type }: CommonBranchInterface) {
+  return type === 'merged' ? <Styled.Branch.MergedBranch /> : <Styled.Branch.BasedBranch />;
+}
+
+function Commit({ type, children }: CommitInterface) {
+  return type === 'merged' ? (
+    <Styled.Branch.MergedCommit>{children}</Styled.Branch.MergedCommit>
+  ) : (
+    <Styled.Branch.BasedCommit>{children}</Styled.Branch.BasedCommit>
+  );
+}
+
+function GitBranch({ type, period, children }: GitBranchInterface) {
+  return (
+    <Styled.Branch.MergedCommitContainer>
+      <Branch type={type} />
+      <Commit type={type}>
+        <Styled.History.Dot main period={period} />
+        <Styled.History.CommitMessage main>{children}</Styled.History.CommitMessage>
+      </Commit>
+    </Styled.Branch.MergedCommitContainer>
+  );
+}
 
 function GitGraph({ shouldDraw, shouldShowHistory, nowExperience }: GitGraphInterface) {
   return (
     <Styled.Container>
       <Styled.Branch.Container draw={shouldDraw} shouldShowHistory={shouldShowHistory}>
-        <Styled.Branch.MergedCommitContainer>
-          <Styled.Branch.MergedBranch />
-          <Styled.Branch.MergedCommit>
-            <Styled.History.Dot main period={nowExperience.period.end} />
-            <Styled.History.CommitMessage main>{nowExperience.title}</Styled.History.CommitMessage>
-          </Styled.Branch.MergedCommit>
-        </Styled.Branch.MergedCommitContainer>
+        <GitBranch type="merged" period={nowExperience.period.end}>
+          {nowExperience.title}
+        </GitBranch>
 
         {nowExperience.contents.map((content) => (
           <Styled.History.Container key={content}>
@@ -23,16 +48,18 @@ function GitGraph({ shouldDraw, shouldShowHistory, nowExperience }: GitGraphInte
           </Styled.History.Container>
         ))}
 
-        <Styled.Branch.MergedCommitContainer>
-          <Styled.Branch.BasedBranch />
-          <Styled.Branch.BasedCommit>
-            <Styled.History.Dot main period={nowExperience.period.start} />
-            <Styled.History.CommitMessage main />
-          </Styled.Branch.BasedCommit>
-        </Styled.Branch.MergedCommitContainer>
+        <GitBranch type="based" period={nowExperience.period.start} />
       </Styled.Branch.Container>
     </Styled.Container>
   );
 }
+
+Commit.defaultProps = {
+  children: undefined,
+};
+
+GitBranch.defaultProps = {
+  children: undefined,
+};
 
 export default GitGraph;
