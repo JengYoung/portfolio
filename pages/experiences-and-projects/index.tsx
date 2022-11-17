@@ -7,7 +7,10 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { Browser, ProjectInterface } from '@components/Browser';
-import LinksImage, { ImageSizeOption } from '@components/Links/LinksImage';
+import { GitGraph } from '@components/GitGraph';
+import { GitGraphExperienceInterface } from '@components/GitGraph/types';
+import LinksImage from '@components/Links/LinksImage';
+import { ImageSizeOption } from '@components/Links/types';
 import { CollapsedText } from '@components/Text';
 import Gummy from '@components/Text/Gummy';
 import { getBaseLayout } from '@components/layouts';
@@ -20,16 +23,10 @@ import projectsData from '@assets/dataset/projects.json';
 import readonly from '@utils/readonly';
 import throttle from '@utils/throttle';
 
-interface ExperienceInterface {
+export interface ExperienceInterface extends GitGraphExperienceInterface {
   id: number;
   type: string;
-  title: string;
-  period: {
-    start: string;
-    end: string;
-  };
   skills: string[];
-  contents: string[];
   images: {
     src: string;
     alt: string;
@@ -261,154 +258,6 @@ const StyledExperience = {
   `,
 };
 
-const Commit = styled.div`
-  position: absolute;
-  top: -1.5rem;
-  left: -1.5rem;
-  display: flex;
-  line-height: 1;
-  color: ${({ theme }) => theme.colors.primary.light};
-`;
-
-const Branch = styled.div`
-  position: relative;
-  width: 3rem;
-  height: 3rem;
-  border: 2px solid ${({ theme }) => theme.colors.success};
-`;
-
-const StyledGitGraph = {
-  Container: styled.article`
-    display: flex;
-    width: 100%;
-    height: 100%;
-    margin-left: 50%;
-  `,
-  Branch: {
-    Container: styled.div<{ draw: boolean; shouldShowHistories: boolean }>`
-      flex-shrink: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      transition: opacity 0.3s;
-
-      ${({ draw, shouldShowHistories }) =>
-        draw &&
-        shouldShowHistories &&
-        css`
-          transform-origin: left;
-          animation: scale-up 1s ease-out forwards;
-          animation-delay: 0.25s;
-          @keyframes scale-up {
-            0% {
-              transform: scale(1);
-            }
-            50% {
-              opacity: 1;
-              transform: scale(1.05);
-            }
-            100% {
-              opacity: 1;
-              transform: scale(1);
-            }
-          }
-        `}
-    `,
-    MergedCommitContainer: styled.div`
-      position: relative;
-      display: flex;
-      align-items: flex-start;
-      width: 100%;
-      height: 3rem;
-    `,
-    MergedBranch: styled(Branch)`
-      border-bottom: 0;
-      border-left: 0;
-      border-top-right-radius: 5rem;
-    `,
-
-    BasedBranch: styled(Branch)`
-      border-top: 0;
-      border-left: 0;
-      border-bottom-right-radius: 5rem;
-    `,
-    MergedCommit: styled(Commit)`
-      top: -1.5rem;
-      left: -1.5rem;
-    `,
-    BasedCommit: styled(Commit)`
-      top: 1.5rem;
-      left: -1.5rem;
-    `,
-    Body: styled.div<{ commitCount: number }>`
-      width: 3rem;
-      height: ${({ commitCount }) => `calc(5 * ${commitCount}rem)`};
-      border-right: 2px solid ${({ theme }) => theme.colors.success};
-    `,
-    End: styled.div`
-      width: 3rem;
-      height: 3rem;
-      border: 2px solid ${({ theme }) => theme.colors.success};
-      border-top: 0;
-      border-left: 0;
-      border-bottom-right-radius: 5rem;
-    `,
-  },
-  Histories: {
-    Container: styled.div<{ length: number }>`
-      width: 100%;
-      height: 100%;
-    `,
-  },
-  History: {
-    Container: styled.div`
-      position: relative;
-      display: flex;
-      padding: 1rem 0;
-      margin-left: calc(1.5rem + 2px);
-    `,
-
-    Dot: styled.div<{ main?: boolean; period?: string }>`
-      position: relative;
-      display: flex;
-      flex-shrink: 0;
-      width: ${({ main }) => `${main ? '3rem' : '2.5rem'}`};
-      height: ${({ main }) => `${main ? '3rem' : '2.5rem'}`};
-      margin-right: 0.75rem;
-      background-color: ${({ main, theme }) =>
-        main ? theme.colors.primary.light : theme.colors.success};
-      border-radius: 50%;
-
-      &:before {
-        position: absolute;
-        left: -6rem;
-        z-index: 99;
-        display: block;
-        align-self: center;
-        width: 5rem;
-        text-align: right;
-        content: '${({ period }) => period}';
-      }
-    `,
-    CommitMessage: styled.span<{ main?: boolean }>`
-      align-self: center;
-      justify-items: flex-end;
-      width: 100%;
-      font-size: ${({ main, theme }) => (main ? theme.fontSizes.xxl : theme.fontSizes.l)};
-      font-weight: ${({ main, theme }) =>
-        main ? theme.heads[4].weight : theme.fontWeights.default};
-    `,
-    Line: styled.div`
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: calc(1.5rem - 4px);
-
-      border: 1px solid ${({ theme }) => theme.colors.success};
-    `,
-  },
-};
-
 const StyledProjectIntro = {
   Ball: styled.div<{ ballScale: number }>`
     top: 90%;
@@ -589,7 +438,6 @@ const StyledProject = {
 
 function ExperiencesAndProjectsPage() {
   const [textReversed, setTextReversed] = useState(false);
-  // const [nowPassedExperienceIndex, setNowPassedExperienceIndex] = useState(-1);
 
   const [isDrawLine, setIsDrawLine] = useState({
     start: false,
@@ -748,40 +596,11 @@ function ExperiencesAndProjectsPage() {
                     </StyledExperience.ImageContainer>
                   ))}
                 </StyledExperience.Images>
-                <StyledGitGraph.Container>
-                  <StyledGitGraph.Branch.Container
-                    draw={isDrawLine.start}
-                    shouldShowHistories={shouldShowHistories[idx]}
-                  >
-                    <StyledGitGraph.Branch.MergedCommitContainer>
-                      <StyledGitGraph.Branch.MergedBranch />
-                      <StyledGitGraph.Branch.MergedCommit>
-                        <StyledGitGraph.History.Dot main period={nowExperience.period.end} />
-                        <StyledGitGraph.History.CommitMessage main>
-                          {nowExperience.title}
-                        </StyledGitGraph.History.CommitMessage>
-                      </StyledGitGraph.Branch.MergedCommit>
-                    </StyledGitGraph.Branch.MergedCommitContainer>
-
-                    {nowExperience.contents.map((content) => (
-                      <StyledGitGraph.History.Container key={content}>
-                        <StyledGitGraph.History.Dot />
-                        <StyledGitGraph.History.CommitMessage>
-                          {content}
-                        </StyledGitGraph.History.CommitMessage>
-                        <StyledGitGraph.History.Line />
-                      </StyledGitGraph.History.Container>
-                    ))}
-
-                    <StyledGitGraph.Branch.MergedCommitContainer>
-                      <StyledGitGraph.Branch.BasedBranch />
-                      <StyledGitGraph.Branch.BasedCommit>
-                        <StyledGitGraph.History.Dot main period={nowExperience.period.start} />
-                        <StyledGitGraph.History.CommitMessage main />
-                      </StyledGitGraph.Branch.BasedCommit>
-                    </StyledGitGraph.Branch.MergedCommitContainer>
-                  </StyledGitGraph.Branch.Container>
-                </StyledGitGraph.Container>
+                <GitGraph
+                  shouldDraw={isDrawLine.start}
+                  shouldShowHistory={shouldShowHistories[idx]}
+                  nowExperience={nowExperience}
+                />
               </StyledExperience.ExperienceContainer>
             ))}
           </StyledExperience.LineContainer>

@@ -23,9 +23,6 @@ function TerminalBodyLogs({
   isActive,
   initDelay,
 }: TerminalBodyLogsInterface<typeof logColorsEnum>) {
-  // const logs: { id: number; type: keyof typeof logColorsEnum; text: string }[] =
-  //   readonly(terminalData);
-
   const [logClassNames, setLogClassNames] = useState(new Array(logs.length).fill(''));
   const router = useRouter();
 
