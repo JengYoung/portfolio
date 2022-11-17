@@ -106,10 +106,9 @@ const Styled = {
       font-weight: ${theme.fontWeights.default};
     `}
   `,
-  ProfileImage: styled.img`
+  ProfileImage: styled.img<{ top: number }>`
     position: absolute;
-    top: calc((100% + 20px) / 2);
-    left: calc((100% - 280px) / 2);
+    top: ${({ top }) => top}px;
 
     z-index: 10;
     width: 280px;
@@ -472,7 +471,10 @@ function AboutPage() {
 
   const { windowState } = useResize();
 
-  const minWidth = useMemo(() => Math.min(windowState.innerWidth ?? 0), [windowState.innerWidth]);
+  const minWidth = useMemo(
+    () => Math.min(1440, windowState.innerWidth ?? 0),
+    [windowState.innerWidth]
+  );
 
   const minHeight = useMemo(
     () => Math.min(1024, windowState.innerHeight ?? 0),
@@ -766,7 +768,7 @@ function AboutPage() {
             <div>최적화와 새로운 것들에 호기심을 가지며</div>
             <div>더 나은 UX를 제공하며 성장할 팀을 찾고 있어요.</div>
           </Styled.IntroductionSubCopy>
-          <Styled.ProfileImage src="profile.gif" alt="프로필" />
+          <Styled.ProfileImage top={minHeight / 2 + 10} src="profile.gif" alt="프로필" />
         </Styled.Introduction>
 
         <Styled.Features>
