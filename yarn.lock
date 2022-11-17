@@ -5577,7 +5577,6 @@ __metadata:
     stylelint-config-recess-order: ^3.0.0
     stylelint-config-recommended-scss: ^7.0.0
     stylelint-prettier: ^2.0.0
-    three: ^0.145.0
     typescript: ^4.8.4
   languageName: unknown
   linkType: soft
@@ -6639,13 +6638,6 @@ __metadata:
   version: 0.2.0
   resolution: "text-table@npm:0.2.0"
   checksum: b6937a38c80c7f84d9c11dd75e49d5c44f71d95e810a3250bd1f1797fc7117c57698204adf676b71497acc205d769d65c16ae8fa10afad832ae1322630aef10a
-  languageName: node
-  linkType: hard
-
-"three@npm:^0.145.0":
-  version: 0.145.0
-  resolution: "three@npm:0.145.0"
-  checksum: 1469a5994666a8e76ee7fffda93bde9a5d1c0dfcc831377b1a6ce3579f2933b57e8a8004a3ff7b36529b68484b9fa58eec8f136e1ac9ec02413cdfc360300ec4
   languageName: node
   linkType: hard
 
