@@ -49,7 +49,14 @@ const fontSizes = {
   min: '8px',
 };
 
+const layout = {
+  header: {
+    height: '3.5rem',
+  },
+};
+
 const globalTheme = {
+  layout,
   colors,
   fontWeights,
   heads,

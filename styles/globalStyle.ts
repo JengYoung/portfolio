@@ -8,6 +8,13 @@ const globalStyle = css`
     padding: 0;
     margin: 0;
     font-family: Noto Sans KR, sans-serif;
+
+    @media screen and (max-width: ${globalTheme.viewPort.mobileMax}) {
+      font-size: 10px;
+    }
+    @media screen and (max-width: ${globalTheme.viewPort.tabletMax}) {
+      font-size: 10px;
+    }
   }
 
   #__next,

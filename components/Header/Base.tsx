@@ -47,7 +47,7 @@ function Base({ hidden }: BasePropsInterface) {
     return () => {
       window.removeEventListener('keydown', onBack);
     };
-  });
+  }, []);
 
   const { windowState } = useWindow(['location']);
 
