@@ -52,14 +52,21 @@ interface SkillInterface {
   checks: string[];
 }
 
-const ContainerCSS = css`
+const ContainerCSS = (theme: typeof globalTheme) => css`
   position: relative;
 
   max-width: 1440px;
   height: 100vh;
   max-height: 1024px;
   margin: 0 auto;
+
+  overflow: hidden;
   background-color: white;
+
+  @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+    width: 100%;
+    max-width: 100%;
+  }
 `;
 
 const Styled = {
@@ -77,16 +84,26 @@ const Styled = {
 
     background-color: white;
     border: 0;
-    ${ContainerCSS}
+    ${({ theme }) => ContainerCSS(theme)};
+  `,
+  CopyBox: styled.section`
+    margin-top: 3.125rem;
+    text-align: center;
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+        width: 100%;
+        max-width: 100%;
+        margin-top: 10%;
+      }
+    `}
   `,
   IntroductionMainCopy: styled.h1`
     position: relative;
-    top: 50px;
 
     z-index: 10;
 
     margin: 0;
-    line-height: 1.5;
 
     ${({ theme }) => css`
       font-size: ${theme.heads[2].size};
@@ -95,7 +112,7 @@ const Styled = {
   `,
   IntroductionSubCopy: styled.h1`
     position: relative;
-    top: 4rem;
+    top: 1rem;
     z-index: 10;
     margin: 0;
     line-height: 1.5;
@@ -120,7 +137,7 @@ const Styled = {
   `,
 
   Features: styled.section`
-    ${ContainerCSS}
+    ${({ theme }) => ContainerCSS(theme)}
 
     box-sizing: border-box;
     width: 100%;
@@ -307,7 +324,7 @@ const Styled = {
     position: relative;
     align-items: center;
     overflow: hidden;
-    ${ContainerCSS}
+    ${({ theme }) => ContainerCSS(theme)}
   `,
   SkllContainer: styled.div`
     width: 100%;
@@ -749,25 +766,28 @@ function AboutPage() {
       <Styled.Page ref={pageRef}>
         <Styled.Introduction>
           <ForwardedCanvas width={minWidth} height={minHeight} ref={canvasRef} />
-          <Styled.IntroductionMainCopy>
-            <CollapsedText x={(windowState.innerWidth ?? 0) + 500} y={0} direction="LEFT">
-              <Gummy texts="프론트엔드&nbsp;개발자" delay={1.5} />
-            </CollapsedText>
-          </Styled.IntroductionMainCopy>
+          <Styled.CopyBox>
+            <Styled.IntroductionMainCopy>
+              <CollapsedText x={(windowState.innerWidth ?? 0) + 500} y={0} direction="LEFT">
+                <Gummy texts="프론트엔드&nbsp;개발자" delay={1.5} />
+              </CollapsedText>
+            </Styled.IntroductionMainCopy>
 
-          <Styled.IntroductionMainCopy>
-            <CollapsedText x={-500} y={0} direction="RIGHT">
-              <Styled.Name>
-                <Gummy texts="황재영" delay={1.5} options={{ isGummy: true, infinite: true }} />
-              </Styled.Name>
-              <Gummy texts="입니다" delay={1.5} />
-            </CollapsedText>
-          </Styled.IntroductionMainCopy>
-          <Styled.IntroductionSubCopy>
-            <div>부족함을 알기에, 더 나은 자신을 위해 꾸준히 공부해요.</div>
-            <div>최적화와 새로운 것들에 호기심을 가지며</div>
-            <div>더 나은 UX를 제공하며 성장할 팀을 찾고 있어요.</div>
-          </Styled.IntroductionSubCopy>
+            <Styled.IntroductionMainCopy>
+              <CollapsedText x={-500} y={0} direction="RIGHT">
+                <Styled.Name>
+                  <Gummy texts="황재영" delay={1.5} options={{ isGummy: true, infinite: true }} />
+                </Styled.Name>
+                <Gummy texts="입니다" delay={1.5} />
+              </CollapsedText>
+            </Styled.IntroductionMainCopy>
+
+            <Styled.IntroductionSubCopy>
+              <div>부족함을 알기에, 더 나은 자신을 위해 꾸준히 공부해요.</div>
+              <div>최적화와 새로운 것들에 호기심을 가지며</div>
+              <div>더 나은 UX를 제공하며 성장할 팀을 찾고 있어요.</div>
+            </Styled.IntroductionSubCopy>
+          </Styled.CopyBox>
           <Styled.ProfileImage top={minHeight / 2 + 10} src="profile.gif" alt="프로필" />
         </Styled.Introduction>
 
