@@ -116,7 +116,7 @@ export class Metaballs implements MetaballsInterface {
         ctx: this.ctx,
         x: this.mainMetaball.x,
         y: this.mainMetaball.y,
-        r: 130,
+        r: this.mainMetaball.r * 0.9,
         v: [
           getRandom(0.1, 0.2, { allowNagative: true }),
           getRandom(0.1, 0.2, { allowNagative: true }),

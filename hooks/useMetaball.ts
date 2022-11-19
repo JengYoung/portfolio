@@ -47,7 +47,7 @@ const useMetaball = ({
       mainMetaballState: mainMetaball ?? {
         x: canvasRef.current.width / 2,
         y: canvasRef.current.height / 2,
-        r: 200,
+        r: 100,
       },
       bubbleNum: bubbleNum ?? 4,
       absorbBallNum: absorbBallNum ?? 5,

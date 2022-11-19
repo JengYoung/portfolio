@@ -22,8 +22,11 @@ import skillsData from '@assets/dataset/skills.json';
 
 import globalTheme from '@styles/globalTheme';
 
+import { getMainMetaball } from '@utils/metaballs/getMainMetaball';
+import getStaticBubbles from '@utils/metaballs/getStaticBubbles';
 import readonly from '@utils/readonly';
 import throttle from '@utils/throttle';
+import { isMobileSize } from '@utils/viewports';
 
 interface FeatureInterface {
   id: number;
@@ -91,10 +94,15 @@ const Styled = {
     text-align: center;
 
     ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        width: 100%;
+        max-width: 100%;
+        margin-top: 20%;
+      }
       @media screen and (max-width: ${theme.viewPort.tabletMax}) {
         width: 100%;
         max-width: 100%;
-        margin-top: 10%;
+        margin-top: 120px;
       }
     `}
   `,
@@ -123,13 +131,14 @@ const Styled = {
       font-weight: ${theme.fontWeights.default};
     `}
   `,
-  ProfileImage: styled.img<{ top: number }>`
+  ProfileImage: styled.img<{ top: number; size: number }>`
     position: absolute;
     top: ${({ top }) => top}px;
 
     z-index: 10;
-    width: 280px;
-    height: 280px;
+    width: ${({ size }) => size}px;
+    height: ${({ size }) => size}px;
+
     border-radius: 50%;
   `,
   Name: styled.span`
@@ -511,81 +520,11 @@ function AboutPage() {
     baseFillColor: globalTheme.colors.canvasBackground,
     gradient: initialGradientColors,
     metaballGradient: metaballGradientColors,
-    mainMetaball: {
-      x: minWidth / 2,
-      y: minHeight / 2 + 150,
-      r: 150,
-    },
-    staticBubbles: [
-      {
-        x: minWidth * 0.1,
-        y: minHeight * 0.1,
-        r: 200,
-        to: {
-          x: minWidth * 0.1,
-          y: minHeight * 0.1,
-        },
-        v: [0, 0],
-      },
-
-      {
-        x: minWidth * 0.9,
-        y: minHeight * 0.7,
-        r: 200,
-        to: {
-          x: minWidth * 0.9,
-          y: minHeight * 0.7,
-        },
-        v: [0, 0],
-      },
-
-      {
-        x: minWidth * 0.15,
-        y: minHeight * 0.8,
-        r: 110,
-        to: {
-          x: minWidth * 0.15,
-          y: minHeight * 0.8,
-        },
-        v: [0, 0],
-      },
-
-      {
-        x: minWidth * 0.8,
-        y: minHeight * 0.3,
-        r: 50,
-        to: {
-          x: minWidth * 0.8,
-          y: minHeight * 0.3,
-        },
-        v: [0, 0],
-      },
-
-      {
-        x: minWidth * 0.7,
-        y: minHeight * 0.05,
-        r: 30,
-        to: {
-          x: minWidth * 0.4,
-          y: minHeight * 0.05,
-        },
-        v: [1, 0.2],
-      },
-
-      {
-        x: minWidth * 0.9,
-        y: minHeight * -0.2,
-        r: 300,
-        to: {
-          x: minWidth * 0.9,
-          y: minHeight * -0.2,
-        },
-        v: [1, 0.2],
-      },
-    ],
+    mainMetaball: getMainMetaball(minWidth, minHeight),
+    staticBubbles: getStaticBubbles(minWidth, minHeight),
     options: {
       bubbleNum: 4,
-      absorbBallNum: 3,
+      absorbBallNum: isMobileSize(minWidth) ? 0 : 3,
       canvasWidth: minWidth,
       canvasHeight: minHeight,
     },
@@ -788,7 +727,13 @@ function AboutPage() {
               <div>더 나은 UX를 제공하며 성장할 팀을 찾고 있어요.</div>
             </Styled.IntroductionSubCopy>
           </Styled.CopyBox>
-          <Styled.ProfileImage top={minHeight / 2 + 10} src="profile.gif" alt="프로필" />
+
+          <Styled.ProfileImage
+            top={minHeight * 0.7 - (isMobileSize(minWidth) ? 100 : 140)}
+            size={isMobileSize(minWidth) ? 200 : 280}
+            src="profile.gif"
+            alt="프로필"
+          />
         </Styled.Introduction>
 
         <Styled.Features>
