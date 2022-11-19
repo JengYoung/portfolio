@@ -25,6 +25,7 @@ import globalTheme from '@styles/globalTheme';
 import { getMainMetaball } from '@utils/metaballs/getMainMetaball';
 import getStaticBubbles from '@utils/metaballs/getStaticBubbles';
 import readonly from '@utils/readonly';
+import getFeatureText from '@utils/svgs/getFeatureText';
 import throttle from '@utils/throttle';
 import { isMobileSize } from '@utils/viewports';
 
@@ -156,10 +157,28 @@ const Styled = {
     max-height: auto;
 
     padding-top: 100px;
+
     background-color: white;
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        padding-top: 0px;
+      }
+    `}
   `,
   FeatureHeader: styled.div`
+    display: flex;
+    align-items: flex-end;
+
     svg text {
+      ${({ theme }) => css`
+        @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+          font-size: 8rem;
+        }
+        @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+          font-size: 5rem;
+        }
+      `}
       font-size: 5rem;
       font-weight: 900;
 
@@ -194,9 +213,19 @@ const Styled = {
 
     width: 100%;
     height: 520px;
-    padding: 10rem;
+    padding: 10rem 0;
 
     overflow: hidden;
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+        padding: 5rem 0;
+      }
+
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        flex-direction: column;
+      }
+    `}
   `,
   FeatureContainer: styled.div`
     position: relative;
@@ -205,8 +234,17 @@ const Styled = {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     width: 270px;
     height: 270px;
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        width: 150px;
+        height: 150px;
+        margin: 10px;
+      }
+    `}
   `,
   FeatureDetail: styled.div`
     z-index: 1;
@@ -214,7 +252,14 @@ const Styled = {
     flex-direction: column;
     align-items: center;
     padding: 0 2rem;
-    padding-top: 1rem;
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        width: 150px;
+        height: 150px;
+        margin: 10px;
+      }
+    `}
   `,
   FeatureHead: styled.h1`
     margin-bottom: 0.5rem;
@@ -222,6 +267,11 @@ const Styled = {
       font-size: ${theme.heads[4].size};
       font-weight: ${theme.heads[4].weight};
       color: ${theme.colors.dark};
+
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        font-size: ${theme.fontSizes.xxl};
+        font-weight: ${theme.fontWeights.bold};
+      }
     `}
   `,
   Description: styled.span`
@@ -230,13 +280,29 @@ const Styled = {
     ${({ theme }) => css`
       font-size: ${theme.fontSizes.l};
       word-break: keep-all;
+
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        font-size: ${theme.fontSizes.default};
+        font-weight: ${theme.fontWeights.default};
+      }
     `}
   `,
   FeatureLines: styled.div`
     position: absolute;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    width: 270px;
+    height: 270px;
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+        width: 25vw;
+        min-width: 150px;
+        max-width: 270px;
+
+        height: 25vw;
+        min-height: 150px;
+        max-height: 270px;
+      }
+    `}
   `,
 
   FeatureLine: styled.div`
@@ -530,48 +596,7 @@ function AboutPage() {
     },
   });
 
-  const featuresHeaderTexts: FeaturesHeaderTextInterface[] = [
-    {
-      x: 0,
-      y: '100%',
-      value: 'F',
-    },
-    {
-      x: 42.5,
-      y: '100%',
-      value: 'E',
-    },
-    {
-      x: 90,
-      y: '100%',
-      value: 'A',
-    },
-    {
-      x: 135,
-      y: '100%',
-      value: 'T',
-    },
-    {
-      x: 182.5,
-      y: '100%',
-      value: 'U',
-    },
-    {
-      x: 235,
-      y: '100%',
-      value: 'R',
-    },
-    {
-      x: 285,
-      y: '100%',
-      value: 'E',
-    },
-    {
-      x: 330,
-      y: '100%',
-      value: 'S',
-    },
-  ];
+  const featuresHeaderTexts: FeaturesHeaderTextInterface[] = getFeatureText(minWidth);
 
   const features: FeatureInterface[] = readonly(featuresData);
 
@@ -738,7 +763,7 @@ function AboutPage() {
 
         <Styled.Features>
           <Styled.FeatureHeader>
-            <svg width={600} height={100} viewBox="0 0 600 100">
+            <svg width={minWidth}>
               {featuresHeaderTexts.map((text) => (
                 <text key={text.x + text.y + text.value} x={text.x} y={text.y}>
                   {text.value}
