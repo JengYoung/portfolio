@@ -402,8 +402,11 @@ const Styled = {
     ${({ theme }) => ContainerCSS(theme)}
   `,
   SkllContainer: styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     width: 100%;
-    /* height: ${({ theme }) => css`calc(100% - ${theme.heads[1].size} * 4)`}; */
+    height: 100%;
     overflow: hidden;
   `,
   SkillHeader: styled.header<{ headerState: HeaderStateInterface }>`
@@ -429,40 +432,100 @@ const Styled = {
     width: 600px;
     height: 600px;
     transform: rotate(-30deg);
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+        position: relative;
+        right: auto;
+        width: 30vh;
+        height: 30vh;
+        margin: 0 auto;
+        transform: rotate(0deg);
+      }
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        width: 30vh;
+        height: 30vh;
+      }
+    `}
   `,
   NowSkillDetailContainer: styled.section`
     position: relative;
     flex-direction: column;
-    height: 100%;
     padding: 5rem;
     margin-top: 5rem;
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+        align-items: center;
+        justify-content: center;
+      }
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    `}
   `,
   NowSkillImageName: styled.div`
     position: relative;
-    z-index: 10;
+    z-index: 1;
 
     width: 100%;
 
     margin: 0;
     line-height: 1.5;
-    ${({ theme }) => css`
-      color: ${theme.colors.subPrimary};
-      text-shadow: 5px 5px ${theme.colors.primary.light};
-    `}
 
     ${({ theme }) => css`
       font-size: calc(${theme.heads[1].size} * 2);
       font-weight: ${theme.heads[1].weight};
+      color: ${theme.colors.subPrimary};
+      text-shadow: 5px 5px ${theme.colors.primary.light};
+
+      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+        font-size: calc(${theme.heads[1].size} * 1.5);
+        font-weight: ${theme.heads[1].weight};
+        text-align: center;
+      }
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        margin: 1rem 0;
+        font-size: calc(${theme.heads[2].size});
+        font-weight: ${theme.heads[1].weight};
+        text-shadow: 2px 2px ${theme.colors.primary.light};
+      }
     `}
   `,
   NowSkillDescriptions: styled.ul`
+    position: relative;
+    z-index: 20;
     margin-top: 1rem;
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 5rem;
+        text-align: center;
+      }
+    `}
   `,
   NowSkillDescription: styled.li`
     ${({ theme }) => css`
+      margin-bottom: 0.5rem;
       font-size: ${theme.fontSizes.l};
       font-weight: ${theme.fontWeights.default};
       color: ${theme.colors.subPrimary};
+
+      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+        width: 60vw;
+        margin-bottom: 0.5rem;
+        font-size: ${theme.fontSizes.l};
+        word-break: keep-all;
+      }
+
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        font-size: ${theme.fontSizes.l};
+      }
     `}
   `,
 
@@ -479,6 +542,12 @@ const Styled = {
     overflow-x: scroll;
     background-color: rgba(0, 0, 0, 0.58);
     border-radius: 20px;
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+        border-radius: 10px;
+      }
+    `}
   `,
   SkillContainer: styled.li`
     display: flex;
@@ -798,30 +867,31 @@ function AboutPage() {
         </Styled.Features>
 
         <Styled.SkillSection>
-          <Styled.SkllContainer />
-          <Styled.SkillHeader ref={skillHeaderRef} headerState={headerState}>
-            SKILLS
-          </Styled.SkillHeader>
+          <Styled.SkllContainer>
+            <Styled.SkillHeader ref={skillHeaderRef} headerState={headerState}>
+              SKILLS
+            </Styled.SkillHeader>
 
-          {nowActiveSkill.src && (
-            <Styled.NowSkillDetailContainer>
-              <Styled.NowSkillImageName>
-                <CollapsedText x={-500} y={0} direction="LEFT">
-                  <Gummy key={nowActiveSkill.name} texts={nowActiveSkill.name} delay={1.5} />
-                </CollapsedText>
-              </Styled.NowSkillImageName>
+            {nowActiveSkill.src && (
+              <Styled.NowSkillDetailContainer>
+                <Styled.NowSkillImageContainer>
+                  <Image src={nowActiveSkill.src} layout="fill" objectFit="contain" />
+                </Styled.NowSkillImageContainer>
 
-              <Styled.NowSkillDescriptions>
-                {nowActiveSkill.checks.map((check) => (
-                  <Styled.NowSkillDescription>- {check}</Styled.NowSkillDescription>
-                ))}
-              </Styled.NowSkillDescriptions>
+                <Styled.NowSkillImageName>
+                  <CollapsedText x={-500} y={0} direction="LEFT">
+                    <Gummy key={nowActiveSkill.name} texts={nowActiveSkill.name} delay={1.5} />
+                  </CollapsedText>
+                </Styled.NowSkillImageName>
 
-              <Styled.NowSkillImageContainer>
-                <Image src={nowActiveSkill.src} layout="fill" objectFit="contain" />
-              </Styled.NowSkillImageContainer>
-            </Styled.NowSkillDetailContainer>
-          )}
+                <Styled.NowSkillDescriptions>
+                  {nowActiveSkill.checks.map((check) => (
+                    <Styled.NowSkillDescription>- {check}</Styled.NowSkillDescription>
+                  ))}
+                </Styled.NowSkillDescriptions>
+              </Styled.NowSkillDetailContainer>
+            )}
+          </Styled.SkllContainer>
           <Styled.Skills>
             {skills.map((skill) => {
               const isSeparate = [Skills.TypeScript, Skills.Vue3, Skills.Quasar].some(
@@ -847,6 +917,7 @@ function AboutPage() {
             })}
           </Styled.Skills>
         </Styled.SkillSection>
+
         <Styled.MouseContainer>
           <ScrollMouse bottom="1rem" delay={1.5} visible={isMouseVisible} />
         </Styled.MouseContainer>

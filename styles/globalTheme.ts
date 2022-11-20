@@ -4,6 +4,7 @@ const viewPort = {
   mobileMin: '260px',
   mobileMax: '500px',
   tabletMin: '501px',
+  tabletMiniMax: '768px',
   tabletMax: '1023px',
   desktopMin: '1024px',
   desktopMax: '3000px', // NOTE: Canvas의 최적화를 위해 적용한다.
