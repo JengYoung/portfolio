@@ -475,8 +475,8 @@ const Styled = {
     align-items: center;
     height: 5rem;
     padding: 0 1rem;
-    margin: 0 7.5rem;
-    overflow: scroll;
+    margin: 0 5vw;
+    overflow-x: scroll;
     background-color: rgba(0, 0, 0, 0.58);
     border-radius: 20px;
   `,
@@ -620,7 +620,7 @@ function AboutPage() {
   });
 
   useIntersectionObserver(skillHeaderRef, skillHeaderCallback, {
-    rootMargin: '-200px',
+    rootMargin: isMobileSize(minWidth) ? '0px' : '-200px',
   });
 
   const pageRef = useRef<HTMLElement>(null);
@@ -677,8 +677,10 @@ function AboutPage() {
 
     if (headerState.isActive) {
       window.addEventListener('scroll', onScroll);
+      window.addEventListener('touchmove', onScroll);
     } else {
       window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('touchmove', onScroll);
     }
 
     return () => {
