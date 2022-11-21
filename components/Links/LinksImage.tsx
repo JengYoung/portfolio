@@ -35,6 +35,12 @@ const StyledLinks = {
       display: flex;
       cursor: pointer;
     }
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        border-radius: 10px;
+      }
+    `}
   `,
   Link: styled.li`
     width: 6rem;
@@ -80,6 +86,13 @@ const Styled = {
     overflow: hidden;
 
     border-radius: 50px;
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        width: 20vw;
+        height: 20vw;
+        border-radius: 10px;
+      }
+    `}
 
     ${({ bg }) =>
       bg &&

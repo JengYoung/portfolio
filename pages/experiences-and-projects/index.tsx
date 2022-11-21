@@ -71,8 +71,14 @@ const StyledPage = {
 };
 
 const Title = styled.header`
-  font-size: ${({ theme }) => `calc(${theme.fontSizes.max} * 4)`};
-  font-weight: ${({ theme }) => theme.fontWeights.extrabold};
+  ${({ theme }) => css`
+    font-size: calc(${theme.fontSizes.max} * 4);
+    font-weight: ${theme.fontWeights.extrabold};
+
+    @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+      font-size: calc(${theme.fontSizes.max} * 2);
+    }
+  `}
 `;
 
 const StyledExperience = {
@@ -204,6 +210,34 @@ const StyledExperience = {
       left: 20rem;
       transform: rotateY(-20deg) rotateZ(10deg) scale(1.1);
     }
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        border-radius: 10px;
+
+        &:first-of-type {
+          left: 1rem;
+          transform: rotateY(10deg) rotateZ(-10deg);
+        }
+        &:last-of-type&:not(:first-of-type),
+        &:nth-of-type(2n + 2) {
+          top: 2rem;
+          left: 7rem;
+          transform: rotateY(-10deg) rotateZ(10deg);
+          transform-origin: right;
+        }
+        &:nth-of-type(2n + 3) {
+          top: 10rem;
+          left: 1rem;
+          transform: rotateY(30deg) rotateZ(-10deg);
+        }
+        &:last-of-type&:not(:first-of-type)&:nth-of-type(n + 4) {
+          top: 12rem;
+          left: 7rem;
+          transform: rotateY(-20deg) rotateZ(10deg) scale(1.1);
+        }
+      }
+    `}
   `,
   Details: styled.section`
     position: relative;
@@ -596,6 +630,7 @@ function ExperiencesAndProjectsPage() {
                     </StyledExperience.ImageContainer>
                   ))}
                 </StyledExperience.Images>
+
                 <GitGraph
                   shouldDraw={isDrawLine.start}
                   shouldShowHistory={shouldShowHistories[idx]}

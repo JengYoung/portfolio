@@ -577,6 +577,12 @@ const Styled = {
     background-color: rgba(256, 256, 256, 0.8);
     border-radius: 20px;
 
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+        border-radius: 12px;
+      }
+    `}
+
     &:hover {
       animation: element-jump 1s infinite;
       @keyframes element-jump {
