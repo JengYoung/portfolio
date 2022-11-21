@@ -14,27 +14,16 @@ import { ImageSizeOption, LinksImageInterface } from './types';
 
 const StyledLinks = {
   Links: styled.ul`
-    position: absolute;
+    position: relative;
 
     display: flex;
     align-items: center;
-    justify-content: center;
+    /* justify-content: center;
 
     width: 100%;
-    height: 100%;
-
-    background-color: rgba(0, 0, 0, 0.7);
-
-    border-radius: 50px;
-
-    opacity: 0;
+    height: 100%; */
 
     transition: all 0.3s;
-
-    &:hover {
-      display: flex;
-      cursor: pointer;
-    }
 
     ${({ theme }) => css`
       @media screen and (max-width: ${theme.viewPort.mobileMax}) {
@@ -42,11 +31,21 @@ const StyledLinks = {
       }
     `}
   `,
-  Link: styled.li`
-    width: 6rem;
+  LinkInner: styled.li`
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    padding: 1rem;
+    width: 2rem;
+    height: 2rem;
+
     margin: 0rem 1rem;
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        margin: 0;
+      }
+    `}
 
     font-size: ${({ theme }) => theme.fontSizes.xs};
     color: black;
@@ -55,20 +54,18 @@ const StyledLinks = {
 
     background-color: white;
 
-    border-radius: 20px;
+    border-radius: 10px;
     transition: all 0.3s;
-
-    &:hover {
-      background-color: #ccc;
-    }
   `,
   LinkContainer: styled.div`
+    display: flex;
+    align-items: center;
     text-align: center;
   `,
   LinkIcon: styled.div`
     position: relative;
-    width: 4rem;
-    height: 4rem;
+    width: 1.5rem;
+    height: 1.5rem;
     margin-bottom: 0.25rem;
   `,
 };
@@ -80,43 +77,38 @@ const Styled = {
     align-items: center;
     justify-content: center;
 
+    overflow: hidden;
+
+    background-color: ${({ theme }) => theme.colors.white};
+
+    border-radius: 10px;
+
+    ${({ theme, size }) => css`
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        width: ${size.width};
+        min-width: 17.5vw;
+        border-radius: 5px;
+      }
+    `}
+  `,
+  ImageContainer: styled.div<{ size: ImageSizeOption<string>['size']; bg?: string }>`
+    position: relative;
+    flex-shrink: 0;
+
     width: ${({ size }) => size.width};
     height: ${({ size }) => size.height};
 
+    margin: 0.5rem;
     overflow: hidden;
+    border: 1px solid ${({ theme }) => theme.colors.border};
 
-    border-radius: 50px;
-    ${({ theme }) => css`
+    ${({ theme, size }) => css`
       @media screen and (max-width: ${theme.viewPort.mobileMax}) {
-        width: 20vw;
-        height: 20vw;
-        border-radius: 10px;
+        width: ${size.width};
+        min-width: 17.5vw;
+        height: ${size.height};
       }
     `}
-
-    ${({ bg }) =>
-      bg &&
-      css`
-        background-color: ${bg};
-      `}
-
-    &:hover {
-      ${StyledLinks.Links} {
-        cursor: pointer;
-        opacity: 1;
-        transform: translateX(1rem) translateY(-1rem);
-      }
-    }
-  `,
-  ImageContainer: styled.div`
-    position: relative;
-
-    width: 100%;
-    height: 100%;
-
-    border-radius: 50px;
-
-    box-shadow: -1rem 1rem 1rem rgba(0, 0, 0, 0.5);
   `,
 };
 
@@ -126,21 +118,21 @@ const Styled = {
  */
 function LinksImage({ image, links, imageOptions }: LinksImageInterface<string>) {
   return (
-    <Styled.Container size={imageOptions.size} bg={imageOptions.bg}>
-      <Styled.ImageContainer>
+    <Styled.Container size={imageOptions.size}>
+      <Styled.ImageContainer size={imageOptions.size}>
         <Image src={image.src} alt={image.alt} layout="fill" objectFit={imageOptions.objectFit} />
       </Styled.ImageContainer>
+
       <StyledLinks.Links>
         {links.map((link) => (
           <StyledLinks.LinkContainer key={link.name}>
-            <StyledLinks.Link>
+            <StyledLinks.LinkInner>
               <a id={link.name} href={link.href} target="_blank" rel="noopener noreferrer">
                 <StyledLinks.LinkIcon>
                   <Image src={link.iconSrc} alt={image.alt} layout="fill" objectFit="cover" />
                 </StyledLinks.LinkIcon>
               </a>
-            </StyledLinks.Link>
-            {link.name}
+            </StyledLinks.LinkInner>
           </StyledLinks.LinkContainer>
         ))}
       </StyledLinks.Links>

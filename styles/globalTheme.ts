@@ -17,12 +17,13 @@ const colors = {
   },
   subPrimary: '#333',
   dark: '#000',
-  white: '#eee',
+  white: '#fdfdfd',
   danger: '#FE0101',
   warning: '#FF7B01',
   success: '#61C454',
   headerColor: '#c0edf5',
   canvasBackground: '#fff',
+  border: '#ddd',
 };
 
 const fontWeights = {

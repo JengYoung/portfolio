@@ -187,54 +187,52 @@ const StyledExperience = {
   `,
   ImageContainer: styled.div`
     position: absolute;
-    border-radius: 50px;
-    box-shadow: -4px 10px 10px 10px rgba(0, 0, 0, 0.3);
+
+    &:first-of-type&:last-of-type {
+      left: 5vw;
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+
     &:first-of-type {
-      left: 5rem;
-      transform: rotateY(30deg) rotateZ(-10deg);
+      left: 2.5vw;
     }
     &:last-of-type&:not(:first-of-type),
     &:nth-of-type(2n + 2) {
-      top: 10rem;
-      left: 17.5rem;
-      transform: rotateY(-30deg) rotateZ(20deg);
+      top: 2.5rem;
+      left: 22.5vw;
       transform-origin: right;
     }
     &:nth-of-type(2n + 3) {
       top: 20rem;
-      left: 5rem;
-      transform: rotateY(30deg) rotateZ(-10deg);
+      left: 2.5vw;
     }
     &:last-of-type&:not(:first-of-type)&:nth-of-type(n + 4) {
-      top: 27rem;
-      left: 20rem;
-      transform: rotateY(-20deg) rotateZ(10deg) scale(1.1);
+      top: 22.5rem;
+      left: 22.5vw;
     }
 
     ${({ theme }) => css`
       @media screen and (max-width: ${theme.viewPort.mobileMax}) {
-        border-radius: 10px;
-
+        &:first-of-type&:last-of-type {
+          left: 5vw;
+        }
         &:first-of-type {
-          left: 1rem;
-          transform: rotateY(10deg) rotateZ(-10deg);
+          left: 2.5vw;
         }
         &:last-of-type&:not(:first-of-type),
         &:nth-of-type(2n + 2) {
-          top: 2rem;
-          left: 7rem;
-          transform: rotateY(-10deg) rotateZ(10deg);
-          transform-origin: right;
+          top: 2.5rem;
+          left: 22.5vw;
         }
         &:nth-of-type(2n + 3) {
-          top: 10rem;
-          left: 1rem;
-          transform: rotateY(30deg) rotateZ(-10deg);
+          top: 12.5rem;
+          left: 2.5vw;
         }
         &:last-of-type&:not(:first-of-type)&:nth-of-type(n + 4) {
-          top: 12rem;
-          left: 7rem;
-          transform: rotateY(-20deg) rotateZ(10deg) scale(1.1);
+          top: 15rem;
+          left: 22.5vw;
         }
       }
     `}
@@ -259,7 +257,7 @@ const StyledExperience = {
       content: '- ';
     }
   `,
-  Images: styled.ul<{ draw: boolean; shouldShowHistories: boolean }>`
+  Images: styled.section<{ draw: boolean; shouldShowHistories: boolean }>`
     position: absolute;
     display: none;
     width: 100%;
@@ -619,8 +617,8 @@ function ExperiencesAndProjectsPage() {
                         image={{ src: obj.src, alt: obj.alt }}
                         imageOptions={{
                           size: {
-                            width: nowExperience.images.length === 1 ? '22.5rem' : '15rem',
-                            height: nowExperience.images.length === 1 ? '22.5rem' : '15rem',
+                            width: nowExperience.images.length === 1 ? '30vw' : '15vw',
+                            height: nowExperience.images.length === 1 ? '30vw' : '15vw',
                           },
                           objectFit: obj.options?.objectFit ?? 'cover',
                           bg: obj.options?.bg,
