@@ -56,7 +56,7 @@ export const StyledTerminal = {
           ${mode === ButtonActionTypeEnum.green &&
           css`
             width: 100vw;
-            height: calc(100vh - ${theme.layout.header.height});
+            height: calc(100vh);
             margin-top: ${theme.layout.header.height};
           `}
         }

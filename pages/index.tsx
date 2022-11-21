@@ -73,7 +73,7 @@ const Styled = {
     /* default */
     &::after {
       background: ${({ theme }) =>
-        `linear-gradient(${theme.colors.primary.dark} 15%, ${theme.colors.primary.light} 85% 100%)`};
+        css`linear-gradient(${theme.colors.primary.dark} 15%, ${theme.colors.primary.light} 85% 100%)`};
       opacity: ${({ mode }) => (mode === null ? 1 : 0)};
       transition: all 1s;
     }

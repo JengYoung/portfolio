@@ -53,7 +53,7 @@ const fontSizes = {
 
 const layout = {
   header: {
-    height: '3.5rem',
+    height: '32px',
   },
 };
 

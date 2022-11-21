@@ -10,7 +10,7 @@ export const StyledHamburger = {
     flex-direction: column;
     justify-content: space-between;
 
-    height: 0.875rem;
+    height: 14px;
 
     padding: 0;
     margin: 0;
