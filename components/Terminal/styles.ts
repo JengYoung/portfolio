@@ -57,7 +57,7 @@ export const StyledTerminal = {
           css`
             width: 100vw;
             height: calc(100vh);
-            margin-top: ${theme.layout.header.height};
+            margin-top: 60px;
           `}
         }
       `}
@@ -87,6 +87,7 @@ export const StyledTerminalHeader = {
     height: 1rem;
 
     list-style: none;
+    cursor: pointer;
 
     border-radius: 50%;
 

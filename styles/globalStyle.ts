@@ -9,9 +9,6 @@ const globalStyle = css`
     margin: 0;
     font-family: Noto Sans KR, sans-serif;
 
-    @media screen and (max-width: ${globalTheme.viewPort.mobileMax}) {
-      font-size: 10px;
-    }
     @media screen and (max-width: ${globalTheme.viewPort.tabletMax}) {
       font-size: 10px;
     }

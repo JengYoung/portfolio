@@ -9,8 +9,10 @@ import { ImageSizeOption, LinksImageInterface } from './types';
 
 /**
  * @description
- * hover하면 링크들이 보이는 이미지입니다.
+ * 링크들이 있는 이미지입니다.
  */
+
+type ContainerType = { size: ImageSizeOption<string>['size']; bg?: string };
 
 const StyledLinks = {
   Links: styled.ul`
@@ -18,10 +20,6 @@ const StyledLinks = {
 
     display: flex;
     align-items: center;
-    /* justify-content: center;
-
-    width: 100%;
-    height: 100%; */
 
     transition: all 0.3s;
 
@@ -71,7 +69,7 @@ const StyledLinks = {
 };
 
 const Styled = {
-  Container: styled.div<{ size: ImageSizeOption<string>['size']; bg?: string }>`
+  Container: styled.div<ContainerType>`
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -91,7 +89,7 @@ const Styled = {
       }
     `}
   `,
-  ImageContainer: styled.div<{ size: ImageSizeOption<string>['size']; bg?: string }>`
+  ImageContainer: styled.div<ContainerType>`
     position: relative;
     flex-shrink: 0;
 
