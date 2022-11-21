@@ -8,6 +8,10 @@ const globalStyle = css`
     padding: 0;
     margin: 0;
     font-family: Noto Sans KR, sans-serif;
+
+    @media screen and (max-width: ${globalTheme.viewPort.tabletMax}) {
+      font-size: 10px;
+    }
   }
 
   #__next,
@@ -30,6 +34,13 @@ const globalStyle = css`
   h3,
   h4 {
     margin: 0;
+  }
+
+  button {
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    outline: none;
   }
 
   @media (prefers-color-scheme: dark) {

@@ -205,8 +205,6 @@ export class Metaball implements MetaballInterface {
     this.ctx.lineTo(...cmpP2);
     this.ctx.bezierCurveTo(...cmpH2, ...h2, ...p2);
 
-    // this.ctx.lineTo(...p1);
-
     this.ctx.closePath();
     this.ctx.fill();
   }

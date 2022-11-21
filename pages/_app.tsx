@@ -1,10 +1,11 @@
-import { Global, ThemeProvider } from '@emotion/react';
 import React, { ReactElement, ReactNode } from 'react';
 
 import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 
 import { RecoilRoot } from 'recoil';
+
+import { Global, ThemeProvider } from '@emotion/react';
 
 import { globalStyle, globalTheme } from '@styles/index';
 

@@ -1,9 +1,9 @@
-import { css } from '@emotion/react';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import Head from 'next/head';
 import Image from 'next/image';
 
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { ForwardedCanvas } from '@components/Metaball';
@@ -15,12 +15,19 @@ import { getBaseLayout } from '@components/layouts';
 
 import useIntersectionObserver from '@hooks/useIntersectionObserver';
 import useMetaball from '@hooks/useMetaball';
-import useWindow from '@hooks/useWindow';
+import useResize from '@hooks/useResize';
+
+import featuresData from '@assets/dataset/features.json';
+import skillsData from '@assets/dataset/skills.json';
 
 import globalTheme from '@styles/globalTheme';
 
+import { getMainMetaball } from '@utils/metaballs/getMainMetaball';
+import getStaticBubbles from '@utils/metaballs/getStaticBubbles';
 import readonly from '@utils/readonly';
+import getFeatureText from '@utils/svgs/getFeatureText';
 import throttle from '@utils/throttle';
+import { isMobileSize } from '@utils/viewports';
 
 interface FeatureInterface {
   id: number;
@@ -49,14 +56,21 @@ interface SkillInterface {
   checks: string[];
 }
 
-const ContainerCSS = css`
+const ContainerCSS = (theme: typeof globalTheme) => css`
   position: relative;
 
   max-width: 1440px;
   height: 100vh;
   max-height: 1024px;
   margin: 0 auto;
+
+  overflow: hidden;
   background-color: white;
+
+  @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+    width: 100%;
+    max-width: 100%;
+  }
 `;
 
 const Styled = {
@@ -74,16 +88,31 @@ const Styled = {
 
     background-color: white;
     border: 0;
-    ${ContainerCSS}
+    ${({ theme }) => ContainerCSS(theme)};
+  `,
+  CopyBox: styled.section`
+    margin-top: 3.125rem;
+    text-align: center;
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        width: 100%;
+        max-width: 100%;
+        margin-top: 20%;
+      }
+      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+        width: 100%;
+        max-width: 100%;
+        margin-top: 120px;
+      }
+    `}
   `,
   IntroductionMainCopy: styled.h1`
     position: relative;
-    top: 50px;
 
     z-index: 10;
 
     margin: 0;
-    line-height: 1.5;
 
     ${({ theme }) => css`
       font-size: ${theme.heads[2].size};
@@ -92,7 +121,7 @@ const Styled = {
   `,
   IntroductionSubCopy: styled.h1`
     position: relative;
-    top: 4rem;
+    top: 1rem;
     z-index: 10;
     margin: 0;
     line-height: 1.5;
@@ -103,14 +132,14 @@ const Styled = {
       font-weight: ${theme.fontWeights.default};
     `}
   `,
-  ProfileImage: styled.img`
+  ProfileImage: styled.img<{ top: number; size: number }>`
     position: absolute;
-    top: calc((100% + 20px) / 2);
-    left: calc((100% - 280px) / 2);
+    top: ${({ top }) => top}px;
 
     z-index: 10;
-    width: 280px;
-    height: 280px;
+    width: ${({ size }) => size}px;
+    height: ${({ size }) => size}px;
+
     border-radius: 50%;
   `,
   Name: styled.span`
@@ -118,7 +147,7 @@ const Styled = {
   `,
 
   Features: styled.section`
-    ${ContainerCSS}
+    ${({ theme }) => ContainerCSS(theme)}
 
     box-sizing: border-box;
     width: 100%;
@@ -128,10 +157,28 @@ const Styled = {
     max-height: auto;
 
     padding-top: 100px;
+
     background-color: white;
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        padding-top: 0px;
+      }
+    `}
   `,
   FeatureHeader: styled.div`
+    display: flex;
+    align-items: flex-end;
+
     svg text {
+      ${({ theme }) => css`
+        @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+          font-size: 8rem;
+        }
+        @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+          font-size: 5rem;
+        }
+      `}
       font-size: 5rem;
       font-weight: 900;
 
@@ -166,9 +213,19 @@ const Styled = {
 
     width: 100%;
     height: 520px;
-    padding: 10rem;
+    padding: 10rem 0;
 
     overflow: hidden;
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+        padding: 5rem 0;
+      }
+
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        flex-direction: column;
+      }
+    `}
   `,
   FeatureContainer: styled.div`
     position: relative;
@@ -177,8 +234,17 @@ const Styled = {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     width: 270px;
     height: 270px;
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        width: 150px;
+        height: 150px;
+        margin: 10px;
+      }
+    `}
   `,
   FeatureDetail: styled.div`
     z-index: 1;
@@ -186,7 +252,14 @@ const Styled = {
     flex-direction: column;
     align-items: center;
     padding: 0 2rem;
-    padding-top: 1rem;
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        width: 150px;
+        height: 150px;
+        margin: 10px;
+      }
+    `}
   `,
   FeatureHead: styled.h1`
     margin-bottom: 0.5rem;
@@ -194,6 +267,11 @@ const Styled = {
       font-size: ${theme.heads[4].size};
       font-weight: ${theme.heads[4].weight};
       color: ${theme.colors.dark};
+
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        font-size: ${theme.fontSizes.xxl};
+        font-weight: ${theme.fontWeights.bold};
+      }
     `}
   `,
   Description: styled.span`
@@ -202,13 +280,29 @@ const Styled = {
     ${({ theme }) => css`
       font-size: ${theme.fontSizes.l};
       word-break: keep-all;
+
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        font-size: ${theme.fontSizes.default};
+        font-weight: ${theme.fontWeights.default};
+      }
     `}
   `,
   FeatureLines: styled.div`
     position: absolute;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    width: 270px;
+    height: 270px;
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+        width: 25vw;
+        min-width: 150px;
+        max-width: 270px;
+
+        height: 25vw;
+        min-height: 150px;
+        max-height: 270px;
+      }
+    `}
   `,
 
   FeatureLine: styled.div`
@@ -305,11 +399,14 @@ const Styled = {
     position: relative;
     align-items: center;
     overflow: hidden;
-    ${ContainerCSS}
+    ${({ theme }) => ContainerCSS(theme)}
   `,
   SkllContainer: styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     width: 100%;
-    /* height: ${({ theme }) => css`calc(100% - ${theme.heads[1].size} * 4)`}; */
+    height: 100%;
     overflow: hidden;
   `,
   SkillHeader: styled.header<{ headerState: HeaderStateInterface }>`
@@ -335,40 +432,100 @@ const Styled = {
     width: 600px;
     height: 600px;
     transform: rotate(-30deg);
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+        position: relative;
+        right: auto;
+        width: 30vh;
+        height: 30vh;
+        margin: 0 auto;
+        transform: rotate(0deg);
+      }
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        width: 30vh;
+        height: 30vh;
+      }
+    `}
   `,
   NowSkillDetailContainer: styled.section`
     position: relative;
     flex-direction: column;
-    height: 100%;
     padding: 5rem;
     margin-top: 5rem;
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+        align-items: center;
+        justify-content: center;
+      }
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    `}
   `,
   NowSkillImageName: styled.div`
     position: relative;
-    z-index: 10;
+    z-index: 1;
 
     width: 100%;
 
     margin: 0;
     line-height: 1.5;
-    ${({ theme }) => css`
-      color: ${theme.colors.subPrimary};
-      text-shadow: 5px 5px ${theme.colors.primary.light};
-    `}
 
     ${({ theme }) => css`
       font-size: calc(${theme.heads[1].size} * 2);
       font-weight: ${theme.heads[1].weight};
+      color: ${theme.colors.subPrimary};
+      text-shadow: 5px 5px ${theme.colors.primary.light};
+
+      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+        font-size: calc(${theme.heads[1].size} * 1.5);
+        font-weight: ${theme.heads[1].weight};
+        text-align: center;
+      }
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        margin: 1rem 0;
+        font-size: calc(${theme.heads[2].size});
+        font-weight: ${theme.heads[1].weight};
+        text-shadow: 2px 2px ${theme.colors.primary.light};
+      }
     `}
   `,
   NowSkillDescriptions: styled.ul`
+    position: relative;
+    z-index: 20;
     margin-top: 1rem;
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 5rem;
+        text-align: center;
+      }
+    `}
   `,
   NowSkillDescription: styled.li`
     ${({ theme }) => css`
+      margin-bottom: 0.5rem;
       font-size: ${theme.fontSizes.l};
       font-weight: ${theme.fontWeights.default};
       color: ${theme.colors.subPrimary};
+
+      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+        width: 60vw;
+        margin-bottom: 0.5rem;
+        font-size: ${theme.fontSizes.l};
+        word-break: keep-all;
+      }
+
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        font-size: ${theme.fontSizes.l};
+      }
     `}
   `,
 
@@ -381,10 +538,16 @@ const Styled = {
     align-items: center;
     height: 5rem;
     padding: 0 1rem;
-    margin: 0 7.5rem;
-    overflow: scroll;
+    margin: 0 5vw;
+    overflow-x: scroll;
     background-color: rgba(0, 0, 0, 0.58);
     border-radius: 20px;
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+        border-radius: 10px;
+      }
+    `}
   `,
   SkillContainer: styled.li`
     display: flex;
@@ -413,6 +576,12 @@ const Styled = {
     cursor: pointer;
     background-color: rgba(256, 256, 256, 0.8);
     border-radius: 20px;
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+        border-radius: 12px;
+      }
+    `}
 
     &:hover {
       animation: element-jump 1s infinite;
@@ -467,7 +636,8 @@ const Styled = {
 function AboutPage() {
   const [isMouseVisible, setIsMouseVisible] = useState(true);
 
-  const { windowState } = useWindow(['innerWidth', 'innerHeight']);
+  const { windowState } = useResize();
+
   const minWidth = useMemo(
     () => Math.min(1440, windowState.innerWidth ?? 0),
     [windowState.innerWidth]
@@ -488,151 +658,22 @@ function AboutPage() {
 
   useMetaball({
     canvasRef,
+    baseFillColor: globalTheme.colors.canvasBackground,
     gradient: initialGradientColors,
     metaballGradient: metaballGradientColors,
-    mainMetaball: {
-      x: minWidth / 2,
-      y: minHeight / 2 + 150,
-      r: 150,
-    },
-    staticBubbles: [
-      {
-        x: minWidth * 0.1,
-        y: minHeight * 0.1,
-        r: 200,
-        to: {
-          x: minWidth * 0.1,
-          y: minHeight * 0.1,
-        },
-        v: [0, 0],
-      },
-
-      {
-        x: minWidth * 0.9,
-        y: minHeight * 0.7,
-        r: 200,
-        to: {
-          x: minWidth * 0.9,
-          y: minHeight * 0.7,
-        },
-        v: [0, 0],
-      },
-
-      {
-        x: minWidth * 0.15,
-        y: minHeight * 0.8,
-        r: 110,
-        to: {
-          x: minWidth * 0.15,
-          y: minHeight * 0.8,
-        },
-        v: [0, 0],
-      },
-
-      {
-        x: minWidth * 0.8,
-        y: minHeight * 0.3,
-        r: 50,
-        to: {
-          x: minWidth * 0.8,
-          y: minHeight * 0.3,
-        },
-        v: [0, 0],
-      },
-
-      {
-        x: minWidth * 0.7,
-        y: minHeight * 0.05,
-        r: 30,
-        to: {
-          x: minWidth * 0.4,
-          y: minHeight * 0.05,
-        },
-        v: [1, 0.2],
-      },
-
-      {
-        x: minWidth * 0.9,
-        y: minHeight * -0.2,
-        r: 300,
-        to: {
-          x: minWidth * 0.9,
-          y: minHeight * -0.2,
-        },
-        v: [1, 0.2],
-      },
-    ],
+    mainMetaball: getMainMetaball(minWidth, minHeight),
+    staticBubbles: getStaticBubbles(minWidth, minHeight),
     options: {
       bubbleNum: 4,
-      absorbBallNum: 3,
-      canvasWidth: windowState.innerWidth,
+      absorbBallNum: isMobileSize(minWidth) ? 0 : 3,
+      canvasWidth: minWidth,
       canvasHeight: minHeight,
     },
   });
 
-  const featuresHeaderTexts: FeaturesHeaderTextInterface[] = [
-    {
-      x: 0,
-      y: '100%',
-      value: 'F',
-    },
-    {
-      x: 42.5,
-      y: '100%',
-      value: 'E',
-    },
-    {
-      x: 90,
-      y: '100%',
-      value: 'A',
-    },
-    {
-      x: 135,
-      y: '100%',
-      value: 'T',
-    },
-    {
-      x: 182.5,
-      y: '100%',
-      value: 'U',
-    },
-    {
-      x: 235,
-      y: '100%',
-      value: 'R',
-    },
-    {
-      x: 285,
-      y: '100%',
-      value: 'E',
-    },
-    {
-      x: 330,
-      y: '100%',
-      value: 'S',
-    },
-  ];
+  const featuresHeaderTexts: FeaturesHeaderTextInterface[] = getFeatureText(minWidth);
 
-  const features: FeatureInterface[] = readonly([
-    {
-      id: 0,
-      emoji: '💡',
-      title: '호기심',
-      description: '항상 새로운 것들에 호기심을 갖고, 기존과 비교하며 개선해나가요 😉',
-    },
-    {
-      id: 1,
-      emoji: '📝',
-      title: '문서화',
-      description: '모르는 것들을 찾으면, 기록하며 배워나가는 습관을 갖고 있어요 🥸',
-    },
-    {
-      id: 2,
-      emoji: '🏄‍♂️',
-      title: '꾸준함',
-      description: '현재에 안주하지 않아요. 항상 더 나은 방향으로 성장하는 것을 즐겨요 🥰',
-    },
-  ]);
+  const features: FeatureInterface[] = readonly(featuresData);
 
   const skillHeaderRef = useRef<HTMLHeadElement>(null);
   const [headerState, setHeaderState] = useState({
@@ -654,7 +695,7 @@ function AboutPage() {
   });
 
   useIntersectionObserver(skillHeaderRef, skillHeaderCallback, {
-    rootMargin: '-200px',
+    rootMargin: isMobileSize(minWidth) ? '0px' : '-200px',
   });
 
   const pageRef = useRef<HTMLElement>(null);
@@ -711,8 +752,10 @@ function AboutPage() {
 
     if (headerState.isActive) {
       window.addEventListener('scroll', onScroll);
+      window.addEventListener('touchmove', onScroll);
     } else {
       window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('touchmove', onScroll);
     }
 
     return () => {
@@ -743,137 +786,10 @@ function AboutPage() {
     Quasar: 'Quasar',
     NodeJS: 'Node.js',
     AWS: 'AWS',
-    YarnBerry: 'Yarn berry',
     CICD: 'CICD',
   } as const;
 
-  const skills: SkillInterface[] = [
-    {
-      id: 0,
-      name: Skills.HTML5,
-      src: '/html.png',
-      checks: [
-        '주요 태그들이 의미하는 특성을 이해하고 있어요.',
-        '효율적으로 구조를 짜고, 시멘틱하게 작성할 수 있어요.',
-        'HTML의 파싱과정을 이해하고 있어요.',
-      ],
-    },
-    {
-      id: 1,
-      name: Skills.CSS3,
-      src: '/css3.png',
-      checks: [
-        'SCSS 구문을 사용할 수 있어요.',
-        'CSS 개발 방법론(BEM, CMACSS, SMASS)를 알고 있어요.',
-        'CSS 최적화의 중요성을 이해하고 리플로우를 최소화하려 노력해요.',
-        'flex와 grid를 자유자재로 사용할 수 있어요.',
-        '미디어 쿼리를 사용할 수 있어요.',
-      ],
-    },
-    {
-      id: 2,
-      name: Skills.JavaScript,
-      src: '/javascript.png',
-      checks: [
-        'ECMAScript의 동향을 꾸준히 체크하고 있어요.',
-        '문제가 주어지면 자바스크립트로 구현하는 데 익숙해요.',
-        'this, 클로저, 실행 컨텍스트 등의 전반적인 자바스크립트 동작을 이해하고 있어요.',
-      ],
-    },
-    {
-      id: 3,
-      name: Skills.TypeScript,
-      src: '/typescript.png',
-      checks: [
-        '프로젝트에서 타입스크립트를 다루는 데 어려움이 없어요.',
-        '중복되는 인터페이스 구조 생성을 지양하고 타입의 재사용을 지향해요.',
-        'any를 지양하며, type assertion을 남발하지 않아요.',
-      ],
-    },
-    {
-      id: 4,
-      name: Skills.React,
-      src: '/react.png',
-      checks: [
-        '라이프사이클과 재조정 과정을 이해하고 있어요',
-        '함수형 컴포넌트를 사용할 수 있어요',
-        '커스텀 훅을 사용하여 재사용성을 높여요.',
-        '전역 상태 관리의 원리를 이해하고 있어요.',
-        'Redux를 사용할 수 있어요',
-        '컴포넌트의 재사용을 지향하며 코드를 작성해요.',
-      ],
-    },
-    {
-      id: 5,
-      name: Skills.Vue3,
-      src: '/vue3.png',
-      checks: [
-        'Vue의 라이프사이클을 이해하고 있어요.',
-        'Vue2와 최신 Vue3의 문법을 이해하고 있어요.',
-        '레거시 코드를 Vue3로 마이그레이션한 경험이 있어요.',
-        'Composition API로 재사용 가능한 코드를 작성할 수 있어요.',
-        'Vuex와 Pinia를 다룰 수 있어요.',
-        '컴포넌트의 재사용을 지향하며 코드를 작성해요.',
-      ],
-    },
-    {
-      id: 6,
-      name: Skills.NextJS,
-      src: '/nextjs.png',
-      checks: [
-        'CSR, SSR, SSG, ISR의 차이점을 이해하고 있어요.',
-        'NextJS가 주는 여러 최적화를 다룰 수 있어요.',
-      ],
-    },
-    {
-      id: 7,
-      name: Skills.Quasar,
-      src: '/quasar.png',
-      checks: [
-        'Quasar가 주는 컴포넌트, CSS 기능들을 이해하고 있어요',
-        'Quasar 기반 반응형 웹을 구축한 경험을 갖고 있어요.',
-        'Icongenie 등을 다룰 수 있으며, 하이브리드 앱 유지 보수 경험이 있어요.',
-      ],
-    },
-    {
-      id: 8,
-      name: Skills.Storybook,
-      src: '/storybook.png',
-      checks: [
-        'React와 Vue에서 모두 처음부터 구성하고 사용할 수 있어요.',
-        'Control을 이용하여 테스트할 수 있는 스토리북을 만들어요.',
-      ],
-    },
-    {
-      id: 9,
-      name: Skills.NodeJS,
-      src: '/nodejs.png',
-      checks: [
-        'Express.js와 Koa.js를 사용해본 경험이 있어요',
-        'Node.js의 이벤트 루프를 이해하고 있어요.',
-        'REST API로 클라이언트와 통신하는 서버를 만들 수 있어요.',
-      ],
-    },
-    {
-      id: 10,
-      name: Skills.AWS,
-      src: '/aws.png',
-      checks: [
-        'S3를 이용하여 스토리지 사용 및 정적 웹사이트를 호스팅 및 배포할 수 있어요.',
-        'CloudFront를 다룰 수 있어요.',
-      ],
-    },
-    {
-      id: 11,
-      name: Skills.CICD,
-      src: '/github-actions.png',
-      checks: [
-        '클라이언트 훅과 서버 훅을 이해하고 있어요.',
-        'Git hook을 기반으로 husky와 github-action을 다룰 수 있어요.',
-        'AWS와 연동하여 배포 자동화를 할 수 있어요.',
-      ],
-    },
-  ];
+  const skills: SkillInterface[] = skillsData;
 
   return (
     <>
@@ -891,31 +807,40 @@ function AboutPage() {
       <Styled.Page ref={pageRef}>
         <Styled.Introduction>
           <ForwardedCanvas width={minWidth} height={minHeight} ref={canvasRef} />
-          <Styled.IntroductionMainCopy>
-            <CollapsedText x={(windowState.innerWidth ?? 0) + 500} y={0} direction="LEFT">
-              <Gummy texts="프론트엔드&nbsp;개발자" delay={1.5} />
-            </CollapsedText>
-          </Styled.IntroductionMainCopy>
+          <Styled.CopyBox>
+            <Styled.IntroductionMainCopy>
+              <CollapsedText x={(windowState.innerWidth ?? 0) + 500} y={0} direction="LEFT">
+                <Gummy texts="프론트엔드&nbsp;개발자" delay={1.5} />
+              </CollapsedText>
+            </Styled.IntroductionMainCopy>
 
-          <Styled.IntroductionMainCopy>
-            <CollapsedText x={-500} y={0} direction="RIGHT">
-              <Styled.Name>
-                <Gummy texts="황재영" delay={1.5} options={{ isGummy: true, infinite: true }} />
-              </Styled.Name>
-              <Gummy texts="입니다" delay={1.5} />
-            </CollapsedText>
-          </Styled.IntroductionMainCopy>
-          <Styled.IntroductionSubCopy>
-            <div>부족함을 알기에, 더 나은 자신을 위해 꾸준히 공부해요.</div>
-            <div>최적화와 새로운 것들에 호기심을 가지며</div>
-            <div>더 나은 UX를 제공하며 성장할 팀을 찾고 있어요.</div>
-          </Styled.IntroductionSubCopy>
-          <Styled.ProfileImage src="profile.gif" alt="프로필" />
+            <Styled.IntroductionMainCopy>
+              <CollapsedText x={-500} y={0} direction="RIGHT">
+                <Styled.Name>
+                  <Gummy texts="황재영" delay={1.5} options={{ isGummy: true, infinite: true }} />
+                </Styled.Name>
+                <Gummy texts="입니다" delay={1.5} />
+              </CollapsedText>
+            </Styled.IntroductionMainCopy>
+
+            <Styled.IntroductionSubCopy>
+              <div>부족함을 알기에, 더 나은 자신을 위해 꾸준히 공부해요.</div>
+              <div>최적화와 새로운 것들에 호기심을 가지며</div>
+              <div>더 나은 UX를 제공하며 성장할 팀을 찾고 있어요.</div>
+            </Styled.IntroductionSubCopy>
+          </Styled.CopyBox>
+
+          <Styled.ProfileImage
+            top={minHeight * 0.7 - (isMobileSize(minWidth) ? 100 : 140)}
+            size={isMobileSize(minWidth) ? 200 : 280}
+            src="profile.gif"
+            alt="프로필"
+          />
         </Styled.Introduction>
 
         <Styled.Features>
           <Styled.FeatureHeader>
-            <svg width={600} height={100} viewBox="0 0 600 100">
+            <svg width={minWidth}>
               {featuresHeaderTexts.map((text) => (
                 <text key={text.x + text.y + text.value} x={text.x} y={text.y}>
                   {text.value}
@@ -948,30 +873,31 @@ function AboutPage() {
         </Styled.Features>
 
         <Styled.SkillSection>
-          <Styled.SkllContainer />
-          <Styled.SkillHeader ref={skillHeaderRef} headerState={headerState}>
-            SKILLS
-          </Styled.SkillHeader>
+          <Styled.SkllContainer>
+            <Styled.SkillHeader ref={skillHeaderRef} headerState={headerState}>
+              SKILLS
+            </Styled.SkillHeader>
 
-          {nowActiveSkill.src && (
-            <Styled.NowSkillDetailContainer>
-              <Styled.NowSkillImageName>
-                <CollapsedText x={-500} y={0} direction="LEFT">
-                  <Gummy key={nowActiveSkill.name} texts={nowActiveSkill.name} delay={1.5} />
-                </CollapsedText>
-              </Styled.NowSkillImageName>
+            {nowActiveSkill.src && (
+              <Styled.NowSkillDetailContainer>
+                <Styled.NowSkillImageContainer>
+                  <Image src={nowActiveSkill.src} layout="fill" objectFit="contain" />
+                </Styled.NowSkillImageContainer>
 
-              <Styled.NowSkillDescriptions>
-                {nowActiveSkill.checks.map((check) => (
-                  <Styled.NowSkillDescription>- {check}</Styled.NowSkillDescription>
-                ))}
-              </Styled.NowSkillDescriptions>
+                <Styled.NowSkillImageName>
+                  <CollapsedText x={-500} y={0} direction="LEFT">
+                    <Gummy key={nowActiveSkill.name} texts={nowActiveSkill.name} delay={1.5} />
+                  </CollapsedText>
+                </Styled.NowSkillImageName>
 
-              <Styled.NowSkillImageContainer>
-                <Image src={nowActiveSkill.src} layout="fill" objectFit="contain" />
-              </Styled.NowSkillImageContainer>
-            </Styled.NowSkillDetailContainer>
-          )}
+                <Styled.NowSkillDescriptions>
+                  {nowActiveSkill.checks.map((check) => (
+                    <Styled.NowSkillDescription>- {check}</Styled.NowSkillDescription>
+                  ))}
+                </Styled.NowSkillDescriptions>
+              </Styled.NowSkillDetailContainer>
+            )}
+          </Styled.SkllContainer>
           <Styled.Skills>
             {skills.map((skill) => {
               const isSeparate = [Skills.TypeScript, Skills.Vue3, Skills.Quasar].some(
@@ -997,6 +923,7 @@ function AboutPage() {
             })}
           </Styled.Skills>
         </Styled.SkillSection>
+
         <Styled.MouseContainer>
           <ScrollMouse bottom="1rem" delay={1.5} visible={isMouseVisible} />
         </Styled.MouseContainer>

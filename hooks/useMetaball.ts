@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { Metaballs } from '@components/Metaball';
 import { MetaballBaseInterface, StaticBubbleInterface } from '@components/Metaball/types';
@@ -36,43 +36,30 @@ const useMetaball = ({
     baseFillColor,
   });
 
-  const animate = useCallback(
-    (metaballs: Metaballs, linearGradient: CanvasGradient) => {
-      if (ctx === null || canvasRef.current === null) return;
-
-      ctx.save();
-
-      ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-
-      metaballs.render(ctx);
-      metaballs.animate();
-
-      ctx.restore();
-
-      requestAnimationFrame(() => animate(metaballs, linearGradient));
-    },
-    [canvasRef, ctx]
-  );
-
   useEffect(() => {
-    if (ctx === null || canvasRef.current === null) return;
+    let frameId: number | null = null;
 
-    const { width, height } = canvasRef.current;
+    if (ctx === null || canvasRef.current === null) return;
 
     const { bubbleNum, absorbBallNum, canvasWidth, canvasHeight } = options ?? {};
 
     const mainMetaballProp = {
       mainMetaballState: mainMetaball ?? {
-        x: width / 2,
-        y: height / 2,
-        r: 200,
+        x: canvasRef.current.width / 2,
+        y: canvasRef.current.height / 2,
+        r: 100,
       },
       bubbleNum: bubbleNum ?? 4,
       absorbBallNum: absorbBallNum ?? 5,
-      canvasWidth: canvasWidth ?? width,
-      canvasHeight: canvasHeight ?? height,
+      canvasWidth: canvasWidth ?? canvasRef.current.width,
+      canvasHeight: canvasHeight ?? canvasRef.current.height,
       gradients: metaballGradient ?? ['#f200ff', '#9000ff'],
     };
+
+    const metaballs = new Metaballs({
+      ctx,
+      ...mainMetaballProp,
+    });
 
     const linearGradient = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height);
     if (!linearGradient) return;
@@ -85,11 +72,6 @@ const useMetaball = ({
 
     setFillStyle(() => linearGradient);
 
-    const metaballs = new Metaballs({
-      ctx,
-      ...mainMetaballProp,
-    });
-
     if (staticBubbles) {
       staticBubbles.forEach((ballState) => {
         metaballs.createStaticBubbles({
@@ -99,9 +81,31 @@ const useMetaball = ({
       });
     }
 
-    animate(metaballs, linearGradient);
+    const animate = () => {
+      if (ctx === null || canvasRef.current === null) return;
+
+      ctx.fillStyle = baseFillColor;
+      ctx.save();
+
+      ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+
+      metaballs.render(ctx);
+      metaballs.animate();
+
+      ctx.restore();
+      if (frameId !== null) {
+        requestAnimationFrame(animate);
+      }
+    };
+
+    frameId = requestAnimationFrame(animate);
+
+    return () => {
+      cancelAnimationFrame(frameId as number);
+      frameId = null;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ctx, canvasRef.current]);
+  }, [ctx, canvasRef.current?.width, canvasRef.current?.height]);
 };
 
 export default useMetaball;

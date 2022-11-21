@@ -7,19 +7,15 @@ import { IntroTarminalAtom } from '~/atoms';
 import TerminalBody from './Body';
 import TerminalHeader from './Header';
 import { StyledTerminal } from './styles';
+import { TerminalPropsInterface } from './types';
 
-interface TerminalPropsInterface {
-  isActive: boolean;
-  date: string;
-}
-
-function Terminal({ isActive, date }: TerminalPropsInterface) {
+function Terminal({ data, delays, isActive, date }: TerminalPropsInterface) {
   const [{ mode }] = useRecoilState(IntroTarminalAtom);
 
   return (
     <StyledTerminal.Container mode={mode}>
       <TerminalHeader />
-      <TerminalBody isActive={isActive} date={date} />
+      <TerminalBody delays={delays} data={data} isActive={isActive} date={date} />
     </StyledTerminal.Container>
   );
 }

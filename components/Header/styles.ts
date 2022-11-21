@@ -1,17 +1,16 @@
 import { css } from '@emotion/react';
-
 import styled from '@emotion/styled';
-
-import CopyStyle from '@components/Text';
 
 const CommonStyle = {
   Header: css`
     display: flex;
     align-items: center;
+
     max-width: 1440px;
   `,
   Circles: css`
     position: absolute;
+
     display: flex;
 
     padding: 0;
@@ -42,83 +41,138 @@ const CommonStyle = {
   `,
 };
 
-export const StyledIntro = {
-  Header: styled.header`
-    height: 2rem;
-
-    background: #333;
-
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-
-    ${CommonStyle.Header}
-  `,
-  Circles: styled.ul`
-    ${CommonStyle.Circles}
-  `,
-  Circle: styled.li`
-    ${CommonStyle.Circle}
-  `,
-  Title: styled(CopyStyle.XSmall)`
-    margin: 0 auto;
-    color: #aaa;
-  `,
-};
-
 export const StyledBase = {
-  Container: styled.div`
+  Container: styled.div<{ isOpened: boolean }>`
     position: fixed;
     top: 0;
     z-index: 9999;
+
     width: 100vw;
-    margin: 0 auto;
-  `,
+    height: ${({ theme }) => theme.layout.header.height};
 
-  Header: styled.header<{ isScrollDown: boolean }>`
-    height: 3rem;
     margin: 0 auto;
 
-    background: transparent;
-
-    /* border-bottom: 1px solid #aaa; */
-
-    background: black;
+    background: rgba(0, 0, 0, 0.5);
     transition: all 0.3s;
-    ${CommonStyle.Header}
 
-    ${({ isScrollDown }) =>
-      isScrollDown &&
+    ${({ isOpened, theme }) =>
+      isOpened &&
       css`
-        transform: translateY(-4rem);
+        display: flex;
+        height: 10rem;
+        @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+          height: auto;
+        }
       `}
   `,
-  Links: styled.ul`
-    display: flex;
-    padding: 0;
-    margin: 0;
-    margin-right: 5rem;
-    margin-left: auto;
+
+  Title: styled.div<{ isOpened: boolean }>`
+    flex-shrink: 0;
+
+    margin-left: 1.5rem;
+
+    font-size: ${({ theme }) => theme.fontSizes.s};
+    font-weight: ${({ theme }) => theme.fontWeights.bold};
+    ${({ isOpened }) =>
+      isOpened &&
+      css`
+        display: none;
+      `}
   `,
-  LinkContainer: styled.li<{ isActive: boolean }>`
+
+  Header: styled.header<{ isOpened: boolean }>`
+    width: 100%;
+    height: 100%;
+
+    margin-left: 1rem;
+
+    transition: all 0.3s;
+
+    ${CommonStyle.Header}
+  `,
+  Thumbnail: styled.div<{ isOpened: boolean }>`
+    position: relative;
+
+    width: 160px;
+    height: 96px;
+    margin-bottom: 0.5rem;
+
+    ${({ isOpened }) =>
+      !isOpened &&
+      css`
+        display: none;
+      `}
+
+    ${({ theme }) =>
+      theme &&
+      css`
+        @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+          width: 100px;
+          height: 60px;
+        }
+      `}
+  `,
+  Links: styled.ul<{ isOpened: boolean }>`
+    display: flex;
+
+    padding: 0;
+
+    transition: all 0.3s;
+
+    ${({ isOpened, theme }) =>
+      isOpened
+        ? css`
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-evenly;
+            width: 1000px;
+            margin: 0 auto;
+
+            @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+              flex-direction: column;
+              align-items: center;
+            }
+          `
+        : css`
+            @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+              display: none;
+            }
+          `}
+  `,
+  LinkContainer: styled.li<{ isOpened: boolean; isActive: boolean }>`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 1.5rem;
+
+    font-size: ${({ theme }) => theme.fontSizes.xs};
     color: white;
-    list-style: none;
+    text-align: center;
+
     cursor: pointer;
 
-    &:hover {
-      background: black;
-    }
-
-    &:not(:last-of-type) {
-      margin-right: 3em;
-    }
-
-    ${({ isActive }) =>
+    ${({ isActive, theme }) =>
       isActive &&
       css`
-        color: #ffe600;
+        color: ${theme.colors.primary.light};
       `}
-  `,
-  Title: styled(CopyStyle.XSmall)`
-    color: #aaa;
+    ${({ isOpened }) =>
+      isOpened &&
+      css`
+        padding: 0.5rem;
+        border: 2px solid transparent;
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.5);
+          border-radius: 20px;
+          transition: all 0.3s;
+        }
+      `} 
+    ${({ isOpened, isActive, theme }) =>
+      isActive &&
+      isOpened &&
+      css`
+        border: 1px solid ${theme.colors.primary.light};
+        border-radius: 20px;
+      `}
   `,
 };
