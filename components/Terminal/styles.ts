@@ -4,7 +4,6 @@ import styled from '@emotion/styled';
 import { ButtonActionTypeEnum, TerminalModeType } from '~/atoms/intro/terminal';
 
 export const TerminalHeaderHeight = '2rem';
-
 export const StyledTerminal = {
   Container: styled.article<{ mode: TerminalModeType }>`
     width: 800px;
@@ -15,7 +14,7 @@ export const StyledTerminal = {
     border-radius: 20px;
     transition: all 0.5s;
 
-    ${({ mode }) => {
+    ${({ theme, mode }) => {
       if (mode === ButtonActionTypeEnum.red) {
         return css`
           transform: skew(-0.125turn, 40deg);
@@ -41,10 +40,27 @@ export const StyledTerminal = {
         return css`
           width: 100vw;
           height: 100vh;
+          margin-top: ${theme.layout.header.height};
         `;
       }
       return ``;
     }}
+
+    ${({ theme, mode }) =>
+      theme &&
+      css`
+        @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+          width: calc(100vw - 2rem);
+          height: calc(80vw);
+
+          ${mode === ButtonActionTypeEnum.green &&
+          css`
+            width: 100vw;
+            height: calc(100vh);
+            margin-top: 60px;
+          `}
+        }
+      `}
   `,
 };
 
@@ -71,6 +87,7 @@ export const StyledTerminalHeader = {
     height: 1rem;
 
     list-style: none;
+    cursor: pointer;
 
     border-radius: 50%;
 

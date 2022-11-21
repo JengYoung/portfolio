@@ -133,6 +133,13 @@ export const History = {
     width: 100%;
     font-size: ${({ main, theme }) => (main ? theme.fontSizes.xxl : theme.fontSizes.l)};
     font-weight: ${({ main, theme }) => (main ? theme.heads[4].weight : theme.fontWeights.default)};
+
+    ${({ main, theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        font-size: ${main ? theme.fontSizes.l : theme.fontSizes.default};
+        font-weight: ${main ? theme.heads[4].weight : theme.fontWeights.default};
+      }
+    `}
   `,
   Line: styled.div`
     position: absolute;

@@ -48,18 +48,21 @@ export const StyledBase = {
     z-index: 9999;
 
     width: 100vw;
-    height: 2rem;
+    height: ${({ theme }) => theme.layout.header.height};
 
     margin: 0 auto;
 
     background: rgba(0, 0, 0, 0.5);
     transition: all 0.3s;
 
-    ${({ isOpened }) =>
+    ${({ isOpened, theme }) =>
       isOpened &&
       css`
         display: flex;
         height: 10rem;
+        @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+          height: auto;
+        }
       `}
   `,
 
@@ -99,6 +102,15 @@ export const StyledBase = {
       css`
         display: none;
       `}
+
+    ${({ theme }) =>
+      theme &&
+      css`
+        @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+          width: 100px;
+          height: 60px;
+        }
+      `}
   `,
   Links: styled.ul<{ isOpened: boolean }>`
     display: flex;
@@ -107,17 +119,30 @@ export const StyledBase = {
 
     transition: all 0.3s;
 
-    ${({ isOpened }) =>
-      isOpened &&
-      css`
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-evenly;
-        width: 1000px;
-        margin: 0 auto;
-      `}
+    ${({ isOpened, theme }) =>
+      isOpened
+        ? css`
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-evenly;
+            width: 1000px;
+            margin: 0 auto;
+
+            @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+              flex-direction: column;
+              align-items: center;
+            }
+          `
+        : css`
+            @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+              display: none;
+            }
+          `}
   `,
   LinkContainer: styled.li<{ isOpened: boolean; isActive: boolean }>`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-left: 1.5rem;
 
     font-size: ${({ theme }) => theme.fontSizes.xs};
@@ -126,10 +151,10 @@ export const StyledBase = {
 
     cursor: pointer;
 
-    ${({ isActive }) =>
+    ${({ isActive, theme }) =>
       isActive &&
       css`
-        color: #ffe600;
+        color: ${theme.colors.primary.light};
       `}
     ${({ isOpened }) =>
       isOpened &&

@@ -71,8 +71,14 @@ const StyledPage = {
 };
 
 const Title = styled.header`
-  font-size: ${({ theme }) => `calc(${theme.fontSizes.max} * 4)`};
-  font-weight: ${({ theme }) => theme.fontWeights.extrabold};
+  ${({ theme }) => css`
+    font-size: calc(${theme.fontSizes.max} * 4);
+    font-weight: ${theme.fontWeights.extrabold};
+
+    @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+      font-size: calc(${theme.fontSizes.max} * 2);
+    }
+  `}
 `;
 
 const StyledExperience = {
@@ -181,29 +187,55 @@ const StyledExperience = {
   `,
   ImageContainer: styled.div`
     position: absolute;
-    border-radius: 50px;
-    box-shadow: -4px 10px 10px 10px rgba(0, 0, 0, 0.3);
+
+    &:first-of-type&:last-of-type {
+      left: 5vw;
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+
     &:first-of-type {
-      left: 5rem;
-      transform: rotateY(30deg) rotateZ(-10deg);
+      left: 2.5vw;
     }
     &:last-of-type&:not(:first-of-type),
     &:nth-of-type(2n + 2) {
-      top: 10rem;
-      left: 17.5rem;
-      transform: rotateY(-30deg) rotateZ(20deg);
+      top: 2.5rem;
+      left: 22.5vw;
       transform-origin: right;
     }
     &:nth-of-type(2n + 3) {
       top: 20rem;
-      left: 5rem;
-      transform: rotateY(30deg) rotateZ(-10deg);
+      left: 2.5vw;
     }
     &:last-of-type&:not(:first-of-type)&:nth-of-type(n + 4) {
-      top: 27rem;
-      left: 20rem;
-      transform: rotateY(-20deg) rotateZ(10deg) scale(1.1);
+      top: 22.5rem;
+      left: 22.5vw;
     }
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        &:first-of-type&:last-of-type {
+          left: 5vw;
+        }
+        &:first-of-type {
+          left: 2.5vw;
+        }
+        &:last-of-type&:not(:first-of-type),
+        &:nth-of-type(2n + 2) {
+          top: 2.5rem;
+          left: 22.5vw;
+        }
+        &:nth-of-type(2n + 3) {
+          top: 12.5rem;
+          left: 2.5vw;
+        }
+        &:last-of-type&:not(:first-of-type)&:nth-of-type(n + 4) {
+          top: 15rem;
+          left: 22.5vw;
+        }
+      }
+    `}
   `,
   Details: styled.section`
     position: relative;
@@ -225,14 +257,13 @@ const StyledExperience = {
       content: '- ';
     }
   `,
-  Images: styled.ul<{ draw: boolean; shouldShowHistories: boolean }>`
+  Images: styled.section<{ draw: boolean; shouldShowHistories: boolean }>`
     position: absolute;
     display: none;
     width: 100%;
     height: 100%;
     opacity: 0;
     transition: all 0.3s;
-    perspective: 100vw;
 
     ${({ draw, shouldShowHistories }) =>
       draw &&
@@ -271,7 +302,6 @@ const StyledProjectIntro = {
   `,
   Title: styled(Title)`
     position: relative;
-    perspective: 1000vw;
     top: 50%;
     z-index: 99;
     align-self: center;
@@ -295,6 +325,37 @@ const Card = styled.div`
   &:hover {
     background-color: #eeeeee;
   }
+
+  &:before {
+    width: 300px;
+    height: 200px;
+  }
+
+  ${({ theme }) => css`
+    @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+      width: 300px;
+      height: 200px;
+      border-radius: 10px;
+
+      &:before {
+        width: 150px;
+        height: 100px;
+        content: '';
+      }
+    }
+
+    @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+      width: 150px;
+      height: 100px;
+      border-radius: 10px;
+
+      &:before {
+        width: 150px;
+        height: 100px;
+        content: '';
+      }
+    }
+  `}
 `;
 
 const StyledProject = {
@@ -304,25 +365,37 @@ const StyledProject = {
     z-index: 3;
 
     transform: scale(1.4) rotateX(30deg) rotateY(-20deg) rotateZ(-15deg) translate3d(50px, 0, 0);
-
     transform-origin: top;
+
     &:before {
       position: absolute;
       bottom: 0;
       left: 0;
       z-index: -999;
 
-      width: 300px;
-      height: 200px;
       cursor: auto;
-
-      content: '';
 
       border-radius: 20px;
       box-shadow: -20px 50px 100px rgba(0, 0, 0, 0.2);
 
       transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) translate3d(-0px, 0px, -1px);
     }
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+        top: 20%;
+        left: 10%;
+        transform: scale(1) rotateX(30deg) rotateY(-20deg) rotateZ(-15deg) translate3d(0px, 0, 0);
+      }
+    `}
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        top: 150px;
+        left: 10px;
+        transform: scale(1) rotateX(30deg) rotateY(-20deg) rotateZ(-15deg) translate3d(0px, 0, 0);
+      }
+    `}
   `,
   Card2: styled(Card)`
     top: 200px;
@@ -339,15 +412,29 @@ const StyledProject = {
       left: 0;
       z-index: -1;
 
-      width: 300px;
-      height: 200px;
-
-      content: '';
-
       border-radius: 20px;
       box-shadow: -50px 0px 150px rgba(0, 0, 0, 0.3);
       transform: scale(1) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
     }
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+        top: 20%;
+        left: 20%;
+        transform: scale(0.9) rotateX(50deg) rotateY(-20deg) rotateZ(-65deg)
+          translate3d(0px, 100px, 0px);
+      }
+    `}
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        top: 200px;
+        left: 20px;
+
+        transform: scale(0.9) rotateX(50deg) rotateY(-20deg) rotateZ(-65deg)
+          translate3d(0px, 100px, 0px);
+      }
+    `}
   `,
   Card3: styled(Card)`
     position: absolute;
@@ -377,6 +464,23 @@ const StyledProject = {
 
       transform: rotateX(10deg) rotateY(-30deg) rotateZ(0deg) translate3d(0px, 0px, -100px);
     }
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+        top: 30%;
+        left: 10%;
+        transform: scale(0.9) rotateX(50deg) rotateY(50deg) rotateZ(15deg);
+      }
+    `}
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        top: 220px;
+        left: 20px;
+
+        transform: scale(0.9) rotateX(50deg) rotateY(50deg) rotateZ(15deg);
+      }
+    `}
   `,
   CardContainer: styled.div`
     position: relative;
@@ -403,14 +507,32 @@ const StyledProject = {
       left: 0;
       z-index: -1;
 
-      width: 300px;
-      height: 200px;
       cursor: auto;
 
       content: '';
       border-radius: 20px;
       box-shadow: -50px 50px 50px rgba(0, 0, 0, 0.3);
     }
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+        top: 35%;
+        left: 20%;
+
+        transform: scale(1.1) rotateX(50deg) rotateY(10deg) rotateZ(5deg)
+          translate3d(90px, -50px, 0px);
+      }
+    `}
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        top: 260px;
+        left: 20px;
+
+        transform: scale(1.1) rotateX(50deg) rotateY(10deg) rotateZ(5deg)
+          translate3d(90px, -50px, 0px);
+      }
+    `}
   `,
   ProjectTitle: styled.header`
     height: 96px;
@@ -423,13 +545,36 @@ const StyledProject = {
   BrowserContainer: styled.div`
     position: absolute;
     right: 5rem;
+    bottom: 3rem;
     z-index: 9999;
 
     display: flex;
     flex-direction: column;
     justify-content: center;
 
-    height: 100%;
+    width: 600px;
+    height: 480px;
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+        right: auto;
+        bottom: 1rem;
+        left: 50%;
+        width: 90%;
+        height: 300px;
+        margin: 0 auto;
+        transform: translateX(-50%);
+      }
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        right: auto;
+        bottom: 1rem;
+        left: 50%;
+        width: 90%;
+        height: 300px;
+        margin: 0 auto;
+        transform: translateX(-50%);
+      }
+    `}
   `,
   Video: styled.video`
     width: 100%;
@@ -524,7 +669,7 @@ function ExperiencesAndProjectsPage() {
 
   const [projectIndex, setProjectIndex] = useState(-1);
 
-  const [perspective, setPerspective] = useState({ x: 0, y: 0 });
+  const [perspective, setPerspective] = useState({ x: 50, y: 50 });
   const onMouseOver = throttle((e: MouseEvent) => {
     const { screenX, screenY } = e;
 
@@ -585,8 +730,8 @@ function ExperiencesAndProjectsPage() {
                         image={{ src: obj.src, alt: obj.alt }}
                         imageOptions={{
                           size: {
-                            width: nowExperience.images.length === 1 ? '22.5rem' : '15rem',
-                            height: nowExperience.images.length === 1 ? '22.5rem' : '15rem',
+                            width: nowExperience.images.length === 1 ? '30vw' : '15vw',
+                            height: nowExperience.images.length === 1 ? '30vw' : '15vw',
                           },
                           objectFit: obj.options?.objectFit ?? 'cover',
                           bg: obj.options?.bg,
@@ -596,6 +741,7 @@ function ExperiencesAndProjectsPage() {
                     </StyledExperience.ImageContainer>
                   ))}
                 </StyledExperience.Images>
+
                 <GitGraph
                   shouldDraw={isDrawLine.start}
                   shouldShowHistory={shouldShowHistories[idx]}
@@ -643,7 +789,6 @@ function ExperiencesAndProjectsPage() {
                   </CollapsedText>
                 )}
               </StyledProject.ProjectTitle>
-
               <Browser project={projects[projectIndex] ?? null} projectIndex={projectIndex} />
             </StyledProject.BrowserContainer>
           </StyledPage.Projects>

@@ -185,11 +185,17 @@ function Navigator({ direction, children }: NavigatorInterface) {
     if (pageRef.current === null) return;
 
     const onScroll = () => {
-      const customEvent = new CustomEvent('scroll', { detail: { name: 'hi' } });
+      const customEvent = new CustomEvent('scroll', { detail: { name: 'scroll' } });
+      window.dispatchEvent(customEvent);
+    };
+
+    const onTouchmove = () => {
+      const customEvent = new CustomEvent('touchmove', { detail: { name: 'touchmove' } });
       window.dispatchEvent(customEvent);
     };
 
     pageRef.current.addEventListener('scroll', onScroll, { passive: true });
+    pageRef.current.addEventListener('touchmove', onTouchmove, { passive: true });
   }, [pageRef, router.pathname]);
 
   useEffect(() => {
