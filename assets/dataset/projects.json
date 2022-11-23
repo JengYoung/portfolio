@@ -65,7 +65,7 @@
 
   {
     "id": 0,
-    "title": "JS, React Libs",
+    "title": "JavaScript Utils",
     "period": {
       "start": "2022.08",
       "end": "진행 중"
@@ -80,10 +80,16 @@
         "id": 1000,
         "type": "intro",
         "title": "💡 설명",
-        "skills": ["Vanilla JS", "React", "Three.js", "yarn berry"],
+        "skills": ["Vanilla JS", "React", "yarn berry"],
         "descriptions": [
           "세상에는 재사용할 수 있을 코드들이 많아요.",
           "언젠가 재사용하기 위해 재미로 삼아 구현한 코드들을 모아놓아요."
+        ],
+        "links": [
+          {
+            "iconSrc": "/github.png",
+            "href": "https://github.com/JengYoung/javascript-utils"
+          }
         ],
         "background": {
           "type": "video",
@@ -99,6 +105,12 @@
           "메타볼 애니메이션을 구현했어요.",
           "터지거나, 제한적으로 이동하는 다양한 옵션을 추가했어요."
         ],
+        "links": [
+          {
+            "iconSrc": "/github.png",
+            "href": "https://github.com/JengYoung/javascript-utils/tree/main/src/components/canvas/Metaball"
+          }
+        ],
         "background": {
           "type": "video",
           "src": "/projects/metaball.mp4"
@@ -109,6 +121,12 @@
         "id": 1002,
         "type": "detail",
         "title": "Calendar",
+        "links": [
+          {
+            "iconSrc": "/github.png",
+            "href": "https://github.com/JengYoung/javascript-utils/tree/main/src/components/calendar"
+          }
+        ],
         "descriptions": [
           "노션처럼 일정을 등록하는 캘린더 컴포넌트를 구현했어요.",
           "쌓일 일정이 변경될 때마다 깔끔하게 쌓이도록 구현했어요! 🧱"
@@ -123,6 +141,12 @@
         "id": 1003,
         "type": "detail",
         "title": "About",
+        "links": [
+          {
+            "iconSrc": "/github.png",
+            "href": "https://github.com/JengYoung/react-libs/tree/main/src/components/Navigator"
+          }
+        ],
         "descriptions": [
           "웹도 앱처럼 페이지 전환 효과가 있다면 어떨까요?",
           "자연스러운 페이지 전환 효과를 만들었어요."
@@ -154,6 +178,12 @@
         "id": 1000,
         "skills": ["Vue3", "Storybook"],
         "descriptions": ["Vue 3로 다양한 컴포넌트를 만들었어요.", "한 번 탭들을 눌러 살펴볼까요?"],
+        "links": [
+          {
+            "iconSrc": "/github.png",
+            "href": "https://github.com/JengYoung/Vue-Components"
+          }
+        ],
         "background": {
           "type": "image",
           "src": "/profile.gif"
@@ -165,7 +195,13 @@
         "title": "Carousel",
         "id": 1001,
         "skills": ["Vue3", "Storybook"],
-        "descriptions": ["Carousel을 구현했어요."],
+        "descriptions": ["이동에 따라 버튼 애니메이션이 자연스럽게 움직이는 캐러셀을 구현했어요."],
+        "links": [
+          {
+            "iconSrc": "/github.png",
+            "href": "https://github.com/JengYoung/Vue-Components/blob/develop/src/components/Base/Carousel/README.md"
+          }
+        ],
         "background": {
           "type": "image",
           "src": "/profile.gif"
@@ -174,10 +210,36 @@
 
       {
         "type": "detail",
-        "title": "Menu",
+        "title": "Toast",
         "id": 1002,
         "skills": ["Vue3", "Storybook"],
-        "descriptions": ["뷰포트에 따라 유기적으로 동작하는 메뉴를 만들었어요."],
+        "descriptions": [
+          "사용자의 이벤트에 따라 메시지를 전달할 수 있는 Toast 컴포넌트를 만들었어요."
+        ],
+        "links": [
+          {
+            "iconSrc": "/github.png",
+            "href": "https://github.com/JengYoung/Vue-Components/tree/develop/src/components/Base/Toast"
+          }
+        ],
+        "background": {
+          "type": "image",
+          "src": "/profile.gif"
+        }
+      },
+
+      {
+        "type": "detail",
+        "title": "FormattingInput",
+        "id": 1002,
+        "skills": ["Vue3", "Storybook"],
+        "descriptions": ["원하는 대로 구분자를 두고 입력할 수 있는 FormattingInput을 구현했어요."],
+        "links": [
+          {
+            "iconSrc": "/github.png",
+            "href": "https://github.com/JengYoung/Vue-Components/blob/develop/src/components/Base/Input/FormattingInput/README.md"
+          }
+        ],
         "background": {
           "type": "image",
           "src": "/profile.gif"
@@ -213,6 +275,12 @@
           "yarn-berry",
           "turborepo",
           "AWS"
+        ],
+        "links": [
+          {
+            "iconSrc": "/github.png",
+            "href": "https://github.com/seeyouletter/seayouletter-fe"
+          }
         ],
         "descriptions": [
           "페이지 제작 플랫폼을 기획하고 있어요.",
