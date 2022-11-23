@@ -177,8 +177,8 @@ export const Styled = {
   `,
   BodyDescriptions: styled.ul`
     position: absolute;
-    top: 0;
     right: 1rem;
+    bottom: 1rem;
     left: 1rem;
     z-index: 1;
 
@@ -193,7 +193,7 @@ export const Styled = {
 
     text-align: left;
 
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.5);
 
     border-radius: 10px;
     box-shadow: -2px 2px 4px 2px rgba(0, 0, 0, 0.2);

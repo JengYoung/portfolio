@@ -769,7 +769,7 @@ function ExperiencesAndProjectsPage() {
               <StyledProject.Video src="/projects/metaball.mp4" autoPlay muted loop />
             </StyledProject.Card2>
             <StyledProject.Card3 onClick={() => onClickCard(2)}>
-              <Image src="/profile.gif" layout="fill" objectFit="contain" />
+              <Image src="/projects/vue-components.png" layout="fill" objectFit="contain" />
             </StyledProject.Card3>
             <StyledProject.Card4 onClick={() => onClickCard(3)}>
               <StyledProject.CardContainer>
