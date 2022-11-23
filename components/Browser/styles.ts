@@ -140,8 +140,10 @@ export const Styled = {
     background-color: ${({ theme }) => theme.colors.white};
   `,
   BarDescription: styled.div`
+    display: flex;
+    align-items: center;
     width: calc(100% - 1rem);
-    height: 1.5rem;
+    height: 2rem;
 
     padding: 0 0.5rem;
 

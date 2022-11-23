@@ -131,10 +131,8 @@ export const StyledBase = {
     height: 100%;
 
     ${({ theme }) => css`
-      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
         flex-direction: column;
-        justify-content: center;
-        margin: 0 6rem;
       }
     `}
   `,
@@ -153,6 +151,7 @@ export const StyledBase = {
             justify-content: space-evenly;
             width: 100%;
             margin: 0 auto;
+            margin: 0 6rem;
 
             @media screen and (max-width: ${theme.viewPort.mobileMax}) {
               flex-direction: column;
@@ -170,6 +169,8 @@ export const StyledBase = {
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    padding: 0.125rem 0.5rem;
     margin-left: 1.5rem;
 
     font-size: ${({ theme }) => theme.fontSizes.xs};
@@ -177,11 +178,13 @@ export const StyledBase = {
     text-align: center;
 
     cursor: pointer;
+    border-radius: 5px;
 
     ${({ isActive, theme }) =>
       isActive &&
       css`
-        color: ${theme.colors.primary.light};
+        color: ${theme.colors.white};
+        background-color: rgba(256, 256, 256, 0.3);
       `}
     ${({ isOpened }) =>
       isOpened &&

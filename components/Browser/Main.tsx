@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import Image from 'next/image';
 
+import IconTextLink from '@components/Link/IconLinkWithText';
 import Gummy from '@components/Text/Gummy';
 
 import { Styled } from './styles';
@@ -47,7 +48,19 @@ function Browser({ project, projectIndex }: BrowserProps) {
       </Styled.Header>
 
       <Styled.Toolbar>
-        <Styled.BarDescription />
+        <Styled.BarDescription>
+          {project?.contents[activeTabIndex]?.links.map((link) => (
+            <IconTextLink
+              key={link.href}
+              iconSrc={link.iconSrc}
+              alt={link.alt}
+              iconSize="16px"
+              text={link.alt}
+              href={link.href}
+              bgColor={link.bgColor}
+            />
+          ))}
+        </Styled.BarDescription>
       </Styled.Toolbar>
 
       <Styled.Body intro={activeTabIndex === 0}>
