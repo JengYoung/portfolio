@@ -7,24 +7,22 @@
       "end": "진행 중"
     },
     "thumbnail": { "type": "video", "src": "/projects/portfolio.mp4" },
-
+    "techStacks": [
+      "Next.js",
+      "React",
+      "recoil",
+      "@emotion",
+      "TypeScript",
+      "AWS(S3, Route 53, CloudFront)",
+      "Github Action",
+      "yarn berry",
+      "Canvas API"
+    ],
     "contents": [
       {
         "id": 1000,
         "type": "intro",
         "title": "💡 설명",
-        "skills": [
-          "Next.js",
-          "React",
-          "husky",
-          "recoil",
-          "@emotion",
-          "TypeScript",
-          "AWS(S3, Route 53, CloudFront)",
-          "Github Action",
-          "yarn berry",
-          "Canvas API"
-        ],
         "links": [
           {
             "iconSrc": "/github.png",
@@ -70,15 +68,17 @@
       "src": "/projects/metaball.mp4"
     },
 
+    "techStacks": ["Vanilla JS", "React", "yarn berry", "Canvas API"],
     "contents": [
       {
         "id": 2001,
         "type": "intro",
         "title": "💡 설명",
-        "skills": ["Vanilla JS", "React", "yarn berry"],
+
         "descriptions": [
           "세상에는 재사용할 수 있을 코드들이 많아요.",
-          "언젠가 재사용하기 위해 재미로 삼아 구현한 코드들을 모아놓아요."
+          "설령 사용하지 않더라도, 다시 로직을 참고하는 코드들도 많죠.",
+          "그런 날들을 위해, 재미삼아 구현한 코드들을 모아놓아요."
         ],
         "links": [
           {
@@ -175,12 +175,12 @@
       "src": "/projects/vue-components.png"
     },
 
+    "techStacks": ["Vue3", "Storybook", "pinia"],
     "contents": [
       {
         "type": "intro",
         "title": "💡 설명",
         "id": 3001,
-        "skills": ["Vue3", "Storybook"],
         "descriptions": [
           "Vue3과 Storybook으로 다양한 컴포넌트를 쉽게 알 수 있게 만들었어요.",
           "누구나 컴포넌트를 쉽게 사용할 수 있도록 짜기 위해 만들었어요.",
@@ -204,7 +204,6 @@
         "type": "detail",
         "title": "Carousel",
         "id": 3002,
-        "skills": ["Vue3", "Storybook"],
         "descriptions": ["이동에 따라 버튼 애니메이션이 자연스럽게 움직이는 캐러셀을 구현했어요."],
         "links": [
           {
@@ -224,7 +223,6 @@
         "type": "detail",
         "title": "Toast",
         "id": 3003,
-        "skills": ["Vue3", "Storybook"],
         "descriptions": [
           "사용자의 이벤트에 따라 메시지를 전달할 수 있는 Toast 컴포넌트를 만들었어요.",
           "8방향 어디에서나 블록처럼 쌓을 수도 있고, 겹칠 수도 있어요!"
@@ -247,7 +245,6 @@
         "type": "detail",
         "title": "FormattingInput",
         "id": 3004,
-        "skills": ["Vue3", "Storybook"],
         "descriptions": [
           "원하는 대로 구분자를 두고 입력할 수 있는 FormattingInput을 구현했어요.",
           "동적으로 마스킹을 자연스럽게 바꿔줄 수 있어요! 🙇🏻‍♂️",
@@ -281,22 +278,13 @@
       "src": "/projects/seeyouletter.png"
     },
 
+    "techStacks": [],
+
     "contents": [
       {
         "id": 4001,
         "type": "intro",
         "title": "💡 설명",
-        "skills": [
-          "Next.js",
-          "React Native",
-          "Storybook",
-          "Playwright",
-          "jotai",
-          "react-query",
-          "yarn-berry",
-          "turborepo",
-          "AWS"
-        ],
         "links": [
           {
             "iconSrc": "/github.png",

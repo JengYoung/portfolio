@@ -542,6 +542,19 @@ const StyledProject = {
     color: ${({ theme }) => theme.colors.white};
     text-shadow: 0px 4px 2px rgba(0, 0, 0, 0.2);
   `,
+  TechStacks: styled.ul`
+    display: inline-flex;
+    flex-wrap: wrap;
+  `,
+  TechStack: styled.li`
+    flex-shrink: 0;
+    padding: 0.25rem 0.75rem;
+    margin: 0.25rem;
+    font-size: ${({ theme }) => theme.fontSizes.xs};
+    color: ${({ theme }) => theme.colors.white};
+    background-color: ${({ theme }) => theme.colors.subPrimary};
+    border-radius: ${({ theme }) => theme.fontSizes.xs};
+  `,
   BrowserContainer: styled.div`
     position: absolute;
     right: 5rem;
@@ -789,6 +802,12 @@ function ExperiencesAndProjectsPage() {
                   </CollapsedText>
                 )}
               </StyledProject.ProjectTitle>
+              <StyledProject.TechStacks>
+                {projects[projectIndex] &&
+                  projects[projectIndex].techStacks.map((techStack) => (
+                    <StyledProject.TechStack key={techStack}>{techStack}</StyledProject.TechStack>
+                  ))}
+              </StyledProject.TechStacks>
               <Browser project={projects[projectIndex] ?? null} projectIndex={projectIndex} />
             </StyledProject.BrowserContainer>
           </StyledPage.Projects>

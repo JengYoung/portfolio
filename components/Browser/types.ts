@@ -30,6 +30,7 @@ export interface ProjectInterface {
   };
   thumbnail: AssetType;
   contents: (IntroContents | DetailContents)[];
+  techStacks: string[];
 }
 
 export interface BrowserProps {

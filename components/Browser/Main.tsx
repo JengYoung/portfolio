@@ -22,7 +22,7 @@ function Browser({ project, projectIndex }: BrowserProps) {
   return (
     <Styled.Container>
       <Styled.Header>
-        <Styled.Circles isActive={activeTabIndex === 0}>
+        <Styled.Circles isActive={activeTabIndex === 0 && projectIndex >= 0}>
           <Styled.Circle />
           <Styled.Circle />
           <Styled.Circle />
@@ -42,7 +42,9 @@ function Browser({ project, projectIndex }: BrowserProps) {
                 </Styled.TabTitle>
               </Styled.Tab>
             ))}
-            <Styled.Separator />
+            <Styled.Separator
+              isLeftActive={activeTabIndex === (project?.contents?.length ?? 0) - 1}
+            />
           </Styled.TabsInner>
         </Styled.TabsContainer>
       </Styled.Header>
