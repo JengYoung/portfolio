@@ -54,23 +54,6 @@
           "type": "video",
           "src": "/projects/portfolio-interaction.mp4"
         }
-      },
-
-      {
-        "id": 1002,
-        "type": "detail",
-        "title": "CICD",
-        "descriptions": [
-          "일일이 반복된 일을 하는 건 너무 번거로워요.",
-          "따라서 배포 및 릴리즈 노트 템플릿 생성을 자동화했어요.",
-          "이슈 및 PR을 업데이트하며 할 일을 체크해요."
-        ],
-        "links": [],
-
-        "background": {
-          "type": "image",
-          "src": "/profile.gif"
-        }
       }
     ]
   },
@@ -152,7 +135,7 @@
         ],
         "background": {
           "type": "image",
-          "src": "/profile.gif"
+          "src": "/projects/calendar.png"
         }
       },
 
@@ -169,12 +152,12 @@
           }
         ],
         "descriptions": [
-          "웹도 앱처럼 페이지 전환 효과가 있다면 어떨까요?",
-          "자연스러운 페이지 전환 효과를 만들었어요."
+          "웹도 끊기지 않는 페이지 전환 효과가 있다면 어떨까요?",
+          "전환 중 자연스러운 페이지 전환 효과를 만들었어요."
         ],
         "background": {
-          "type": "image",
-          "src": "/profile.gif"
+          "type": "video",
+          "src": "/projects/navigator.mp4"
         }
       }
     ]
