@@ -60,16 +60,20 @@ export const StyledBase = {
       css`
         display: flex;
         height: 10rem;
+
+        @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+          height: 15rem;
+        }
         @media screen and (max-width: ${theme.viewPort.mobileMax}) {
           height: auto;
-        }
+        } ;
       `}
   `,
 
   Title: styled.div<{ isOpened: boolean }>`
     flex-shrink: 0;
 
-    margin-left: 1.5rem;
+    margin-left: 4rem;
 
     font-size: ${({ theme }) => theme.fontSizes.s};
     font-weight: ${({ theme }) => theme.fontWeights.bold};
@@ -78,13 +82,17 @@ export const StyledBase = {
       css`
         display: none;
       `}
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+        margin-left: 4.5rem;
+      }
+    `}
   `,
 
   Header: styled.header<{ isOpened: boolean }>`
     width: 100%;
     height: 100%;
-
-    margin-left: 1rem;
 
     transition: all 0.3s;
 
@@ -106,11 +114,29 @@ export const StyledBase = {
     ${({ theme }) =>
       theme &&
       css`
-        @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+          width: 120px;
+          height: 96px;
+        }
+        @media screen and (max-width: ${theme.viewPort.tabletMax}) {
           width: 100px;
           height: 60px;
         }
       `}
+  `,
+  LinksContainer: styled.section`
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+
+    ${({ theme }) => css`
+      @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+        flex-direction: column;
+        justify-content: center;
+        margin: 0 6rem;
+      }
+    `}
   `,
   Links: styled.ul<{ isOpened: boolean }>`
     display: flex;
@@ -125,12 +151,13 @@ export const StyledBase = {
             display: flex;
             align-items: flex-end;
             justify-content: space-evenly;
-            width: 1000px;
+            width: 100%;
             margin: 0 auto;
 
             @media screen and (max-width: ${theme.viewPort.mobileMax}) {
               flex-direction: column;
               align-items: center;
+              width: 100%;
             }
           `
         : css`
@@ -160,6 +187,7 @@ export const StyledBase = {
       isOpened &&
       css`
         padding: 0.5rem;
+        margin-left: 0;
         border: 2px solid transparent;
         &:hover {
           background-color: rgba(0, 0, 0, 0.5);
@@ -174,5 +202,35 @@ export const StyledBase = {
         border: 1px solid ${theme.colors.primary.light};
         border-radius: 20px;
       `}
+  `,
+
+  OutLinks: styled.ul<{ isOpened: boolean }>`
+    position: absolute;
+    right: 1rem;
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    height: 100%;
+
+    ${({ isOpened, theme }) =>
+      isOpened
+        ? css`
+            @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+              position: relative;
+              right: 0;
+              justify-content: center;
+              width: 100%;
+              height: 3rem;
+              margin: 1rem 0;
+            }
+          `
+        : css`
+            @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+              right: 1rem;
+            }
+          `}
+  `,
+  OutLinkContainer: styled.li`
+    margin: 0 0.5rem;
   `,
 };

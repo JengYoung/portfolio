@@ -4,8 +4,9 @@ import { StyledHamburger } from './styles';
 
 interface HamburgerInterface {
   onClick: () => void;
+  margin: string;
 }
-function Hamburger({ onClick }: HamburgerInterface) {
+function Hamburger({ onClick, margin }: HamburgerInterface) {
   const [isActive, setIsActive] = useState(false);
 
   const onButtonClick = () => {
@@ -15,7 +16,7 @@ function Hamburger({ onClick }: HamburgerInterface) {
 
   const arr = Array.from({ length: 3 }, (_, idx) => idx);
   return (
-    <StyledHamburger.Container onClick={onButtonClick}>
+    <StyledHamburger.Container onClick={onButtonClick} margin={margin}>
       {arr.map((value) => (
         <StyledHamburger.LineContainer key={value} isActive={isActive}>
           <StyledHamburger.Line />

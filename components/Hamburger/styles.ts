@@ -4,8 +4,8 @@ import styled from '@emotion/styled';
 import HamburgerLine from './hamburger-line.svg';
 
 export const StyledHamburger = {
-  Container: styled.button`
-    position: relative;
+  Container: styled.button<{ margin: string }>`
+    position: absolute;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -13,7 +13,7 @@ export const StyledHamburger = {
     height: 14px;
 
     padding: 0;
-    margin: 0;
+    margin: ${({ margin }) => margin};
   `,
   LineContainer: styled.div<{ isActive: boolean }>`
     height: 2px;
