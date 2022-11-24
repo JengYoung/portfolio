@@ -5,8 +5,11 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import { Hamburger } from '@components/Hamburger';
+import IconLink from '@components/Link/IconLink';
 
 import useWindow from '@hooks/useWindow';
+
+import { MY_GITHUB_URL, MY_TECH_BLOG_URL } from '@utils/constants';
 
 import { StyledBase } from './styles';
 
@@ -55,28 +58,57 @@ function Base({ hidden }: BasePropsInterface) {
     router.push(url);
   };
 
+  const outLinks = [
+    {
+      href: MY_GITHUB_URL,
+      iconSrc: '/github.png',
+      alt: 'GitHub URL',
+    },
+    {
+      href: MY_TECH_BLOG_URL,
+      iconSrc: '/velog.png',
+      alt: 'TechBlog URL',
+    },
+  ];
+
   return (
     <StyledBase.Container isOpened={isOpened} hidden={hidden}>
       <StyledBase.Header isOpened={isOpened}>
-        <Hamburger onClick={() => setIsOpened((state) => !state)} />
+        <Hamburger onClick={() => setIsOpened((state) => !state)} margin="0 0 0 1rem" />
 
         <StyledBase.Title isOpened={isOpened}>Portfolio</StyledBase.Title>
 
-        <StyledBase.Links isOpened={isOpened}>
-          {Links.map((link) => (
-            <StyledBase.LinkContainer
-              isOpened={isOpened}
-              isActive={new RegExp(`^${windowState.location?.pathname}$`).test(link.url)}
-              key={link.name}
-              onClick={() => onLinkContainerClick(link.url)}
-            >
-              <StyledBase.Thumbnail isOpened={isOpened}>
-                <Image src={link.thumbnail} layout="fill" objectFit="contain" />
-              </StyledBase.Thumbnail>
-              <Link href={link.url}>{link.name}</Link>
-            </StyledBase.LinkContainer>
-          ))}
-        </StyledBase.Links>
+        <StyledBase.LinksContainer>
+          <StyledBase.Links isOpened={isOpened}>
+            {Links.map((link) => (
+              <StyledBase.LinkContainer
+                isOpened={isOpened}
+                isActive={new RegExp(`^${windowState.location?.pathname}$`).test(link.url)}
+                key={link.name}
+                onClick={() => onLinkContainerClick(link.url)}
+              >
+                <StyledBase.Thumbnail isOpened={isOpened}>
+                  <Image src={link.thumbnail} layout="fill" objectFit="contain" />
+                </StyledBase.Thumbnail>
+                <Link href={link.url}>{link.name}</Link>
+              </StyledBase.LinkContainer>
+            ))}
+          </StyledBase.Links>
+
+          <StyledBase.OutLinks isOpened={isOpened}>
+            {outLinks.map((link) => (
+              <StyledBase.OutLinkContainer key={link.iconSrc}>
+                <IconLink
+                  width="20px"
+                  height="20px"
+                  iconSrc={link.iconSrc}
+                  alt={link.alt}
+                  href={link.href}
+                />
+              </StyledBase.OutLinkContainer>
+            ))}
+          </StyledBase.OutLinks>
+        </StyledBase.LinksContainer>
       </StyledBase.Header>
     </StyledBase.Container>
   );

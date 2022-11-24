@@ -1,3 +1,5 @@
+import { IconTextPropsInterface } from '@components/Link/types';
+
 type AssetType = {
   type: string;
   src: string;
@@ -8,6 +10,7 @@ interface BaseContentsInterface {
   title: string;
   descriptions: string[];
   background: AssetType;
+  links: IconTextPropsInterface[];
 }
 
 interface IntroContents extends BaseContentsInterface {
@@ -27,6 +30,7 @@ export interface ProjectInterface {
   };
   thumbnail: AssetType;
   contents: (IntroContents | DetailContents)[];
+  techStacks: string[];
 }
 
 export interface BrowserProps {
