@@ -9,16 +9,7 @@ export interface IconLinkStyleInterface {
   height: string;
 }
 
-export interface IconLinkPropsInterface extends IconLinkStyleInterface {
-  href: string;
-  iconSrc: string;
-  alt: string;
-}
-
-export interface IconTextPropsInterface extends IconTextLinkStyleInterface {
-  href: string;
-  iconSrc: string;
-  alt: string;
+export interface TextLinkInterface extends IconTextLinkStyleInterface {
   text: string;
 }
 
@@ -26,3 +17,6 @@ export interface IconTextLinkStyleInterface {
   bgColor: string;
   iconSize: string;
 }
+
+export type IconLinkPropsInterface = IconLinkStyleInterface & LinkInterface;
+export type IconTextPropsInterface = TextLinkInterface & LinkInterface;
