@@ -1,3 +1,4 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 export const Styled = {
@@ -89,6 +90,7 @@ export const Styled = {
       background-color: ${({ theme }) => theme.colors.headerColor};
     }
   `,
+
   Tab: styled.div<{ isActive: boolean; isLeftActive: boolean; isRightActive: boolean }>`
     position: relative;
     display: flex;
@@ -105,13 +107,26 @@ export const Styled = {
     border-top-right-radius: 10px;
     border-bottom-right-radius: ${({ isRightActive }) => (isRightActive ? '10px' : 0)};
     border-bottom-left-radius: ${({ isLeftActive }) => (isLeftActive ? '10px' : 0)};
+
+    ${({ theme, isRightActive, isLeftActive }) => css`
+      @media screen and (max-width: ${theme.viewPort.mobileMax}) {
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: ${isRightActive ? '5px' : 0};
+        border-bottom-left-radius: ${isLeftActive ? '5px' : 0};
+      }
+    `}
   `,
-  Separator: styled.div`
+  Separator: styled.div<{ isLeftActive: boolean }>`
     width: 0.5rem;
     height: 100%;
 
     background-color: ${({ theme }) => theme.colors.headerColor};
-    border-bottom-left-radius: 10px;
+    ${({ isLeftActive }) =>
+      isLeftActive &&
+      css`
+        border-bottom-left-radius: 10px;
+      `}
   `,
   TabTitle: styled.div<{ isActive: boolean }>`
     width: 5rem;
@@ -140,8 +155,10 @@ export const Styled = {
     background-color: ${({ theme }) => theme.colors.white};
   `,
   BarDescription: styled.div`
+    display: flex;
+    align-items: center;
     width: calc(100% - 1rem);
-    height: 1.5rem;
+    height: 2rem;
 
     padding: 0 0.5rem;
 
@@ -175,8 +192,8 @@ export const Styled = {
   `,
   BodyDescriptions: styled.ul`
     position: absolute;
-    top: 0;
     right: 1rem;
+    bottom: 1rem;
     left: 1rem;
     z-index: 1;
 
@@ -191,7 +208,7 @@ export const Styled = {
 
     text-align: left;
 
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.5);
 
     border-radius: 10px;
     box-shadow: -2px 2px 4px 2px rgba(0, 0, 0, 0.2);

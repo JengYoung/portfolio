@@ -38,9 +38,10 @@ export const StyledTerminal = {
       }
       if (mode === ButtonActionTypeEnum.green) {
         return css`
+          position: relative;
+          top: ${theme.layout.header.height};
           width: 100vw;
           height: 100vh;
-          margin-top: ${theme.layout.header.height};
         `;
       }
       return ``;
@@ -55,9 +56,9 @@ export const StyledTerminal = {
 
           ${mode === ButtonActionTypeEnum.green &&
           css`
+            bottom: 0;
             width: 100vw;
             height: calc(100vh);
-            margin-top: 60px;
           `}
         }
       `}
@@ -106,8 +107,12 @@ export const StyledTerminalHeader = {
     }
   `,
   Title: styled.div`
+    padding: 0 6rem;
     margin: 0 auto;
+    overflow: hidden;
     color: ${({ theme }) => theme.colors.white};
+    text-overflow: ellipsis;
+    white-space: nowrap;
   `,
 };
 
