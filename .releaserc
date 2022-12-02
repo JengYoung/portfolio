@@ -21,18 +21,19 @@
         "noteKeywords": ["BREAKING CHANGE", "BREAKING CHANGES"]
       }
     }],
+    "@semantic-release/release-notes-generator",
     [
       "@semantic-release/changelog",
       {
-        "changelogFile": "./CHANGELOG.md"
+        "changelogFile": "CHANGELOG.md",
+        "changelogTitle": "# 🚦 CHANGELOG | 변경 사항"
       }
     ],
     [
       "@semantic-release/git",
       {
-        "assets": ["./CHANGELOG.md"]
+        "assets": ["CHANGELOG.md"]
       }
-    ],
-    "@semantic-release/github"
+    ]
   ]
 }
