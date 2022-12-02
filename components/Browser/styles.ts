@@ -225,4 +225,12 @@ export const Styled = {
       color: ${({ theme }) => theme.colors.primary.light};
     }
   `,
+  EmptyContainer: styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+  `,
 };
