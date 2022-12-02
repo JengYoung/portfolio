@@ -23,6 +23,7 @@
     "recoil": "^0.7.6"
   },
   "devDependencies": {
+    "@commitlint/config-conventional": "^17.3.0",
     "@next/eslint-plugin-next": "latest",
     "@stylelint/postcss-css-in-js": "^0.38.0",
     "@svgr/webpack": "^6.5.1",
@@ -33,6 +34,9 @@
     "@types/three": "^0.144.0",
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "^5.42.0",
+    "commitizen": "^4.2.5",
+    "commitlint": "^17.3.0",
+    "cz-customizable": "^7.0.0",
     "eslint": "^7.32.0",
     "eslint-config-airbnb": "latest",
     "eslint-config-next": "12.2.5",
@@ -47,6 +51,7 @@
     "postcss": "^8.4.16",
     "postcss-syntax": "^0.36.2",
     "prettier": "^2.7.1",
+    "standard-version": "^9.5.0",
     "stylelint": "^14.11.0",
     "stylelint-config-prettier-scss": "^0.0.1",
     "stylelint-config-recess-order": "^3.0.0",
@@ -56,8 +61,11 @@
   },
   "packageManager": "yarn@3.2.4",
   "lint-staged": {
+    "*.{js,json,md,html}": [
+      "prettier --write **/*.{js,json,md,html} --ignore-unknown"
+    ],
     "*.{tsx,ts}": [
-      "prettier --write **/*.{tsx,ts,js,json,md,html} --ignore-unknown",
+      "prettier --write **/*.{tsx,ts} --ignore-unknown",
       "eslint --fix",
       "stylelint --fix"
     ]

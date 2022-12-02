@@ -57,3 +57,8 @@ jobs:
       - name: Invalidate Cache
         run: |
           aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
+     
+      - name: Semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: yarn dlx semantic-release
