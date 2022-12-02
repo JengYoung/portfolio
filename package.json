@@ -65,9 +65,12 @@
   },
   "packageManager": "yarn@3.3.0",
   "lint-staged": {
+    "*.{js,json,md,html}": [
+      "prettier --write **/*.{js,json,md,html} --ignore-unknown --no-error-on-unmatched-pattern"
+    ],
     "*.{tsx,ts}": [
-      "prettier --write --no-error-on-unmatched-pattern",
-      "eslint --fix --ext (.ts|.tsx) --no-error-on-unmatched-pattern",
+      "prettier --write **/*.{tsx,ts} --ignore-unknown --no-error-on-unmatched-pattern",
+      "eslint --fix",
       "stylelint --fix",
       "git add"
     ]
