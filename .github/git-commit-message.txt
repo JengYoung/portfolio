@@ -10,15 +10,15 @@
 
 # --- COMMIT END ---
 # Type can be
-#   ✨    : new feature
-#   🐛    : bug fix
-#   ♻️    : refactoring production code
-#   💄    : formatting, missing semi colons, etc; (no production code change)
-#   📝    : changes to documentation
-#   ✅    : adding or refactoring tests; (no production code change)
-#   📦    : updating grunt tasks etc; (no production code change)
-#   🚚    : move files, code, directory
-#   🔥    : remove files, code, directory
+#   feat    : new feature
+#   fix    : bug fix
+#   refactor    : refactoring production code
+#   style    : formatting, missing semi colons, etc; (no production code change)
+#   docs    : changes to documentation
+#   test    : adding or refactoring tests; (no production code change)
+#   chore    : updating grunt tasks etc; (no production code change)
+#   move    : move files, code, directory
+#   remove    : remove files, code, directory
 # ------------------
 # Remember me ~
 #   Capitalize the subject line
