@@ -23,7 +23,13 @@
     "recoil": "^0.7.6"
   },
   "devDependencies": {
+    "@commitlint/cli": "^17.3.0",
+    "@commitlint/config-conventional": "^17.3.0",
     "@next/eslint-plugin-next": "latest",
+    "@semantic-release/changelog": "^6.0.2",
+    "@semantic-release/commit-analyzer": "^9.0.2",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^8.0.7",
     "@stylelint/postcss-css-in-js": "^0.38.0",
     "@svgr/webpack": "^6.5.1",
     "@trivago/prettier-plugin-sort-imports": "^3.4.0",
@@ -33,7 +39,10 @@
     "@types/three": "^0.144.0",
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "^5.42.0",
-    "eslint": "^7.32.0",
+    "commitizen": "^4.2.5",
+    "conventional-changelog-conventionalcommits": "^5.0.0",
+    "cz-customizable": "^7.0.0",
+    "eslint": "^8.28.0",
     "eslint-config-airbnb": "latest",
     "eslint-config-next": "12.2.5",
     "eslint-config-prettier": "^8.5.0",
@@ -47,6 +56,7 @@
     "postcss": "^8.4.16",
     "postcss-syntax": "^0.36.2",
     "prettier": "^2.7.1",
+    "standard-version": "^9.5.0",
     "stylelint": "^14.11.0",
     "stylelint-config-prettier-scss": "^0.0.1",
     "stylelint-config-recess-order": "^3.0.0",
@@ -54,12 +64,13 @@
     "stylelint-prettier": "^2.0.0",
     "typescript": "^4.8.4"
   },
-  "packageManager": "yarn@3.2.4",
+  "packageManager": "yarn@3.3.0",
   "lint-staged": {
     "*.{tsx,ts}": [
-      "prettier --write **/*.{tsx,ts,js,json,md,html} --ignore-unknown",
-      "eslint --fix",
-      "stylelint --fix"
+      "prettier --write --no-error-on-unmatched-pattern",
+      "eslint --fix --ext (.ts|.tsx) --no-error-on-unmatched-pattern",
+      "stylelint --fix",
+      "git add"
     ]
   }
 }
