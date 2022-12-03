@@ -2,6 +2,10 @@ import { css } from '@emotion/react';
 
 import globalTheme from './globalTheme';
 
+/** CHECKLIST
+ * @todo
+ * [ ] 라이트 모드와 다크 모드에 따라 적용될 색을 각각 지정해주도록 한다.
+ */
 const globalStyle = css`
   html,
   body {
