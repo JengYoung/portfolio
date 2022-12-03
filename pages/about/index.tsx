@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 
-import { css } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { ForwardedCanvas } from '@components/Metaball';
@@ -20,7 +20,7 @@ import useResize from '@hooks/useResize';
 import featuresData from '@assets/dataset/features.json';
 import skillsData from '@assets/dataset/skills.json';
 
-import globalTheme from '@styles/globalTheme';
+import { CustomTheme } from '@styles/globalTheme';
 
 import { getMainMetaball } from '@utils/metaballs/getMainMetaball';
 import getStaticBubbles from '@utils/metaballs/getStaticBubbles';
@@ -56,7 +56,7 @@ interface SkillInterface {
   checks: string[];
 }
 
-const ContainerCSS = (theme: typeof globalTheme) => css`
+const ContainerCSS = (theme: CustomTheme) => css`
   position: relative;
 
   max-width: 1440px;
@@ -634,6 +634,7 @@ const Styled = {
 };
 
 function AboutPage() {
+  const theme = useTheme();
   const [isMouseVisible, setIsMouseVisible] = useState(true);
 
   const { windowState } = useResize();
@@ -650,15 +651,15 @@ function AboutPage() {
 
   const initialGradientColors: GradientType = ['#fff', '#fff'];
   const metaballGradientColors: GradientType = [
-    globalTheme.colors.primary.dark,
-    globalTheme.colors.primary.light,
+    theme.colors.primary.dark,
+    theme.colors.primary.light,
   ];
 
   const canvasRef = useRef(null);
 
   useMetaball({
     canvasRef,
-    baseFillColor: globalTheme.colors.canvasBackground,
+    baseFillColor: theme.colors.canvasBackground,
     gradient: initialGradientColors,
     metaballGradient: metaballGradientColors,
     mainMetaball: getMainMetaball(minWidth, minHeight),

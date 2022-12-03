@@ -3,8 +3,6 @@ import styled from '@emotion/styled';
 
 import { ColorSchemeType } from '@hooks/useColorScheme';
 
-import globalTheme from '@styles/globalTheme';
-
 import { COLOR_SCHEME_DARK, COLOR_SCHEME_LIGHT } from '@utils/constants';
 
 import Moon from './moon.svg';
@@ -67,7 +65,7 @@ export const StyledToggle = {
     box-sizing: border-box;
     width: 100%;
     height: 100%;
-    background: ${globalTheme.colors.primary.light};
+    background: ${({ theme }) => theme.colors.primary.light};
     border-radius: ${({ size }) => css`calc(${size} / 2)`};
   `,
   WheelContainer: styled.div<SizeType & ToggleType>`
@@ -77,7 +75,7 @@ export const StyledToggle = {
     width: ${({ size }) => size};
     height: ${({ size }) => size};
 
-    background-color: ${globalTheme.colors.white};
+    background-color: ${({ theme }) => theme.colors.white};
 
     border-radius: 50%;
 
