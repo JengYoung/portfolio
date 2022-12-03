@@ -10,15 +10,18 @@
 
 # --- COMMIT END ---
 # Type can be
-#   feat    : new feature
-#   fix    : bug fix
-#   refactor    : refactoring production code
-#   style    : formatting, missing semi colons, etc; (no production code change)
-#   docs    : changes to documentation
-#   test    : adding or refactoring tests; (no production code change)
-#   chore    : updating grunt tasks etc; (no production code change)
-#   move    : move files, code, directory
+#   feat      : new feature
+#   fix       : bug fix
+#   refactor  : refactoring production code
+#   style     : formatting, missing semi colons, etc; (no production code change)
+#   docs      : changes to documentation
+#   test      : adding or refactoring tests; (no production code change)
+#   chore     : updating grunt tasks etc; (no production code change)
+#   move      : move files, code, directory
 #   remove    : remove files, code, directory
+#   perf      : enhancement performance
+#   ci        : update CI codes
+#   revert    : abort changes, reset previous codes
 # ------------------
 # Remember me ~
 #   Capitalize the subject line
