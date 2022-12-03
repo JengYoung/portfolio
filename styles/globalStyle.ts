@@ -14,7 +14,7 @@ const globalStyle = css`
     font-family: Noto Sans KR, sans-serif;
 
     @media screen and (max-width: ${globalTheme.viewPort.tabletMax}) {
-      font-size: 10px;
+      font-size: 12px;
     }
   }
 

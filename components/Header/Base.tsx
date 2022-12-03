@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
+import Scheme from '@components/Button/Scheme';
 import { Hamburger } from '@components/Hamburger';
 import IconLink from '@components/Link/IconLink';
 
@@ -97,7 +98,10 @@ function Base({ hidden }: BasePropsInterface) {
             ))}
           </StyledBase.Links>
 
-          <StyledBase.OutLinks isOpened={isOpened}>
+          <StyledBase.RightLinks isOpened={isOpened}>
+            <StyledBase.ToggleContainer>
+              <Scheme size="20px" />
+            </StyledBase.ToggleContainer>
             {outLinks.map((link) => (
               <StyledBase.OutLinkContainer key={link.iconSrc}>
                 <IconLink
@@ -109,7 +113,7 @@ function Base({ hidden }: BasePropsInterface) {
                 />
               </StyledBase.OutLinkContainer>
             ))}
-          </StyledBase.OutLinks>
+          </StyledBase.RightLinks>
         </StyledBase.LinksContainer>
       </StyledBase.Header>
     </StyledBase.Container>

@@ -86,6 +86,7 @@ export const StyledBase = {
     ${({ theme }) => css`
       @media screen and (max-width: ${theme.viewPort.tabletMax}) {
         margin-left: 4.5rem;
+        font-size: ${theme.fontSizes.default};
       }
     `}
   `,
@@ -207,7 +208,7 @@ export const StyledBase = {
       `}
   `,
 
-  OutLinks: styled.ul<{ isOpened: boolean }>`
+  RightLinks: styled.ul<{ isOpened: boolean }>`
     position: absolute;
     right: 1rem;
     z-index: 99;
@@ -233,7 +234,13 @@ export const StyledBase = {
             }
           `}
   `,
+  ToggleContainer: styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.5rem;
+  `,
   OutLinkContainer: styled.li`
-    margin: 0 0.5rem;
+    margin: 0 0.375rem;
   `,
 };

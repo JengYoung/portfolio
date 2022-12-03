@@ -28,6 +28,8 @@ const colors = {
     darkmode: '#222',
     lightmode: '#fafafa',
   },
+  toggle: '#aaa',
+  scheme: '#eee',
 };
 
 const fontWeights = {
