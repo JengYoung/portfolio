@@ -46,7 +46,8 @@
 
 ## 커밋 컨벤션
 
-> [커밋 템플릿 문서](./.github/git-commit-message.txt)를 참고해주세요! 🙆🏻
+> 영문으로 된 컨벤션이 궁금한가요? [커밋 템플릿 문서](./.github/git-commit-message.txt)를 참고해주세요! 🙆🏻
+> 한글로 된 컨벤션이 궁금한가요? [.cz-config.js](./.cz-config.js)를 참고해주세요! 🙆🏻‍♀️
 
 &nbsp;
 
@@ -60,10 +61,15 @@
 ## 🐛 Trouble Shooting
 
 > 문제를 해결할 때마다 추가할 거에요!
+> 순서는 최근 글이 위로 올라오도록 **내림차순**으로 업데이트합니다.
 
-- [yarn berry + prettier plugin = 😖](https://github.com/JengYoung/portfolio/pull/42)
-- [[🐛 Bugfix] hotfix: 새로고침 시 403이 호출되는 현상](https://github.com/JengYoung/portfolio/pull/38)
-- [Next.js Dynamic import + ForwardRef = 😖](https://github.com/JengYoung/portfolio/pull/12)
+| 제목                                                                                   | 타입           | 링크                                                                                                                                       |
+| -------------------------------------------------------------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| 버저닝 + 변경사항 CICD 자동화 개편기 - Sementic Release로 버저닝 및 CHANGELOG 관리하기 | CICD           | [버저닝 + 변경사항 CICD 자동화 개편기 - Sementic Release로 버저닝 및 CHANGELOG 관리하기](https://velog.io/@young_pallete/semantic-release) |
+| 버저닝 + 변경사항 CI 자동화 - Release Note Draft 자동화하기                            | CICD           | [버저닝 + 변경사항 CI 자동화 - Release Note Draft 자동화하기](https://velog.io/@young_pallete/release-note-drafter)                        |
+| Next.js Dynamic import + ForwardRef = 😖                                               | Next.js        | [Next.js Dynamic import + ForwardRef = 😖](https://github.com/JengYoung/portfolio/pull/12)                                                 |
+| [🐛 Bugfix] hotfix: 새로고침 시 403이 호출되는 현상                                    | web hosting    | [[🐛 Bugfix] hotfix: 새로고침 시 403이 호출되는 현상](https://github.com/JengYoung/portfolio/pull/38)                                      |
+| yarn berry + prettier plugin = 😖                                                      | package config | [yarn berry + prettier plugin = 😖](https://github.com/JengYoung/portfolio/pull/42)                                                        |
 
 &nbsp;
 
