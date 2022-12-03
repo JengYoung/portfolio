@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { Hamburger } from '@components/Hamburger';
 import IconLink from '@components/Link/IconLink';
 
+import { useColorScheme } from '@hooks/useColorScheme';
 import useWindow from '@hooks/useWindow';
 
 import { MY_GITHUB_URL, MY_TECH_BLOG_URL } from '@utils/constants';
@@ -18,6 +19,7 @@ interface BasePropsInterface {
 }
 function Base({ hidden }: BasePropsInterface) {
   const router = useRouter();
+  useColorScheme();
 
   const Links = [
     {
