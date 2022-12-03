@@ -2,6 +2,10 @@ import { css } from '@emotion/react';
 
 import globalTheme from './globalTheme';
 
+/** CHECKLIST
+ * @todo
+ * [ ] 라이트 모드와 다크 모드에 따라 적용될 색을 각각 지정해주도록 한다.
+ */
 const globalStyle = css`
   html,
   body {
@@ -45,11 +49,21 @@ const globalStyle = css`
 
   @media (prefers-color-scheme: dark) {
     html {
-      color-scheme: ${globalTheme.colors.dark};
+      color-scheme: ${globalTheme.colors.background.darkmode};
     }
     body {
       color: ${globalTheme.colors.white};
-      background: ${globalTheme.colors.dark};
+      background: ${globalTheme.colors.background.darkmode};
+    }
+  }
+
+  @media (prefers-color-scheme: light) {
+    html {
+      color-scheme: ${globalTheme.colors.background.darkmode};
+    }
+    body {
+      color: ${globalTheme.colors.white};
+      background: ${globalTheme.colors.background.darkmode};
     }
   }
 
