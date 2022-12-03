@@ -11,8 +11,9 @@ export const globalViewPort = {
 };
 
 export const lightModeColors = {
+  type: 'light',
   primary: {
-    dark: '#5200FF',
+    dark: '#22c1c3',
     light: '#FFD600',
   },
   subPrimary: '#333',
@@ -24,15 +25,13 @@ export const lightModeColors = {
   headerColor: '#c0edf5',
   canvasBackground: '#fff',
   border: '#ddd',
-  background: {
-    darkmode: '#222',
-    lightmode: '#fafafa',
-  },
+  background: '#eee',
   toggle: '#aaa',
   scheme: '#eee',
 };
 
 export const darkModeColors = {
+  type: 'dark',
   primary: {
     dark: '#5200FF',
     light: '#FFD600',
@@ -46,10 +45,7 @@ export const darkModeColors = {
   headerColor: '#c0edf5',
   canvasBackground: '#fff',
   border: '#ddd',
-  background: {
-    darkmode: '#222',
-    lightmode: '#fafafa',
-  },
+  background: '#222',
   toggle: '#aaa',
   scheme: '#eee',
 };
@@ -58,7 +54,7 @@ export const globalPagesStyle = {
   intro: {
     subBgColor: {
       light: '#61C454',
-      dark: '##17007A',
+      dark: '#17007A',
     },
   },
 };
@@ -112,4 +108,4 @@ export const globalDarkTheme = {
   heads: globalHeadsStyle,
   fontSizes: globalFontSizesStyle,
   viewPort: globalViewPort,
-};
+} as const;

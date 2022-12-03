@@ -29,5 +29,5 @@ export const useLocalStorage = () => {
     }
   };
 
-  return { getItem, setItem };
+  return { getItem, setItem, localStorage };
 };

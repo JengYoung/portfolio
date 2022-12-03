@@ -47,24 +47,12 @@ const globalStyle = (theme: CustomTheme) => css`
     outline: none;
   }
 
-  @media (prefers-color-scheme: dark) {
-    html {
-      color-scheme: ${theme.colors.background.darkmode};
-    }
-    body {
-      color: ${theme.colors.white};
-      background: ${theme.colors.background.darkmode};
-    }
+  html {
+    color-scheme: ${theme.colors.background};
   }
-
-  @media (prefers-color-scheme: light) {
-    html {
-      color-scheme: ${theme.colors.background.darkmode};
-    }
-    body {
-      color: ${theme.colors.white};
-      background: ${theme.colors.background.darkmode};
-    }
+  body {
+    color: ${theme.colors.white};
+    background: ${theme.colors.background};
   }
 
   ul {

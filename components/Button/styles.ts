@@ -1,12 +1,11 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import { ColorSchemeType } from '@hooks/useColorScheme';
-
 import { COLOR_SCHEME_DARK, COLOR_SCHEME_LIGHT } from '@utils/constants';
 
 import Moon from './moon.svg';
 import Sun from './sun.svg';
+import { ColorSchemeType } from './types';
 
 type SizeType = { size: string };
 

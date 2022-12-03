@@ -635,6 +635,7 @@ const Styled = {
 
 function AboutPage() {
   const theme = useTheme();
+
   const [isMouseVisible, setIsMouseVisible] = useState(true);
 
   const { windowState } = useResize();

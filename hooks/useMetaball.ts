@@ -105,7 +105,7 @@ const useMetaball = ({
       frameId = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ctx, canvasRef.current?.width, canvasRef.current?.height]);
+  }, [ctx, canvasRef.current?.width, canvasRef.current?.height, metaballGradient[0]]);
 };
 
 export default useMetaball;
