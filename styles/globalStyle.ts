@@ -45,11 +45,21 @@ const globalStyle = css`
 
   @media (prefers-color-scheme: dark) {
     html {
-      color-scheme: ${globalTheme.colors.dark};
+      color-scheme: ${globalTheme.colors.background.darkmode};
     }
     body {
       color: ${globalTheme.colors.white};
-      background: ${globalTheme.colors.dark};
+      background: ${globalTheme.colors.background.darkmode};
+    }
+  }
+
+  @media (prefers-color-scheme: light) {
+    html {
+      color-scheme: ${globalTheme.colors.background.darkmode};
+    }
+    body {
+      color: ${globalTheme.colors.white};
+      background: ${globalTheme.colors.background.darkmode};
     }
   }
 

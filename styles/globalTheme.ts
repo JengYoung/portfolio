@@ -24,6 +24,10 @@ const colors = {
   headerColor: '#c0edf5',
   canvasBackground: '#fff',
   border: '#ddd',
+  background: {
+    darkmode: '#222',
+    lightmode: '#fafafa',
+  },
 };
 
 const fontWeights = {
