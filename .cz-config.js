@@ -38,7 +38,8 @@ module.exports = {
     // NOTE: .releaserc.js
     'breaking',
     'no-release',
-    'README'
+    'README',
+    'CHANGELOG'
   ],
   allowCustomScopes: true,
 };

@@ -57,7 +57,6 @@ module.exports = {
             { type: 'fix', section: '🐛 Bug Fixes', hidden: false },
             { type: 'perf', section: '🌈 Performance', hidden: false },
             { type: 'refactor', section: '♻️ Refactor', hidden: false },
-            { type: 'docs', section: '📝 Docs', hidden: false },
             { type: 'style', section: '💄 Styles', hidden: false },
             { type: 'revert', section: '🕐 Reverts', hidden: false },
             { type: 'ci', section: '💫 CI/CD', hidden: false },
@@ -66,6 +65,7 @@ module.exports = {
              * @inner
              * 아래 변화들은 보이지 않게 한다.
              */
+            { type: 'docs', section: '📝 Docs', hidden: true },
             { type: 'test', section: '✅ Tests', hidden: true },
             { type: 'chore', section: '📦 Chores', hidden: true },
             { type: 'move', section: '🚚 Move Files', hidden: true },
