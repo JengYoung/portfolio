@@ -13,8 +13,8 @@ export const globalViewPort = {
 export const lightModeColors = {
   type: 'light',
   primary: {
-    dark: '#db36a4',
     light: '#FFD600',
+    dark: '#9c36db',
   },
   subPrimary: '#333',
   dark: '#000',
@@ -28,13 +28,14 @@ export const lightModeColors = {
   background: '#eee',
   toggle: '#aaa',
   scheme: '#eee',
+  font: '#333',
 };
 
 export const darkModeColors = {
   type: 'dark',
   primary: {
-    dark: '#6c00ff',
-    light: '#FFD600',
+    light: '#6c00ff',
+    dark: '#250864',
   },
   subPrimary: '#333',
   dark: '#000',
@@ -45,20 +46,23 @@ export const darkModeColors = {
   headerColor: '#c0edf5',
   canvasBackground: '#fff',
   border: '#ddd',
-  background: '#222',
+  background: '#000',
   toggle: '#aaa',
   scheme: '#eee',
+  font: '#ddd',
 };
 
 export const globalLightPagesStyle = {
   intro: {
     subBgColor: {
       light: '#FFD600',
-      dark: '#db36a4',
+      dark: '#9c36db',
     },
   },
   about: {
-    canvasBg: '#fff',
+    bg: '#fff',
+    featureLine: '#fff',
+    name: lightModeColors.primary.dark,
   },
 };
 
@@ -66,11 +70,13 @@ export const globalDarkPagesStyle = {
   intro: {
     subBgColor: {
       light: '#6c00ff',
-      dark: '#250864',
+      dark: '#2a0845',
     },
   },
   about: {
-    canvasBg: '#111',
+    bg: '#111',
+    featureLine: '#111',
+    name: darkModeColors.primary.light,
   },
 };
 

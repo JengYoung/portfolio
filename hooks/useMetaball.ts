@@ -32,7 +32,6 @@ const useMetaball = ({
 }: UseMetaballParams) => {
   const { ctx, setFillStyle } = useCanvas({
     canvasRef,
-    gradient,
     baseFillColor,
   });
 
@@ -53,7 +52,7 @@ const useMetaball = ({
       absorbBallNum: absorbBallNum ?? 5,
       canvasWidth: canvasWidth ?? canvasRef.current.width,
       canvasHeight: canvasHeight ?? canvasRef.current.height,
-      gradients: metaballGradient ?? ['#f200ff', '#9000ff'],
+      gradients: metaballGradient,
     };
 
     const metaballs = new Metaballs({
@@ -84,7 +83,6 @@ const useMetaball = ({
     const animate = () => {
       if (ctx === null || canvasRef.current === null) return;
 
-      ctx.fillStyle = baseFillColor;
       ctx.save();
 
       ctx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
