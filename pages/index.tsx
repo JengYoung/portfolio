@@ -16,10 +16,12 @@ import { useLocalStorage } from '@hooks/useLocalStorage';
 
 import terminalData from '@assets/dataset/terminal.json';
 
-import { IntroTarminalAtom } from '~/atoms';
-import { ButtonActionTypeEnum, TerminalModeType } from '~/atoms/intro/terminal';
+import { CustomTheme } from '@styles/globalTheme';
 
-const modeGradients = {
+import { IntroTarminalAtom } from '~/atoms';
+import { TerminalModeType } from '~/atoms/intro/terminal';
+
+const modeGradients = (theme: CustomTheme) => ({
   ANGRY: {
     start: '#FF0000',
     end: '#250864',
@@ -32,7 +34,11 @@ const modeGradients = {
     start: '#FFD600',
     end: '#FF5C00',
   },
-};
+  FULL_SCREEN: {
+    start: theme.pages.intro.subBgColor.dark,
+    end: theme.pages.intro.subBgColor.light,
+  },
+});
 
 const Styled = {
   Page: styled.div<{ mode: TerminalModeType }>`
@@ -57,13 +63,12 @@ const Styled = {
 
     /* mode */
     &::before {
-      ${({ mode }) =>
-        mode !== ButtonActionTypeEnum.green &&
+      ${({ theme, mode }) =>
         mode !== null &&
         css`
           background: linear-gradient(
-            ${modeGradients[mode].start} 15%,
-            ${modeGradients[mode].end} 85% 100%
+            ${modeGradients(theme)[mode].start} 15%,
+            ${modeGradients(theme)[mode].end} 85% 100%
           );
         `};
       opacity: ${({ mode }) => (mode === null ? 0 : 1)};
@@ -73,7 +78,7 @@ const Styled = {
     /* default */
     &::after {
       background: ${({ theme }) =>
-        css`linear-gradient(${theme.colors.primary.dark} 15%, ${theme.colors.primary.light} 85% 100%)`};
+        css`linear-gradient(${theme.pages.intro.subBgColor.dark} 15%, ${theme.pages.intro.subBgColor.light} 85% 100%)`};
       opacity: ${({ mode }) => (mode === null ? 1 : 0)};
       transition: all 1s;
     }

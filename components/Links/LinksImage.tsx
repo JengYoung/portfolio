@@ -52,16 +52,25 @@ const StyledLinks = {
 
     background-color: white;
 
-    border-radius: 10px;
+    border-radius: 5px;
     transition: all 0.3s;
   `,
   LinkContainer: styled.div`
     display: flex;
     align-items: center;
+    height: 100%;
+    margin-bottom: 0.5rem;
     text-align: center;
   `,
-  LinkIcon: styled.div`
+  Link: styled.a`
     position: relative;
+    display: flex;
+    align-items: center;
+  `,
+  LinkIcon: styled.div`
+    display: flex;
+    flex-shrink: 0;
+    align-self: center;
     width: 1.5rem;
     height: 1.5rem;
     margin-bottom: 0.25rem;
@@ -74,7 +83,6 @@ const Styled = {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
     overflow: hidden;
 
     background-color: ${({ theme }) => theme.colors.white};
@@ -125,11 +133,16 @@ function LinksImage({ image, links, imageOptions }: LinksImageInterface<string>)
         {links.map((link) => (
           <StyledLinks.LinkContainer key={link.name}>
             <StyledLinks.LinkInner>
-              <a id={link.name} href={link.href} target="_blank" rel="noopener noreferrer">
+              <StyledLinks.Link
+                id={link.name}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <StyledLinks.LinkIcon>
-                  <Image src={link.iconSrc} alt={image.alt} layout="fill" objectFit="cover" />
+                  <Image src={link.iconSrc} alt={image.alt} layout="fill" objectFit="contain" />
                 </StyledLinks.LinkIcon>
-              </a>
+              </StyledLinks.Link>
             </StyledLinks.LinkInner>
           </StyledLinks.LinkContainer>
         ))}

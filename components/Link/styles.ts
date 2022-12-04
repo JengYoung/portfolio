@@ -13,11 +13,13 @@ export const Styled = {
     height: ${({ height }) => height};
     overflow: hidden;
     background-color: ${({ theme }) => theme.colors.white};
+    filter: grayscale(0.75) contrast(0.75);
     border-radius: 50%;
     transition: all 0.3s;
 
     &:hover,
     &:active {
+      filter: none;
       transform: scale(1.2);
     }
   `,
