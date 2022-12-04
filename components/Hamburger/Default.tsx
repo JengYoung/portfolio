@@ -16,11 +16,7 @@ function Hamburger({ onClick, margin }: HamburgerInterface) {
 
   const arr = Array.from({ length: 3 }, (_, idx) => idx);
   return (
-    <StyledHamburger.Container
-      onClick={onButtonClick}
-      margin={margin}
-      aria-label="pages-preview-button"
-    >
+    <StyledHamburger.Container onClick={onButtonClick} margin={margin}>
       {arr.map((value) => (
         <StyledHamburger.LineContainer key={value} isActive={isActive}>
           <StyledHamburger.Line />
