@@ -305,7 +305,7 @@ const StyledProjectIntro = {
     top: 50%;
     z-index: 99;
     align-self: center;
-    color: ${({ theme }) => theme.colors.subPrimary};
+    color: ${({ theme }) => theme.colors.font};
   `,
 };
 
@@ -536,15 +536,15 @@ const StyledProject = {
   `,
   ProjectTitle: styled.header`
     height: 96px;
-    margin-bottom: 1rem;
     font-size: ${({ theme }) => theme.heads[1].size};
     font-weight: ${({ theme }) => theme.heads[1].weight};
-    color: ${({ theme }) => theme.colors.white};
+    color: ${({ theme }) => theme.colors.font};
     text-shadow: 0px 4px 2px rgba(0, 0, 0, 0.2);
   `,
   TechStacks: styled.ul`
     display: inline-flex;
     flex-wrap: wrap;
+    margin: 1rem 0;
   `,
   TechStack: styled.li`
     flex-shrink: 0;
