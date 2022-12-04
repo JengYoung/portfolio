@@ -828,7 +828,7 @@ function AboutPage() {
           <Styled.ProfileImage
             top={minHeight * 0.7 - (isMobileSize(minWidth) ? 100 : 140)}
             size={isMobileSize(minWidth) ? 200 : 280}
-            src="profile.gif"
+            src="profile.webp"
             alt="프로필"
           />
         </Styled.Introduction>

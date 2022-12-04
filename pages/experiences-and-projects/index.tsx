@@ -783,11 +783,21 @@ function ExperiencesAndProjectsPage() {
               <StyledProject.Video src="/projects/metaball.mp4" autoPlay muted loop />
             </StyledProject.Card2>
             <StyledProject.Card3 onClick={() => onClickCard(2)}>
-              <Image src="/projects/vue-components.png" layout="fill" objectFit="contain" />
+              <Image
+                src="/projects/vue-components.png"
+                layout="fill"
+                objectFit="contain"
+                alt="project-vue-components"
+              />
             </StyledProject.Card3>
             <StyledProject.Card4 onClick={() => onClickCard(3)}>
               <StyledProject.CardContainer>
-                <Image src="/projects/seeyouletter.png" layout="fill" objectPosition="center" />
+                <Image
+                  src="/projects/seeyouletter.png"
+                  layout="fill"
+                  objectPosition="center"
+                  alt="project-seeyouletter"
+                />
               </StyledProject.CardContainer>
             </StyledProject.Card4>
 
