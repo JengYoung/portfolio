@@ -1,6 +1,6 @@
-export type CustomTheme = typeof globalTheme;
+export type CustomTheme = typeof globalLightTheme & typeof globalDarkTheme;
 
-const viewPort = {
+export const globalViewPort = {
   mobileMin: '260px',
   mobileMax: '500px',
   tabletMin: '501px',
@@ -10,10 +10,11 @@ const viewPort = {
   desktopMax: '3000px', // NOTE: Canvas의 최적화를 위해 적용한다.
 };
 
-const colors = {
+export const lightModeColors = {
+  type: 'light',
   primary: {
-    dark: '#5200FF',
     light: '#FFD600',
+    dark: '#9c36db',
   },
   subPrimary: '#333',
   dark: '#000',
@@ -24,22 +25,75 @@ const colors = {
   headerColor: '#c0edf5',
   canvasBackground: '#fff',
   border: '#ddd',
+  background: '#eee',
+  toggle: '#aaa',
+  scheme: '#eee',
+  font: '#333',
 };
 
-const fontWeights = {
+export const darkModeColors = {
+  type: 'dark',
+  primary: {
+    light: '#6c00ff',
+    dark: '#250864',
+  },
+  subPrimary: '#333',
+  dark: '#000',
+  white: '#fdfdfd',
+  danger: '#FE0101',
+  warning: '#FF7B01',
+  success: '#61C454',
+  headerColor: '#c0edf5',
+  canvasBackground: '#fff',
+  border: '#ddd',
+  background: '#000',
+  toggle: '#aaa',
+  scheme: '#eee',
+  font: '#ddd',
+};
+
+export const globalLightPagesStyle = {
+  intro: {
+    subBgColor: {
+      light: '#FFD600',
+      dark: '#9c36db',
+    },
+  },
+  about: {
+    bg: '#fff',
+    featureLine: '#fff',
+    name: lightModeColors.primary.dark,
+  },
+};
+
+export const globalDarkPagesStyle = {
+  intro: {
+    subBgColor: {
+      light: '#6c00ff',
+      dark: '#2a0845',
+    },
+  },
+  about: {
+    bg: '#111',
+    featureLine: '#111',
+    name: darkModeColors.primary.light,
+  },
+};
+
+export const globalFontWeights = {
   extrabold: 900,
   bold: 700,
   default: 400,
 };
 
-const heads = {
-  1: { size: '4rem', weight: fontWeights.extrabold },
-  2: { size: '3rem', weight: fontWeights.bold },
-  3: { size: '2.5rem', weight: fontWeights.bold },
-  4: { size: '2rem', weight: fontWeights.bold },
+export const globalHeadsStyle = {
+  1: { size: '4rem', weight: globalFontWeights.extrabold },
+  2: { size: '3rem', weight: globalFontWeights.bold },
+  3: { size: '2.5rem', weight: globalFontWeights.bold },
+  4: { size: '2rem', weight: globalFontWeights.bold },
 };
 
-const fontSizes = {
+export const globalFontSizesStyle = {
   max: '2rem',
   xxl: '1.5rem',
   xl: '1.25rem',
@@ -51,19 +105,28 @@ const fontSizes = {
   min: '0.5rem',
 };
 
-const layout = {
+const globalLayoutStyle = {
   header: {
     height: '32px',
   },
 };
 
-const globalTheme = {
-  layout,
-  colors,
-  fontWeights,
-  heads,
-  fontSizes,
-  viewPort,
+export const globalLightTheme = {
+  layout: globalLayoutStyle,
+  pages: globalLightPagesStyle,
+  colors: lightModeColors,
+  fontWeights: globalFontWeights,
+  heads: globalHeadsStyle,
+  fontSizes: globalFontSizesStyle,
+  viewPort: globalViewPort,
 } as const;
 
-export default globalTheme;
+export const globalDarkTheme = {
+  layout: globalLayoutStyle,
+  pages: globalDarkPagesStyle,
+  colors: darkModeColors,
+  fontWeights: globalFontWeights,
+  heads: globalHeadsStyle,
+  fontSizes: globalFontSizesStyle,
+  viewPort: globalViewPort,
+} as const;

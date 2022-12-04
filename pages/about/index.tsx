@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Head from 'next/head';
 import Image from 'next/image';
 
-import { css } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { ForwardedCanvas } from '@components/Metaball';
@@ -20,7 +20,8 @@ import useResize from '@hooks/useResize';
 import featuresData from '@assets/dataset/features.json';
 import skillsData from '@assets/dataset/skills.json';
 
-import globalTheme from '@styles/globalTheme';
+import { CustomTheme } from '@styles/globalTheme';
+import { strokeTextLine } from '@styles/keyframes/strokeLine';
 
 import { getMainMetaball } from '@utils/metaballs/getMainMetaball';
 import getStaticBubbles from '@utils/metaballs/getStaticBubbles';
@@ -56,7 +57,7 @@ interface SkillInterface {
   checks: string[];
 }
 
-const ContainerCSS = (theme: typeof globalTheme) => css`
+const ContainerCSS = (theme: CustomTheme) => css`
   position: relative;
 
   max-width: 1440px;
@@ -65,7 +66,8 @@ const ContainerCSS = (theme: typeof globalTheme) => css`
   margin: 0 auto;
 
   overflow: hidden;
-  background-color: white;
+
+  background-color: ${theme.pages.about.bg};
 
   @media screen and (max-width: ${theme.viewPort.tabletMax}) {
     width: 100%;
@@ -92,6 +94,8 @@ const Styled = {
   `,
   CopyBox: styled.section`
     margin-top: 3.125rem;
+
+    color: ${({ theme }) => theme.colors.font};
     text-align: center;
 
     ${({ theme }) => css`
@@ -143,7 +147,7 @@ const Styled = {
     border-radius: 50%;
   `,
   Name: styled.span`
-    color: ${({ theme }) => theme.colors.primary.dark};
+    color: ${({ theme }) => theme.pages.about.name};
   `,
 
   Features: styled.section`
@@ -158,7 +162,7 @@ const Styled = {
 
     padding-top: 100px;
 
-    background-color: white;
+    background-color: ${({ theme }) => theme.pages.about.bg};
 
     ${({ theme }) => css`
       @media screen and (max-width: ${theme.viewPort.mobileMax}) {
@@ -182,27 +186,14 @@ const Styled = {
       font-size: 5rem;
       font-weight: 900;
 
-      fill: transparent;
+      fill: ${({ theme }) => theme.colors.primary.light};
       stroke: ${({ theme }) => theme.colors.primary.light};
       stroke-dasharray: 750;
       stroke-dashoffset: 750;
       stroke-width: 3px;
 
-      animation: stroke 2s cubic-bezier(0.39, 0.575, 0.565, 1);
+      animation: ${({ theme }) => strokeTextLine(theme)} 2s cubic-bezier(0.39, 0.575, 0.565, 1);
       animation-fill-mode: forwards;
-    }
-
-    @keyframes stroke {
-      0% {
-        stroke-dashoffset: 700;
-      }
-      70% {
-        fill: ${({ theme }) => theme.colors.primary.light};
-      }
-      100% {
-        fill: ${({ theme }) => theme.colors.primary.light};
-        stroke-dashoffset: 0;
-      }
     }
   `,
   FeaturesContainer: styled.div`
@@ -266,7 +257,7 @@ const Styled = {
     ${({ theme }) => css`
       font-size: ${theme.heads[4].size};
       font-weight: ${theme.heads[4].weight};
-      color: ${theme.colors.dark};
+      color: ${theme.colors.font};
 
       @media screen and (max-width: ${theme.viewPort.mobileMax}) {
         font-size: ${theme.fontSizes.xxl};
@@ -275,6 +266,7 @@ const Styled = {
     `}
   `,
   Description: styled.span`
+    color: ${({ theme }) => theme.colors.font};
     text-align: center;
 
     ${({ theme }) => css`
@@ -309,9 +301,9 @@ const Styled = {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: white;
+    background-color: ${({ theme }) => theme.pages.about.featureLine};
 
-    border: 2px solid #fff;
+    border: 2px solid ${({ theme }) => theme.pages.about.featureLine};
     border-radius: 40% 60% 65% 35% / 40% 45% 55% 60%;
     box-shadow: 0 2px 2px 2px rgba(0, 0, 0, 0.1);
 
@@ -478,7 +470,7 @@ const Styled = {
     ${({ theme }) => css`
       font-size: calc(${theme.heads[1].size} * 2);
       font-weight: ${theme.heads[1].weight};
-      color: ${theme.colors.subPrimary};
+      color: ${theme.colors.font};
       text-shadow: 5px 5px ${theme.colors.primary.light};
 
       @media screen and (max-width: ${theme.viewPort.tabletMax}) {
@@ -514,7 +506,7 @@ const Styled = {
       margin-bottom: 0.5rem;
       font-size: ${theme.fontSizes.l};
       font-weight: ${theme.fontWeights.default};
-      color: ${theme.colors.subPrimary};
+      color: ${theme.colors.font};
 
       @media screen and (max-width: ${theme.viewPort.tabletMax}) {
         width: 60vw;
@@ -634,6 +626,8 @@ const Styled = {
 };
 
 function AboutPage() {
+  const theme = useTheme();
+
   const [isMouseVisible, setIsMouseVisible] = useState(true);
 
   const { windowState } = useResize();
@@ -648,17 +642,18 @@ function AboutPage() {
     [windowState.innerHeight]
   );
 
-  const initialGradientColors: GradientType = ['#fff', '#fff'];
+  const initialGradientColors: GradientType = [theme.pages.about.bg, theme.pages.about.bg];
+
   const metaballGradientColors: GradientType = [
-    globalTheme.colors.primary.dark,
-    globalTheme.colors.primary.light,
+    theme.colors.primary.dark,
+    theme.colors.primary.light,
   ];
 
   const canvasRef = useRef(null);
 
   useMetaball({
     canvasRef,
-    baseFillColor: globalTheme.colors.canvasBackground,
+    baseFillColor: theme.colors.canvasBackground,
     gradient: initialGradientColors,
     metaballGradient: metaballGradientColors,
     mainMetaball: getMainMetaball(minWidth, minHeight),

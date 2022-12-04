@@ -88,7 +88,7 @@ function Browser({ project, projectIndex }: BrowserProps) {
           ))}
 
         {projectIndex < 0 && (
-          <>
+          <Styled.EmptyContainer>
             <Styled.InitText>왼쪽의 프로젝트를</Styled.InitText>
             <Styled.InitText>
               <strong>
@@ -96,7 +96,7 @@ function Browser({ project, projectIndex }: BrowserProps) {
               </strong>
               해주세요!
             </Styled.InitText>
-          </>
+          </Styled.EmptyContainer>
         )}
       </Styled.Body>
     </Styled.Container>

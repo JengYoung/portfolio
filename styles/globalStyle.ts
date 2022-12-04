@@ -1,16 +1,20 @@
 import { css } from '@emotion/react';
 
-import globalTheme from './globalTheme';
+import { CustomTheme } from './globalTheme';
 
-const globalStyle = css`
+/** CHECKLIST
+ * @todo
+ * [ ] 라이트 모드와 다크 모드에 따라 적용될 색을 각각 지정해주도록 한다.
+ */
+const globalStyle = (theme: CustomTheme) => css`
   html,
   body {
     padding: 0;
     margin: 0;
     font-family: Noto Sans KR, sans-serif;
 
-    @media screen and (max-width: ${globalTheme.viewPort.tabletMax}) {
-      font-size: 10px;
+    @media screen and (max-width: ${theme.viewPort.tabletMax}) {
+      font-size: 12px;
     }
   }
 
@@ -43,14 +47,12 @@ const globalStyle = css`
     outline: none;
   }
 
-  @media (prefers-color-scheme: dark) {
-    html {
-      color-scheme: ${globalTheme.colors.dark};
-    }
-    body {
-      color: ${globalTheme.colors.white};
-      background: ${globalTheme.colors.dark};
-    }
+  html {
+    color-scheme: ${theme.colors.background};
+  }
+  body {
+    color: ${theme.colors.white};
+    background: ${theme.colors.background};
   }
 
   ul {

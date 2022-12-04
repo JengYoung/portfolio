@@ -22,12 +22,12 @@ export const useLocalStorage = () => {
     try {
       if (!localStorage) return false;
 
-      localStorage.setItem(key, JSON.parse(value));
+      localStorage.setItem(key, JSON.stringify(value));
       return true;
     } catch (e) {
       return false;
     }
   };
 
-  return { getItem, setItem };
+  return { getItem, setItem, localStorage };
 };
