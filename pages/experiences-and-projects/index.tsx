@@ -707,6 +707,7 @@ function ExperiencesAndProjectsPage() {
         <meta property="og:description" content="개발자로서 제 경험들을 보여드립니다! 👋🏻" />
         <meta property="og:site_name" content="JengYoung's Portfolio" />
         <meta property="og:locale" content="ko_KR" />
+        <meta httpEquiv="Filename" content="experiences-and-skills.html" />
       </Head>
 
       <StyledPage.Container>
@@ -782,11 +783,21 @@ function ExperiencesAndProjectsPage() {
               <StyledProject.Video src="/projects/metaball.mp4" autoPlay muted loop />
             </StyledProject.Card2>
             <StyledProject.Card3 onClick={() => onClickCard(2)}>
-              <Image src="/projects/vue-components.png" layout="fill" objectFit="contain" />
+              <Image
+                src="/projects/vue-components.png"
+                layout="fill"
+                objectFit="contain"
+                alt="project-vue-components"
+              />
             </StyledProject.Card3>
             <StyledProject.Card4 onClick={() => onClickCard(3)}>
               <StyledProject.CardContainer>
-                <Image src="/projects/seeyouletter.png" layout="fill" objectPosition="center" />
+                <Image
+                  src="/projects/seeyouletter.png"
+                  layout="fill"
+                  objectPosition="center"
+                  alt="project-seeyouletter"
+                />
               </StyledProject.CardContainer>
             </StyledProject.Card4>
 
@@ -815,6 +826,19 @@ function ExperiencesAndProjectsPage() {
       </StyledPage.Container>
     </>
   );
+}
+
+// This function gets called at build time on server-side.
+// It may be called again, on a serverless function, if
+// revalidation is enabled and a new request comes in
+export async function getStaticProps() {
+  return {
+    // Next.js will attempt to re-generate the page:
+    // - When a request comes in
+    // - At most once every 300 seconds
+    props: {},
+    revalidate: 300, // In seconds
+  };
 }
 
 ExperiencesAndProjectsPage.getLayout = getBaseLayout;

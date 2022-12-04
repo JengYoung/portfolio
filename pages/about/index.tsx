@@ -828,7 +828,7 @@ function AboutPage() {
           <Styled.ProfileImage
             top={minHeight * 0.7 - (isMobileSize(minWidth) ? 100 : 140)}
             size={isMobileSize(minWidth) ? 200 : 280}
-            src="profile.gif"
+            src="profile.webp"
             alt="프로필"
           />
         </Styled.Introduction>
@@ -926,5 +926,19 @@ function AboutPage() {
     </>
   );
 }
+
+// This function gets called at build time on server-side.
+// It may be called again, on a serverless function, if
+// revalidation is enabled and a new request comes in
+export async function getStaticProps() {
+  return {
+    // Next.js will attempt to re-generate the page:
+    // - When a request comes in
+    // - At most once every 60 seconds
+    props: {},
+    revalidate: 300, // In seconds
+  };
+}
+
 AboutPage.getLayout = getBaseLayout;
 export default AboutPage;
