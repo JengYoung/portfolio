@@ -1,9 +1,24 @@
 import React, { Head, Html, Main, NextScript } from 'next/document';
 
 export default function Document() {
+  /**
+   * Page-Enter은 IE에서만 작동.
+   */
   return (
-    <Html>
+    <Html lang="ko">
       <Head>
+        <meta charSet="UTF-8" />
+
+        <meta name="description" content="웹 프론트엔드 개발자 황재영 포트폴리오" />
+        <meta name="keyword" content="frontend web portfolio, 프론트엔드 웹 포트폴리오" />
+        <meta name="author" content="황재영" />
+        <meta name="copyright" content="황재영" />
+
+        <meta httpEquiv="imagetoolbar" content="no" />
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+        <meta httpEquiv="Content-Script-Type" content="text/javascript" />
+        <meta httpEquiv="Content-Style-Type" content="text/css" />
+
         <link
           href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap"
           rel="stylesheet"
@@ -37,6 +52,7 @@ export default function Document() {
         <link rel="icon" type="image/png" sizes="96x96" href="/favicons/favicon-96x96.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicons/favicon-16x16.png" />
       </Head>
+
       <body>
         <Main />
         <NextScript />

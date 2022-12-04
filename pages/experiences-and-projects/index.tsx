@@ -707,6 +707,7 @@ function ExperiencesAndProjectsPage() {
         <meta property="og:description" content="개발자로서 제 경험들을 보여드립니다! 👋🏻" />
         <meta property="og:site_name" content="JengYoung's Portfolio" />
         <meta property="og:locale" content="ko_KR" />
+        <meta httpEquiv="Filename" content="experiences-and-skills.html" />
       </Head>
 
       <StyledPage.Container>

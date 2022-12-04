@@ -145,6 +145,7 @@ function HomePage() {
         />
         <meta property="og:site_name" content="JengYoung's Portfolio" />
         <meta property="og:locale" content="ko_KR" />
+        <meta httpEquiv="Filename" content="index.html" />
       </Head>
 
       <Styled.Page mode={mode}>
