@@ -18,6 +18,7 @@ export default function Document() {
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
         <meta httpEquiv="Content-Script-Type" content="text/javascript" />
         <meta httpEquiv="Content-Style-Type" content="text/css" />
+        <meta name="robots" content="noindex" />
 
         <link
           href="https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap"
