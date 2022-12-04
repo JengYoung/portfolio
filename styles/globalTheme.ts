@@ -13,7 +13,7 @@ export const globalViewPort = {
 export const lightModeColors = {
   type: 'light',
   primary: {
-    dark: '#22c1c3',
+    dark: '#db36a4',
     light: '#FFD600',
   },
   subPrimary: '#333',
@@ -33,7 +33,7 @@ export const lightModeColors = {
 export const darkModeColors = {
   type: 'dark',
   primary: {
-    dark: '#5200FF',
+    dark: '#6c00ff',
     light: '#FFD600',
   },
   subPrimary: '#333',
@@ -50,12 +50,27 @@ export const darkModeColors = {
   scheme: '#eee',
 };
 
-export const globalPagesStyle = {
+export const globalLightPagesStyle = {
   intro: {
     subBgColor: {
-      light: '#61C454',
-      dark: '#17007A',
+      light: '#FFD600',
+      dark: '#db36a4',
     },
+  },
+  about: {
+    canvasBg: '#fff',
+  },
+};
+
+export const globalDarkPagesStyle = {
+  intro: {
+    subBgColor: {
+      light: '#6c00ff',
+      dark: '#250864',
+    },
+  },
+  about: {
+    canvasBg: '#111',
   },
 };
 
@@ -92,7 +107,7 @@ const globalLayoutStyle = {
 
 export const globalLightTheme = {
   layout: globalLayoutStyle,
-  pages: globalPagesStyle,
+  pages: globalLightPagesStyle,
   colors: lightModeColors,
   fontWeights: globalFontWeights,
   heads: globalHeadsStyle,
@@ -102,7 +117,7 @@ export const globalLightTheme = {
 
 export const globalDarkTheme = {
   layout: globalLayoutStyle,
-  pages: globalPagesStyle,
+  pages: globalDarkPagesStyle,
   colors: darkModeColors,
   fontWeights: globalFontWeights,
   heads: globalHeadsStyle,
