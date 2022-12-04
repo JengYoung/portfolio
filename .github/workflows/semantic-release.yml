@@ -26,4 +26,4 @@ jobs:
       - name: Semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: yarn dlx semantic-release
+        run: HUSKY=0 yarn dlx semantic-release
