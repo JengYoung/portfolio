@@ -168,9 +168,11 @@ export async function getStaticProps() {
   return {
     // Next.js will attempt to re-generate the page:
     // - When a request comes in
-    // - At most once every 60 seconds
+    // - At most once every 300 seconds
+    props: {},
     revalidate: 300, // In seconds
   };
 }
 
 HomePage.getLayout = getBaseLayout;
+export default HomePage;
