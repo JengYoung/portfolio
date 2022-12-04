@@ -61,6 +61,7 @@ function Scheme({ size }: SchemeButtonPropsInterface) {
       size={size}
       scheme={colorSchemeState.theme}
       onClick={onChangeColorScheme}
+      aria-label="color-scheme change button"
     >
       <StyledScheme.Moon scheme={colorSchemeState.theme} />
       <StyledScheme.Sun scheme={colorSchemeState.theme} />

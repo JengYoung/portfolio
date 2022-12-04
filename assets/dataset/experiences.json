@@ -10,7 +10,7 @@
 
     "images": [
       {
-        "src": "/experiences/js-study-1.png",
+        "src": "/experiences/js-study-1.webp",
         "alt": "자바스크립트 스터디 블로그",
         "links": [
           {
@@ -21,7 +21,7 @@
         ]
       },
       {
-        "src": "/experiences/js-study-2.png",
+        "src": "/experiences/js-study-2.webp",
         "alt": "자바스크립트 스터디 중간 미션",
         "links": [
           {

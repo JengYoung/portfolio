@@ -2,6 +2,7 @@ import React, { ReactElement, ReactNode } from 'react';
 
 import { NextPage } from 'next';
 import type { AppProps } from 'next/app';
+import Head from 'next/head';
 
 import { RecoilRoot } from 'recoil';
 
@@ -26,12 +27,17 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
 
   return (
-    <RecoilRoot>
-      <CustomThemeProvider>
-        {/* eslint-disable react/jsx-props-no-spreading */}
-        {getLayout(<Component key={Component.prototype.constructor.name} {...pageProps} />)}
-      </CustomThemeProvider>
-    </RecoilRoot>
+    <>
+      <Head>
+        <meta name="viewport" content="viewport-fit=cover" />
+      </Head>
+      <RecoilRoot>
+        <CustomThemeProvider>
+          {/* eslint-disable react/jsx-props-no-spreading */}
+          {getLayout(<Component key={Component.prototype.constructor.name} {...pageProps} />)}
+        </CustomThemeProvider>
+      </RecoilRoot>
+    </>
   );
 }
 
