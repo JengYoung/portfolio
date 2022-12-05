@@ -43,16 +43,16 @@ jobs:
       - name: delete all files
         run: aws s3 rm ${{ secrets.AWS_S3_BUCKET_NAME }}/ --recursive
 
-      - run: aws s3 cp ./out/_next/ ${{ secrets.AWS_S3_BUCKET_NAME }}/_next/
+      - run: aws s3 cp ./out/_next/ ${{ secrets.AWS_S3_BUCKET_NAME }}/_next/ --recursive
 
       - name: remove .html files extension
         run: for file in $(find ./out -name "*.html"); do mv "$file" "${file%%.html}"; done
 
       - name: Set HTML Content-Type and Copy them
-        run: aws s3 cp --content-type "text/html" ./out ${{ secrets.AWS_S3_BUCKET_NAME }} --exclude "*.(jpg|png|svg|ico|mp4|webp)" --acl public-read --delete
+        run: aws s3 cp ./out ${{ secrets.AWS_S3_BUCKET_NAME }} --recursive --exclude "*.(jpg|png|svg|ico|mp4|webp)" --content-type "text/html" --acl public-read --delete
 
       - name: Copy Other Assets
-        run: aws s3 cp ./out/ ${{ secrets.AWS_S3_BUCKET_NAME }} --exclude "*.*" --include "*.(jpg|png|svg|ico|mp4|webp)" --metadata-directive REPLACE --cache-control max-age=300
+        run: aws s3 cp ./out/ ${{ secrets.AWS_S3_BUCKET_NAME }} --recursive --exclude "*.*" --include "*.(jpg|png|svg|ico|mp4|webp)" --metadata-directive REPLACE --cache-control max-age=300
 
       - name: Invalidate Cache
         run: |
