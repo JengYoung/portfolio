@@ -49,10 +49,10 @@ jobs:
         run: for file in $(find ./out -name "*.html"); do mv "$file" "${file%%.html}"; done
 
       - name: Set HTML Content-Type and Copy them
-        run: aws s3 cp ./out ${{ secrets.AWS_S3_BUCKET_NAME }} --recursive --exclude "*.(jpg|png|svg|ico|mp4|webp)" --content-type "text/html" --acl public-read --delete
+        run: aws s3 cp ./out ${{ secrets.AWS_S3_BUCKET_NAME }} --recursive --exclude "*.(jpg|png|svg|ico|mp4|webp)" --metadata-directive REPLACE --acl public-read --cache-control max-age=0,must-revalidate,public --content-type \"text/html; charset=utf-8\"
 
       - name: Copy Other Assets
-        run: aws s3 cp ./out/ ${{ secrets.AWS_S3_BUCKET_NAME }} --recursive --exclude "*.*" --include "*.(jpg|png|svg|ico|mp4|webp)" --metadata-directive REPLACE --cache-control max-age=300
+        run: aws s3 cp ./out/ ${{ secrets.AWS_S3_BUCKET_NAME }} --recursive --exclude "*.*" --include "*.(jpg|png|svg|ico|mp4|webp)" --metadata-directive REPLACE --cache-control max-age=300,must-revalidate
 
       - name: Invalidate Cache
         run: |
