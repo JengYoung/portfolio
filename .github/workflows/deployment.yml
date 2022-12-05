@@ -43,7 +43,7 @@ jobs:
       - name: delete all files
         run: aws s3 rm ${{ secrets.AWS_S3_BUCKET_NAME }}/ --recursive
 
-      - run: aws s3 sync ./out/_next/ ${{ secrets.AWS_S3_BUCKET_NAME }}/_next/
+      - run: aws s3 cp ./out/_next/ ${{ secrets.AWS_S3_BUCKET_NAME }}/_next/
 
       - name: remove .html files extension
         run: for file in $(find ./out -name "*.html"); do mv "$file" "${file%%.html}"; done
