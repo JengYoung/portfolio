@@ -52,7 +52,7 @@ jobs:
         run: for file in $(find ./out -name "*.html"); do mv "$file" "${file%%.html}"; done
 
       - name: Copy Other Assets
-        run: aws s3 cp ./out/ ${{ secrets.AWS_S3_BUCKET_NAME }} --exclude "*" \ 
+        run: aws s3 sync ./out/ ${{ secrets.AWS_S3_BUCKET_NAME }} --exclude "*" \ 
              --include "*.jpg" --include "*.png" --include "*.svg" --include "*.ico" --include "*.mp4" --include "*.webp" \
              --metadata-directive --recursive REPLACE --cache-control max-age=300
 
