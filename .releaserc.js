@@ -81,10 +81,15 @@ module.exports = {
         "changelogTitle": "# 🚦 CHANGELOG | 변경 사항을 기록해요."
       }
     ],
+    '@semantic-release/npm',
     [
       "@semantic-release/git",
       {
-        "assets": ["CHANGELOG.md"]
+        "assets": [
+          "package.json",
+          "CHANGELOG.md"
+        ],
+        "message": "chore(release): set `CHANGELOG.md`, `package.json` to ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
       }
     ]
   ]

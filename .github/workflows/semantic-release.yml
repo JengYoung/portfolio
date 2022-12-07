@@ -4,7 +4,7 @@
 name: Semantic-release
 
 on:
-  push:
+  pull_request:
     branches: ['main']
 
 jobs:
@@ -26,4 +26,5 @@ jobs:
       - name: Semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: HUSKY=0 yarn dlx semantic-release
