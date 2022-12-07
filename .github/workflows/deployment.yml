@@ -49,7 +49,7 @@ jobs:
         run: for file in $(find ./out -name "*.html"); do mv "$file" "${file%%.html}"; done
       
       - name: Set HTML Content-Type and Copy them
-        run: aws s3 sync ./out ${{ secrets.AWS_S3_BUCKET_NAME }} --exclude "*" --include "[!*\.*]" --content-type "text/html" --acl public-read --delete 
+        run: aws s3 sync ./out ${{ secrets.AWS_S3_BUCKET_NAME }} --exclude "*" --include "[!.]" --content-type "text/html" --acl public-read --delete 
 
       - name: Copy Other Assets
         run: aws s3 sync ./out/ ${{ secrets.AWS_S3_BUCKET_NAME }} --exclude "*" --include "*.jpg" --include "*.png" --include "*.svg" --include "*.ico" --include "*.mp4" --include "*.webp" --metadata-directive REPLACE --cache-control max-age=600
