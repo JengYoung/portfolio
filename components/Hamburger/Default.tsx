@@ -1,18 +1,23 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { StyledHamburger } from './styles';
 
 interface HamburgerInterface {
   onClick: () => void;
   margin: string;
+  opened: boolean;
 }
-function Hamburger({ onClick, margin }: HamburgerInterface) {
+function Hamburger({ onClick, margin, opened }: HamburgerInterface) {
   const [isActive, setIsActive] = useState(false);
 
   const onButtonClick = () => {
     onClick();
     setIsActive((state) => !state);
   };
+
+  useEffect(() => {
+    setIsActive(() => opened);
+  }, [opened]);
 
   const arr = Array.from({ length: 3 }, (_, idx) => idx);
   return (
