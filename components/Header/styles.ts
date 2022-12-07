@@ -58,14 +58,14 @@ export const StyledBase = {
     ${({ isOpened, theme }) =>
       isOpened &&
       css`
-        display: flex;
+        /* display: flex; */
         height: 10rem;
 
         @media screen and (max-width: ${theme.viewPort.tabletMax}) {
           height: 15rem;
         }
         @media screen and (max-width: ${theme.viewPort.mobileMax}) {
-          height: auto;
+          height: 360px;
         } ;
       `}
   `,

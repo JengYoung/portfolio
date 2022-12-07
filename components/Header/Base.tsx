@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -8,37 +8,44 @@ import Scheme from '@components/Button/Scheme';
 import { Hamburger } from '@components/Hamburger';
 import IconLink from '@components/Link/IconLink';
 
+import useClickAway from '@hooks/useClickAway';
 import useWindow from '@hooks/useWindow';
 
 import { MY_GITHUB_URL, MY_TECH_BLOG_URL } from '@utils/constants';
 
 import { StyledBase } from './styles';
 
+const links = [
+  {
+    name: 'HOME',
+    url: '/',
+    thumbnail: '/pages/index.png',
+  },
+  {
+    name: 'ABOUT',
+    url: '/about',
+    thumbnail: '/pages/about.png',
+  },
+  {
+    name: 'EXPERIENCES & PROJECTS',
+    url: '/experiences-and-projects',
+    thumbnail: '/pages/experiences-and-skills.png',
+  },
+];
+
 interface BasePropsInterface {
   hidden?: boolean;
 }
+
 function Base({ hidden }: BasePropsInterface) {
   const router = useRouter();
 
-  const links = [
-    {
-      name: 'HOME',
-      url: '/',
-      thumbnail: '/pages/index.png',
-    },
-    {
-      name: 'ABOUT',
-      url: '/about',
-      thumbnail: '/pages/about.png',
-    },
-    {
-      name: 'EXPERIENCES & PROJECTS',
-      url: '/experiences-and-projects',
-      thumbnail: '/pages/experiences-and-skills.png',
-    },
-  ];
-
   const [isOpened, setIsOpened] = useState(false);
+
+  const headerRef = useRef(null);
+  useClickAway(headerRef, () => {
+    setIsOpened(() => false);
+  });
 
   useEffect(() => {
     const onBack = (e: KeyboardEventInit) => {
@@ -48,6 +55,7 @@ function Base({ hidden }: BasePropsInterface) {
     };
 
     window.addEventListener('keydown', onBack);
+
     return () => {
       window.removeEventListener('keydown', onBack);
     };
@@ -73,9 +81,13 @@ function Base({ hidden }: BasePropsInterface) {
   ];
 
   return (
-    <StyledBase.Container isOpened={isOpened} hidden={hidden}>
+    <StyledBase.Container isOpened={isOpened} hidden={hidden} ref={headerRef}>
       <StyledBase.Header isOpened={isOpened}>
-        <Hamburger onClick={() => setIsOpened((state) => !state)} margin="0 0 0 1rem" />
+        <Hamburger
+          onClick={() => setIsOpened((state) => !state)}
+          opened={isOpened}
+          margin="0 0 0 1rem"
+        />
 
         <StyledBase.Title isOpened={isOpened}>Portfolio</StyledBase.Title>
 
