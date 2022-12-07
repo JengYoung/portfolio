@@ -4,7 +4,7 @@
 name: Depoly Portfolio Application to AWS S3 Bucket (Static Web)
 
 on:
-  pull_request:
+  push:
     # NOTE: `main` branch has rule of managing deploy portfolio app in my repo!
     branches: ['main']
 

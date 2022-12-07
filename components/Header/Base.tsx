@@ -20,7 +20,7 @@ interface BasePropsInterface {
 function Base({ hidden }: BasePropsInterface) {
   const router = useRouter();
 
-  const Links = [
+  const links = [
     {
       name: 'HOME',
       url: '/',
@@ -81,7 +81,7 @@ function Base({ hidden }: BasePropsInterface) {
 
         <StyledBase.LinksContainer>
           <StyledBase.Links isOpened={isOpened}>
-            {Links.map((link) => (
+            {links.map((link) => (
               <StyledBase.LinkContainer
                 isOpened={isOpened}
                 isActive={new RegExp(`^${windowState.location?.pathname}$`).test(link.url)}
