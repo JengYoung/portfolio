@@ -29,7 +29,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <>
       <Head>
-        <meta name="viewport" content="viewport-fit=cover" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=0"
+        />
       </Head>
       <RecoilRoot>
         <CustomThemeProvider>
