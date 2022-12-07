@@ -4,7 +4,7 @@
 name: Depoly Portfolio Application to AWS S3 Bucket (Static Web)
 
 on:
-  push:
+  pull_request:
     # NOTE: `main` branch has rule of managing deploy portfolio app in my repo!
     branches: ['main']
 
@@ -46,7 +46,7 @@ jobs:
       - run: aws s3 cp ./out/_next/ ${{ secrets.AWS_S3_BUCKET_NAME }}/_next/
 
       - name: Set HTML Content-Type and Copy them
-        run: aws s3 cp ./out ${{ secrets.AWS_S3_BUCKET_NAME }} --exclude "*" --include "*.html" --content-type "text/html" --acl public-read --delete 
+        run: aws s3 cp ./out ${{ secrets.AWS_S3_BUCKET_NAME }} --exclude "*.*" --include "*.html" --content-type "text/html" --acl public-read --delete 
 
       - name: remove .html files extension
         run: for file in $(find ./out -name "*.html"); do mv "$file" "${file%%.html}"; done
