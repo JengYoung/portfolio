@@ -1,5 +1,17 @@
 # 🚦 CHANGELOG | 변경 사항을 기록해요.
 
+## [1.8.2](https://github.com/JengYoung/portfolio/compare/v1.8.1...v1.8.2) (2022-12-07)
+
+
+### 💫 CI/CD
+
+* **workflow:** package.json을 올릴 수 있도록 설정을 변경한다 ([f2ccb76](https://github.com/JengYoung/portfolio/commit/f2ccb76184836019c4f8f0bd62e11e3ca0d7619b))
+
+
+### ♻️ Refactor
+
+* **workflow:** 불필요한 환경변수를 제거한다 ([413b9bf](https://github.com/JengYoung/portfolio/commit/413b9bff568c732e35567623231aa6ea88f9bea0))
+
 ## 1.8.1(2022-12-07)
 
 ### 🐛 Bug Fixes
