@@ -1,23 +1,31 @@
 # 🚦 CHANGELOG | 변경 사항을 기록해요.
 
-## [1.8.0](https://github.com/JengYoung/portfolio/compare/v1.7.0...v1.8.0) (2022-12-04)
-
-
-### 🌈 Performance
-
-* **assets:** 이미지를 변경하고 alt를 적용한다 ([c334e93](https://github.com/JengYoung/portfolio/commit/c334e935613b5374b623567c25f0aa631ba9cce5))
-* **custom:** revalidate 옵션을 추가하여 유효성 재검사 시간을 부여한다 ([3d0852c](https://github.com/JengYoung/portfolio/commit/3d0852c0acca5c9f02aa8e7d0db42271b30ec29b))
-* **meta:** 버튼에 aria-label 속성을 적용한다 ([2cee77b](https://github.com/JengYoung/portfolio/commit/2cee77bf02540e56f82c51d015c56d64602e39ce))
-
-
-### ✨ Features
-
-* **meta:** indexing이 안되도록 robots를 정의한다 ([9d3e941](https://github.com/JengYoung/portfolio/commit/9d3e941d51e93c03b0a82c2b95b62f9a3d4b69f6))
-
+## 1.8.1(2022-12-07)
 
 ### 🐛 Bug Fixes
 
-* **wrong codes:** 빌드가 작동하지 않는 현상을 수정한다 ([5e227fc](https://github.com/JengYoung/portfolio/commit/5e227fc44c168a59b2993c6e37feab46ca0cc67a))
+- **wrong-code:** 모바일에서 헤더가 제대로 반응형이 적용되지 않는 현상을 해결한다 ([#119](https://github.com/JengYoung/portfolio/pull/119))
+
+### 🌈 Performance
+
+- **custom-hook:** 헤더가 열려있을 시 바깥부분을 벗어나면 다시 최소화되도록 한다 ([#120](https://github.com/JengYoung/portfolio/pull/120))
+- **component:** 키보드로 닫을 때 햄버거 버튼이 제대로 바뀌지 않는 현상을 해결한다 ([#120](https://github.com/JengYoung/portfolio/pull/120))
+
+## [1.8.0](https://github.com/JengYoung/portfolio/compare/v1.7.0...v1.8.0) (2022-12-04)
+
+### 🌈 Performance
+
+- **assets:** 이미지를 변경하고 alt를 적용한다 ([c334e93](https://github.com/JengYoung/portfolio/commit/c334e935613b5374b623567c25f0aa631ba9cce5))
+- **custom:** revalidate 옵션을 추가하여 유효성 재검사 시간을 부여한다 ([3d0852c](https://github.com/JengYoung/portfolio/commit/3d0852c0acca5c9f02aa8e7d0db42271b30ec29b))
+- **meta:** 버튼에 aria-label 속성을 적용한다 ([2cee77b](https://github.com/JengYoung/portfolio/commit/2cee77bf02540e56f82c51d015c56d64602e39ce))
+
+### ✨ Features
+
+- **meta:** indexing이 안되도록 robots를 정의한다 ([9d3e941](https://github.com/JengYoung/portfolio/commit/9d3e941d51e93c03b0a82c2b95b62f9a3d4b69f6))
+
+### 🐛 Bug Fixes
+
+- **wrong codes:** 빌드가 작동하지 않는 현상을 수정한다 ([5e227fc](https://github.com/JengYoung/portfolio/commit/5e227fc44c168a59b2993c6e37feab46ca0cc67a))
 
 ## [1.7.0](https://github.com/JengYoung/portfolio/compare/v1.6.2...v1.7.0) (2022-12-04)
 
